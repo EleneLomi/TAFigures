@@ -348,7 +348,7 @@ n_test     = 2048
 batch_size = 64 #64
 
 # widths to sweep
-widths    = [20] #[5, 10, 20, 50, 100]  # edit as needed
+widths    = [15, 20, 40] #[5, 10, 20, 50, 100]  # edit as needed
 nm_layers = 1#5
 
 # training budgets
@@ -545,7 +545,7 @@ for seed in seeds:
             eval_every      = 40#00
 
             # LR grid (base grid; we optionally amplify for some models)
-            lrs = np.linspace(10**(-3.5), 10**(-0.02), 50) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
 
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants
