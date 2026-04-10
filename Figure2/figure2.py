@@ -531,7 +531,7 @@ for seed in seeds:
             eval_every      = 10#00
 
             # LR grid (base grid; we optionally amplify for some models)
-            lrs = np.linspace(10**(-3.5), 10**(-0.02), 10) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
            
 
             # for 1 hidden layer it was 1,1,1
@@ -546,7 +546,7 @@ for seed in seeds:
             eval_every      = 40#00
 
             # LR grid (base grid; we optionally amplify for some models)
-            lrs = np.linspace(10**(-3.5), 10**(-0.02), 30) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
 
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = .2#2       # for "(scaled lr)" variants
@@ -559,7 +559,7 @@ for seed in seeds:
             eval_every      = 40#00
 
             # LR grid (base grid; we optionally amplify for some models)
-            lrs = np.linspace(10**(-3.5), 10**(-0.02), 10) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
 
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants
@@ -672,10 +672,10 @@ widths_order = sorted(agg_cur["width"].unique())
 
 # --- style map: color by family, linestyle by scaled/unscaled ---
 style = {
-    "BP":              dict(color="tab:blue",   linestyle="-",  marker="o"),
-    "BP (scaled lr)":  dict(color="tab:green",   linestyle="--", marker="o", alpha = 0.3),
-    "PC":              dict(color="tab:orange", linestyle="-",  marker="o"),
-    "PC (scaled lr)":  dict(color="tab:red", linestyle="--", marker="o", alpha = 0.3),
+    "BP":              dict(color="tab:orange",   linestyle="-"),
+    "BP (scaled lr)":  dict(color="tab:orange",   linestyle="--", alpha = 0.3),
+    "PC":              dict(color="tab:blue", linestyle="-"),
+    "PC (scaled lr)":  dict(color="tab:blue", linestyle="--", alpha = 0.3),
 }
 
 # --- make figure: rows = widths, cols = inits ---
@@ -758,6 +758,12 @@ fig, axes = plt.subplots(
     figsize=(12, 2.8 * len(widths_order)),
     sharex=True, sharey=True
 )
+style = {
+    "BP":              dict(color="tab:orange",   linestyle="-",  marker="o"),
+    "BP (scaled lr)":  dict(color="tab:orange",   linestyle="--", marker="o", alpha = 0.3),
+    "PC":              dict(color="tab:blue", linestyle="-",  marker="o"),
+    "PC (scaled lr)":  dict(color="tab:blue", linestyle="--", marker="o", alpha = 0.3),
+}
 
 # Handle edge cases where rows/cols = 1
 if len(widths_order) == 1 and len(inits_order) == 1:
@@ -805,7 +811,7 @@ for r, width in enumerate(widths_order):
         #ax.set_ylim(1e-16, 1e-1)
       #  ax.set_xlim(-1, max_steps_sweep)
        # ax.set_ylim(1e-4, 1e-1)
-      #  ax.grid(True, alpha=0.25)
+        ax.grid(True, alpha=0.25)
 
         # Titles / labels
         if r == 0:

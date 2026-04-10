@@ -672,10 +672,10 @@ widths_order = sorted(agg_cur["width"].unique())
 
 # --- style map: color by family, linestyle by scaled/unscaled ---
 style = {
-    "BP":              dict(color="tab:blue",   linestyle="-",  marker="o"),
-    "BP (scaled lr)":  dict(color="tab:green",   linestyle="--", marker="o", alpha = 0.3),
-    "PC":              dict(color="tab:orange", linestyle="-",  marker="o"),
-    "PC (scaled lr)":  dict(color="tab:red", linestyle="--", marker="o", alpha = 0.3),
+    "BP":              dict(color="tab:orange",   linestyle="-"),
+    "BP (scaled lr)":  dict(color="tab:orange",   linestyle="--", alpha = 0.3),
+    "PC":              dict(color="tab:blue", linestyle="-"),
+    "PC (scaled lr)":  dict(color="tab:blue", linestyle="--", alpha = 0.3),
 }
 
 # --- make figure: rows = widths, cols = inits ---
@@ -758,6 +758,13 @@ fig, axes = plt.subplots(
     figsize=(12, 2.8 * len(widths_order)),
     sharex=True, sharey=True
 )
+
+style = {
+    "BP":              dict(color="tab:orange",   linestyle="-",  marker="o"),
+    "BP (scaled lr)":  dict(color="tab:orange",   linestyle="--", marker="o", alpha = 0.3),
+    "PC":              dict(color="tab:blue", linestyle="-",  marker="o"),
+    "PC (scaled lr)":  dict(color="tab:blue", linestyle="--", marker="o", alpha = 0.3),
+}
 
 # Handle edge cases where rows/cols = 1
 if len(widths_order) == 1 and len(inits_order) == 1:
