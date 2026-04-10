@@ -516,8 +516,8 @@ for seed in seeds:
             eval_every      = 100#00
 
             # LR grid (base grid; we optionally amplify for some models)
-            lrs = np.linspace(10**(-5), 10**(-0.02), 10) #70) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
-            #lrs = np.logspace(-5,-0.02,10)
+            #lrs = np.linspace(10**(-5), 10**(-0.02), 10) #70) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            lrs = np.logspace(-5,-0.02,100)
 
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants
@@ -531,7 +531,8 @@ for seed in seeds:
             eval_every      = 100#00
 
             # LR grid (base grid; we optionally amplify for some models)
-            lrs = np.linspace(10**(-5), 10**(-0.02), 10)# 70) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            #lrs = np.linspace(10**(-5), 10**(-0.02), 10)# 70) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            lrs = np.logspace(-5, -0.02, 100)
 
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants
@@ -546,7 +547,9 @@ for seed in seeds:
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-5), 10**(-0.02), 10) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
-            lrs = np.linspace(10**(-5), 10**(-0.02), 10)#70)
+            #lrs = np.linspace(10**(-5), 10**(-0.02), 10)#70)
+            lrs = np.logspace(-5, -0.02, 10)
+            
             
 
             # Optional LR scaling knobs (keep if you want)
