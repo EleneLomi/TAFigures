@@ -347,21 +347,8 @@ n_test     = 2048
 batch_size = 1
 
 # widths to sweep
-widths    = [15, 20, 40, 100] #[5, 10, 20, 50, 100]  # edit as needed
-nm_layers = 4#5
-
-# training budgets
-#max_steps_sweep = 10 #2000
-#max_steps_curve = 10 #2000
-#eval_every      = 5
-
-# LR grid (base grid; we optionally amplify for some models)
-#lrs = np.logspace(-3, -0.04, 5)  # ~ 1e-4 ... 1.6e-1
-
-# Optional LR scaling knobs (keep if you want)
-#amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants
-#amplify_lr_PC_scaled = 1#50       # for "(scaled lr)" variants
-#amplify_lr_PC = 1#50    # for BP only (if you want)
+widths    = [15, 20, 40] #[5, 10, 20, 50, 100]  # edit as needed
+nm_layers = 1#5
 
 # optimizer choice
 optimizer_cls = torch.optim.SGD
