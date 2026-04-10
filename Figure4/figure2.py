@@ -518,10 +518,6 @@ for seed in seeds:
     X_train, Y_train = X_train.to(device), Y_train.to(device)
     W_data = W_data.to(device)
 
-    # fixed batch sequences (per seed)
-    #batches_sweep = make_batches(X_train, Y_train, max_steps_sweep, seed=seed+111)
-    #batches_curve = make_batches(X_train, Y_train, max_steps_curve, seed=seed+111) #222)
-
     for hidden_dim in widths:
         print(hidden_dim)
         if hidden_dim == 15:
@@ -712,11 +708,6 @@ for r, width in enumerate(widths_order):
             y = np.asarray(y, dtype=float)
             s = np.asarray(s, dtype=float)
 
-          #  mask = np.isfinite(x) & np.isfinite(y) & (x > 0) & (y > 0)
-          #  x, y, s = x[mask], y[mask], s[mask]
-            #if len(x) == 0: THIS BIT REMOVED THE ZEROTH STEP? No
-            #    continue
-
             sem = s / math.sqrt(numruns)
             lower = np.maximum(y - sem, 1e-16)
             upper = np.maximum(y + sem, 1e-16)
@@ -731,16 +722,9 @@ for r, width in enumerate(widths_order):
 
         # Axes formatting
         ax.tick_params(axis='both', labelsize=18)
-      #  ax.set_xscale("log")
         ax.set_yscale("log")
-      #  ax.set_ylim(1e-4, 5e-1)
-     #   ax.set_xlim(1e-32, max_steps_curve)
-        #ax.set_ylim(1e-16, 1e-1)
-     #   ax.grid(True, alpha=0.25)
+        ax.grid(True, alpha=0.25)
 
-        # Titles / labels
-       # if r == 0:
-       #     ax.set_title(init_name, fontsize=14)
         if c == 0:
             ax.set_ylabel(f"width={width}\nTest MSE", fontsize=14)
         if r == len(widths_order) - 1:
@@ -750,36 +734,16 @@ for r, width in enumerate(widths_order):
 handles, labels = axes[0, 0].get_legend_handles_labels()
 fig.legend(
     handles, labels,
-    loc="right",#"upper center",
+    loc="right",
     ncol=4,
     frameon=True,
     bbox_to_anchor=(0.5, 1.01),
-    handlelength=4,     # ← increase this (default ≈2)
+    handlelength=4,  
     handleheight=1.5,
 )
-#fig.legend(handles, labels, loc="upper center", ncol=4, frameon=True, bbox_to_anchor=(0.5, 1.01))
 
 plt.tight_layout(rect=[0, 0, 1, 1])
 plt.savefig("Training_curves_final.png", dpi=300)
-#plt.show()
-#plt.close()
-#plt.savefig("training_curves_fullwidths.png", dpi=300)
-
-
-### YOU NEED TO ADD A PLOT HERE ###
-
-# --- choose orderings ---
-#inits_order = ["kaiming_uniform", "lecun_normal"]
-#models_order = ["BP", "BP (scaled lr)", "PC", "PC (scaled lr)"]
-#widths_order = sorted(agg_cur["width"].unique())
-
-# --- style map: color by family, linestyle by scaled/unscaled ---
-#style = {
-#    "BP":              dict(color="tab:blue",   linestyle="-",  marker="o"),
-#    "BP (scaled lr)":  dict(color="tab:blue",   linestyle="--", marker="o"),
-#    "PC":              dict(color="tab:orange", linestyle="-",  marker="o"),
-#    "PC (scaled lr)":  dict(color="tab:orange", linestyle="--", marker="o"),
-#}
 
 # --- make figure: rows = widths, cols = inits ---
 fig, axes = plt.subplots(
@@ -815,11 +779,6 @@ for r, width in enumerate(widths_order):
             x = np.asarray(x, dtype=float)
             y = np.asarray(y, dtype=float)
             s = np.asarray(s, dtype=float)
-
-          #  mask = np.isfinite(x) & np.isfinite(y) & (x > 0) & (y > 0)
-          #  x, y, s = x[mask], y[mask], s[mask]
-            #if len(x) == 0:
-            #    continue
 
             sem = s / math.sqrt(numruns)
             lower = np.maximum(y - sem, 1e-16)
@@ -860,28 +819,9 @@ fig.legend(
     handlelength=4,     # ← increase this (default ≈2)
     handleheight=1.5,
 )
-#fig.legend(handles, labels, loc="upper center", ncol=4, frameon=True, bbox_to_anchor=(0.5, 1.01))
 
 plt.tight_layout(rect=[0, 0, 1, 0.92])
 plt.savefig("lr_sweeps_final.png", dpi=300)
-#plt.show()
-#plt.savefig("training_curves_fullwidths.png", dpi=300)
-
-### ADDED ###
-
-### I also want an additional plot ###
-# --- choose orderings ---
-#inits_order = ["kaiming_uniform", "lecun_normal"]
-#models_order = ["BP", "BP (scaled lr)", "PC", "PC (scaled lr)"]
-#widths_order = sorted(agg_cur["width"].unique())
-
-# --- style map ---
-#style = {
-#    "BP":              dict(color="tab:blue",   linestyle="-",  marker="o"),
-#    "BP (scaled lr)":  dict(color="tab:blue",   linestyle="--", marker="o"),
-#    "PC":              dict(color="tab:orange", linestyle="-",  marker="o"),
-#    "PC (scaled lr)":  dict(color="tab:orange", linestyle="--", marker="o"),
-#}
 
 # --- compute best MSE per (width, init, model) ---
 best = (
@@ -925,11 +865,9 @@ for c, init_name in enumerate(inits_order):
             **style[model_name]
         )
 
-   # ax.set_xscale("log")   # optional but usually helpful
     ax.set_yscale("log")
     ax.set_xlabel("Width")
     ax.set_title(init_name)
-  #  ax.grid(True, alpha=0.25)
 
 axes[0].set_ylabel("Best Test MSE")
 
@@ -941,17 +879,12 @@ fig.legend(
     ncol=4,
     frameon=True,
     bbox_to_anchor=(0.5, 1.05),
-    handlelength=4,     # ← increase this (default ≈2)
+    handlelength=4,   
     handleheight=1.5,
 )
-#fig.legend(handles, labels, loc="upper center",
-#           ncol=4, frameon=True, bbox_to_anchor=(0.5, 1.05))
 
 plt.tight_layout(rect=[0, 0, 1, 0.92])
 plt.savefig("widths_sweep_final.png", dpi=300)
-
-#plt.show()
-### END ###
 
 # ===================== OPTIONAL: print best LR summary =====================
 print("\nBest LR per (width, init, model): mean ± std over seeds")
