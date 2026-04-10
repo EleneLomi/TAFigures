@@ -5,9 +5,14 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 import numpy as np
 import torch.nn.functional as F
+import os
 
 epsilon = 1e-12#3#12
 alpha = 1e-5#4
+
+# Get the directory of the current script
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
 
 def init_model_gaus(model):
     # LeCun initialization - Should be better than default init
@@ -743,7 +748,9 @@ fig.legend(
 )
 
 plt.tight_layout(rect=[0, 0, 1, 1])
-plt.savefig("Training_curves_final.png", dpi=300)
+# Save inside the same folder (figure2)
+file_path = os.path.join(script_dir, "Training_curves_final.png")
+plt.savefig(file_path, dpi=300)
 
 # --- make figure: rows = widths, cols = inits ---
 fig, axes = plt.subplots(
@@ -821,7 +828,8 @@ fig.legend(
 )
 
 plt.tight_layout(rect=[0, 0, 1, 0.92])
-plt.savefig("lr_sweeps_final.png", dpi=300)
+file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final.png")
+plt.savefig(file_path_lrsweep, dpi=300)
 
 # --- compute best MSE per (width, init, model) ---
 best = (
@@ -884,7 +892,8 @@ fig.legend(
 )
 
 plt.tight_layout(rect=[0, 0, 1, 0.92])
-plt.savefig("widths_sweep_final.png", dpi=300)
+file_path_width = os.path.join(script_dir, "widths_sweep_final.png")
+plt.savefig(file_path_width, dpi=300)
 
 # ===================== OPTIONAL: print best LR summary =====================
 print("\nBest LR per (width, init, model): mean ± std over seeds")
