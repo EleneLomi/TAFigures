@@ -546,10 +546,10 @@ for seed in seeds:
             eval_every      = 40#00
 
             # LR grid (base grid; we optionally amplify for some models)
-            lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            lrs = np.linspace(10**(-3.5), 10**(-0.02), 30) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
 
             # Optional LR scaling knobs (keep if you want)
-            amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants
+            amplify_lr_BP_scaled = .2#2       # for "(scaled lr)" variants
             amplify_lr_PC_scaled = 2.5#50       # for "(scaled lr)" variants
             amplify_lr_PC = 2.5#3#50    # for BP only (if you want)
         
