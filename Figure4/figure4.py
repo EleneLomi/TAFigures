@@ -812,7 +812,7 @@ for r, width in enumerate(widths_order):
         #ax.set_ylim(1e-16, 1e-1)
       #  ax.set_xlim(-1, max_steps_sweep)
        # ax.set_ylim(1e-4, 1e-1)
-      #  ax.grid(True, alpha=0.25)
+        ax.grid(True, alpha=0.25)
 
         # Titles / labels
         if r == 0:
