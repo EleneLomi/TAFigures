@@ -493,15 +493,15 @@ def fresh_models(base_state, hidden_dim):
     Create BP / BP_scaled / PC / PC_scaled and load identical weights (base_state).
     """
     bp        = BP_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers)
-    bp_scaled = BP_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers, scale_method="covariance")
+  #  bp_scaled = BP_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers, scale_method="covariance")
     pc        = PC_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers)
-    pc_scaled = PC_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers, scale_method="covariance")
+  #  pc_scaled = PC_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers, scale_method="covariance")
 
     models = [
         ("BP", bp),
-        ("BP (scaled lr)", bp_scaled),
+   #     ("BP (scaled lr)", bp_scaled),
         ("PC", pc),
-        ("PC (scaled lr)", pc_scaled),
+   #     ("PC (scaled lr)", pc_scaled),
     ]
     for _, m in models:
         m.load_state_dict(base_state, strict=True)
@@ -729,6 +729,7 @@ for r, width in enumerate(widths_order):
         ax.tick_params(axis='both', labelsize=18)
         ax.set_yscale("log")
         ax.grid(True, alpha=0.25)
+        # Add a vertical dashed line at x = 20
 
         if c == 0:
             ax.set_ylabel(f"width={width}\nTest MSE", fontsize=14)
@@ -882,6 +883,8 @@ for c, init_name in enumerate(inits_order):
     ax.set_yscale("log")
     ax.set_xlabel("Width")
     ax.set_title(init_name)
+    ax.grid(True, alpha=0.25)
+    ax.axvline(x=20, linestyle='dashed', color='grey')
 
 axes[0].set_ylabel("Best Test MSE")
 
