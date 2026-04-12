@@ -737,7 +737,7 @@ for r, width in enumerate(widths_order):
 
         # Titles / labels
         if r == 0:
-            ax.set_title(init_name)
+            ax.set_title(init_name.replace("_", " "))
         if c == 0:
             ax.set_ylabel(f"width={width}\nTest MSE")
         if r == len(widths_order) - 1:
@@ -815,7 +815,7 @@ for r, width in enumerate(widths_order):
 
         # Titles / labels
         if r == 0:
-            ax.set_title(init_name)
+            ax.set_title(init_name.replace("_", " "))
         if c == 0:
             ax.set_ylabel(f"width={width}\nTest MSE")
         if r == len(widths_order) - 1:
@@ -873,7 +873,7 @@ for c, init_name in enumerate(inits_order):
 
     ax.set_yscale("log")
     ax.set_xlabel("Width")
-    ax.set_title(init_name)
+    ax.set_title(init_name.replace("_", " "))
     ax.grid(True, alpha=0.25)
     ax.axvline(x=20, linestyle='dashed', color='grey')
 
