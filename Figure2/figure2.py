@@ -353,7 +353,7 @@ n_test     = 2048
 batch_size = 64 #64
 
 # widths to sweep
-widths    = [15, 20, 40] #[5, 10, 20, 50, 100]  # edit as needed
+widths    = [15, 20] #[5, 10, 20, 50, 100]  # edit as needed
 nm_layers = 1#5
 
 # training budgets
@@ -681,7 +681,8 @@ style = {
 # --- make figure: rows = widths, cols = inits ---
 fig, axes = plt.subplots(
     len(widths_order), len(inits_order),
-    figsize=(5, 2.8 * len(widths_order)),
+    figsize=(3.5 * len(inits_order), 2.8 * len(widths_order)),
+    #figsize=(5, 2.8 * len(widths_order)),
     sharex=True, sharey=True
 )
 
@@ -726,27 +727,18 @@ for r, width in enumerate(widths_order):
             ax.fill_between(x, lower, upper, alpha=0.15, color=style[model_name]["color"])
 
         # Axes formatting
-        ax.tick_params(axis='both', labelsize=18)
+        ax.tick_params(axis='both')
         ax.set_yscale("log")
         ax.grid(True, alpha=0.25)
         # Add a vertical dashed line at x = 20
 
         if c == 0:
-            ax.set_ylabel(f"width={width}\nTest MSE", fontsize=14)
+            ax.set_ylabel(f"width={width}\nTest MSE")
         if r == len(widths_order) - 1:
-            ax.set_xlabel("Training steps", fontsize=14)
+            ax.set_xlabel("Training steps")
 
 # Single legend for the whole figure
 handles, labels = axes[0, 0].get_legend_handles_labels()
-fig.legend(
-    handles, labels,
-    loc="right",
-    ncol=4,
-    frameon=True,
-    bbox_to_anchor=(0.5, 1.01),
-    handlelength=4,  
-    handleheight=1.5,
-)
 
 plt.tight_layout(rect=[0, 0, 1, 1])
 # Save inside the same folder (figure2)
@@ -756,7 +748,8 @@ plt.savefig(file_path, dpi=300)
 # --- make figure: rows = widths, cols = inits ---
 fig, axes = plt.subplots(
     len(widths_order), len(inits_order),
-    figsize=(12, 2.8 * len(widths_order)),
+    figsize=(3.5 * len(inits_order), 2.8 * len(widths_order)),
+    #figsize=(12, 2.8 * len(widths_order)),
     sharex=True, sharey=True
 )
 style = {
@@ -824,17 +817,8 @@ for r, width in enumerate(widths_order):
 
 # Single legend for the whole figure
 handles, labels = axes[0, 0].get_legend_handles_labels()
-fig.legend(
-    handles, labels,
-    loc="upper center",
-    ncol=4,
-    frameon=True,
-    bbox_to_anchor=(0.5, 1.01),
-    handlelength=4,     # ← increase this (default ≈2)
-    handleheight=1.5,
-)
 
-plt.tight_layout(rect=[0, 0, 1, 0.92])
+plt.tight_layout(rect=[0, 0, 1, 1])
 file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final.png")
 plt.savefig(file_path_lrsweep, dpi=300)
 
@@ -848,7 +832,8 @@ best = (
 
 # --- make figure: one column per init ---
 fig, axes = plt.subplots(1, len(inits_order),
-                         figsize=(6 * len(inits_order), 4),
+                         figsize = (3.5 * len(inits_order), 3.1),
+                         #figsize=(6 * len(inits_order), 4),
                          sharey=True)
 
 if len(inits_order) == 1:
@@ -890,15 +875,6 @@ axes[0].set_ylabel("Best Test MSE")
 
 # single legend
 handles, labels = axes[0].get_legend_handles_labels()
-fig.legend(
-    handles, labels,
-    loc="upper center",
-    ncol=4,
-    frameon=True,
-    bbox_to_anchor=(0.5, 1.05),
-    handlelength=4,   
-    handleheight=1.5,
-)
 
 plt.tight_layout(rect=[0, 0, 1, 0.92])
 file_path_width = os.path.join(script_dir, "widths_sweep_final.png")
