@@ -415,6 +415,7 @@ def make_synthetic(seed: int):
 
     # W_data: [output_dim, input_dim]
     W_data = torch.randn(output_dim, input_dim, generator=g) / math.sqrt(input_dim)
+    print('This is the mapping to learn', W_data)
 
     X_train = torch.randn(n_train, input_dim, generator=g)
     X_test  = torch.randn(n_test,  input_dim, generator=g)
