@@ -735,6 +735,9 @@ for r, width in enumerate(widths_order):
         ax.grid(True, alpha=0.25)
         # Add a vertical dashed line at x = 20
 
+        # Titles / labels
+        if r == 0:
+            ax.set_title(init_name)
         if c == 0:
             ax.set_ylabel(f"width={width}\nTest MSE")
         if r == len(widths_order) - 1:
