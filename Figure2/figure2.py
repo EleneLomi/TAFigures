@@ -340,7 +340,7 @@ import matplotlib.pyplot as plt
 
 
 # ===================== CONFIG =====================
-seeds = [0]#, 1, 2, 3, 4]
+seeds = [0, 1, 2]#, 3, 4]
 numruns = len(seeds)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -549,7 +549,7 @@ for seed in seeds:
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
-            lrs = np.logspace((-3.5), (-0.02), 20)
+            lrs = np.logspace((-3.5), (-0.02), 80)
 
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = .2#2       # for "(scaled lr)" variants
