@@ -353,7 +353,7 @@ n_test     = 2048
 batch_size = 64 #64
 
 # widths to sweep
-widths    = [15, 20] #[5, 10, 20, 50, 100]  # edit as needed
+widths    = [20] #[5, 10, 20, 50, 100]  # edit as needed
 nm_layers = 1#5
 
 # training budgets
@@ -531,7 +531,8 @@ for seed in seeds:
             eval_every      = 10#00
 
             # LR grid (base grid; we optionally amplify for some models)
-            lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            # lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            lrs = np.logspace((-3.5), (-0.02), 5)
            
 
             # for 1 hidden layer it was 1,1,1
@@ -546,7 +547,8 @@ for seed in seeds:
             eval_every      = 40#00
 
             # LR grid (base grid; we optionally amplify for some models)
-            lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            #lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            lrs = np.logspace((-3.5), (-0.02), 20)
 
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = .2#2       # for "(scaled lr)" variants
@@ -559,7 +561,8 @@ for seed in seeds:
             eval_every      = 40#00
 
             # LR grid (base grid; we optionally amplify for some models)
-            lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            #lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            lrs = np.logspace((-3.5), (-0.02), 5)
 
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants
@@ -800,7 +803,7 @@ for r, width in enumerate(widths_order):
             ax.fill_between(x, lower, upper, alpha=0.15, color=style[model_name]["color"])
 
         # Axes formatting
-    #    ax.set_xscale("log")
+        ax.set_xscale("log")
         ax.set_yscale("log")
         #ax.set_ylim(1e-16, 1e-1)
       #  ax.set_xlim(-1, max_steps_sweep)
