@@ -739,7 +739,8 @@ for r, width in enumerate(widths_order):
         if r == 0:
             ax.set_title(init_name.replace("_", " "))
         if c == 0:
-            ax.set_ylabel(f"width={width}\nTest MSE")
+            ax.set_ylabel(r"$\|W_{\mathrm{data}} - W_{L:1}\|_2^2$")
+           # ax.set_ylabel(f"width={width}\nTest MSE")
         if r == len(widths_order) - 1:
             ax.set_xlabel("Training steps")
 
@@ -817,7 +818,8 @@ for r, width in enumerate(widths_order):
         if r == 0:
             ax.set_title(init_name.replace("_", " "))
         if c == 0:
-            ax.set_ylabel(f"width={width}\nTest MSE")
+            ax.set_ylabel(r"$\|W_{\mathrm{data}} - W_{L:1}\|_2^2$")
+            #ax.set_ylabel(f"width={width}\nTest MSE")
         if r == len(widths_order) - 1:
             ax.set_xlabel("Learning rates (log)")
 
@@ -877,7 +879,7 @@ for c, init_name in enumerate(inits_order):
     ax.grid(True, alpha=0.25)
     ax.axvline(x=20, linestyle='dashed', color='grey')
 
-axes[0].set_ylabel("Best Test MSE")
+axes[0].set_ylabel(r"$\|W_{\mathrm{data}} - W_{L:1}\|_2^2$") # set_ylabel("Best Test MSE")
 
 # single legend
 handles, labels = axes[0].get_legend_handles_labels()
