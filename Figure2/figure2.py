@@ -734,6 +734,9 @@ for r, width in enumerate(widths_order):
         ax.tick_params(axis='both')
         ax.set_yscale("log")
         ax.grid(True, alpha=0.25)
+        for spine in ax.spines.values():
+            spine.set_color('#CCCCCC')   # light gray
+            spine.set_linewidth(0.8) 
         # Add a vertical dashed line at x = 20
 
         # Titles / labels
@@ -814,6 +817,9 @@ for r, width in enumerate(widths_order):
       #  ax.set_xlim(-1, max_steps_sweep)
        # ax.set_ylim(1e-4, 1e-1)
         ax.grid(True, alpha=0.25)
+        for spine in ax.spines.values():
+            spine.set_color('#CCCCCC')   # light gray
+            spine.set_linewidth(0.8) 
 
         # Titles / labels
         if r == 0:
@@ -879,6 +885,9 @@ for c, init_name in enumerate(inits_order):
     ax.set_title(init_name.replace("_", " "))
     ax.grid(True, alpha=0.25)
     ax.axvline(x=20, linestyle='dashed', color='grey')
+    for spine in ax.spines.values():
+            spine.set_color('#CCCCCC')   # light gray
+            spine.set_linewidth(0.8) 
 
 axes[0].set_ylabel(r"$\|W_{\mathrm{data}} - W_{L:1}\|_2^2$") # set_ylabel("Best Test MSE")
 
