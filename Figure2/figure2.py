@@ -511,7 +511,7 @@ def fresh_models(base_state, hidden_dim):
 
 
 # ===================== EXPERIMENT =====================
-inits = ["lecun_normal"] #["kaiming_uniform", "lecun_normal"]
+inits = ["kaiming_uniform"] #["lecun_normal"] #["kaiming_uniform", "lecun_normal"]
 
 lr_sweep_rows = []     # per seed, width, init, model, lr -> test_mse
 curve_rows    = []     # per seed, width, init, model, step -> test_mse
@@ -549,12 +549,12 @@ for seed in seeds:
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
-            lrs = np.logspace((-3.5), (-0.02), 80)
+            lrs = np.logspace((-3.5), (0.1), 80)
 
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = .2#2       # for "(scaled lr)" variants
             amplify_lr_PC_scaled = 2.5#50       # for "(scaled lr)" variants
-            amplify_lr_PC = 2.5#3#50    # for BP only (if you want)
+            amplify_lr_PC = 1.4#5#3#50    # for BP only (if you want)
         
         if hidden_dim == 40:
             max_steps_sweep = 400#00 #2000
@@ -670,7 +670,7 @@ agg_cur = (
 
 # ===================== PLOT: best curves, one line per width =====================
 # --- choose orderings ---
-inits_order = ["lecun_normal"]#["kaiming_uniform", "lecun_normal"]
+inits_order = ["kaiming_uniform"] #["lecun_normal"]#["kaiming_uniform", "lecun_normal"]
 models_order = ["BP", "BP (scaled lr)", "PC", "PC (scaled lr)"]
 widths_order = sorted(agg_cur["width"].unique())
 
