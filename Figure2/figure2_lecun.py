@@ -340,7 +340,7 @@ import matplotlib.pyplot as plt
 
 
 # ===================== CONFIG =====================
-seeds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+seeds = [0, 1, 2, 3, 4]#, 5, 6, 7, 8, 9]
 numruns = len(seeds)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -545,7 +545,7 @@ for seed in seeds:
         if hidden_dim == 20:
             max_steps_sweep = 300#00 #2000
             max_steps_curve = 300#00 #2000
-            eval_every      = 5#00
+            eval_every      = 50#00
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
@@ -557,8 +557,8 @@ for seed in seeds:
             amplify_lr_PC = 1.4#5#3#50    # for BP only (if you want)
         
         if hidden_dim == 40:
-            max_steps_sweep = 50#00 #2000
-            max_steps_curve = 50#00 #2000
+            max_steps_sweep = 55#00 #2000
+            max_steps_curve = 55#00 #2000
             eval_every      = 5#00
 
             # LR grid (base grid; we optionally amplify for some models)
@@ -685,7 +685,7 @@ style = {
 # --- make figure: rows = widths, cols = inits ---
 fig, axes = plt.subplots(
     len(widths_order), len(inits_order),
-    figsize=(3.5 * len(inits_order), 2.8 * len(widths_order)),
+    figsize=(3.5 * len(inits_order), 2.6 * len(widths_order)),
     #figsize=(5, 2.8 * len(widths_order)),
     sharex=True, sharey=True
 )
@@ -724,7 +724,7 @@ for r, width in enumerate(widths_order):
 
             ax.plot(
                 x, y,
-                linewidth=2.5, markersize=5.5,
+               # linewidth=2.5, markersize=5.5,
                 label=model_name,
                 **style[model_name]
             )
@@ -759,7 +759,7 @@ plt.savefig(file_path, dpi=300)
 # --- make figure: rows = widths, cols = inits ---
 fig, axes = plt.subplots(
     len(widths_order), len(inits_order),
-    figsize=(3.5 * len(inits_order), 2.8 * len(widths_order)),
+    figsize=(3.5 * len(inits_order), 2.6 * len(widths_order)),
     #figsize=(12, 2.8 * len(widths_order)),
     sharex=True, sharey=True
 )
@@ -804,7 +804,7 @@ for r, width in enumerate(widths_order):
 
             ax.plot(
                 x, y,
-                linewidth=2.5, markersize=4.5,
+             #   linewidth=2.5, markersize=4.5,
                 label=model_name,
                 **style[model_name]
             )
@@ -847,7 +847,7 @@ best = (
 
 # --- make figure: one column per init ---
 fig, axes = plt.subplots(1, len(inits_order),
-                         figsize = (3.5 * len(inits_order), 3.1),
+                         figsize = (3.3 * len(inits_order), 3.1),
                          #figsize=(6 * len(inits_order), 4),
                          sharey=True)
 
@@ -874,8 +874,8 @@ for c, init_name in enumerate(inits_order):
 
         ax.plot(
             x, y,
-            linewidth=2.5,
-            markersize=6,
+         #   linewidth=2.5,
+         #   markersize=6,
             label=model_name,
             **style[model_name]
         )
