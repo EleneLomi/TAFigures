@@ -687,7 +687,7 @@ style = {
 # --- make figure: rows = widths, cols = inits ---
 fig, axes = plt.subplots(
     len(widths_order), len(inits_order),
-    figsize=(5,3), #12, 2.8 * len(widths_order)),
+    figsize=(3.5 * len(inits_order), 2.6 * len(widths_order)),
     sharex=True, sharey=True
 )
 
@@ -785,7 +785,7 @@ widths_order = sorted(agg_cur["width"].unique())
 # --- make figure: rows = widths, cols = inits ---
 fig, axes = plt.subplots(
     len(widths_order), len(inits_order),
-    figsize=(12, 2.8 * len(widths_order)),
+    figsize=(3.5 * len(inits_order), 2.6 * len(widths_order)),
     sharex=True, sharey=True
 )
 
