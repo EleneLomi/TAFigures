@@ -340,7 +340,7 @@ import matplotlib.pyplot as plt
 
 
 # ===================== CONFIG =====================
-seeds = [0, 1, 2]#, 3, 4]
+seeds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 numruns = len(seeds)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -511,7 +511,7 @@ def fresh_models(base_state, hidden_dim):
 
 
 # ===================== EXPERIMENT =====================
-inits = ["kaiming_uniform"] #["lecun_normal"] #["kaiming_uniform", "lecun_normal"]
+inits = ["lecun_normal"] #["kaiming_uniform", "lecun_normal"]
 
 lr_sweep_rows = []     # per seed, width, init, model, lr -> test_mse
 curve_rows    = []     # per seed, width, init, model, step -> test_mse
@@ -527,9 +527,9 @@ for seed in seeds:
     for hidden_dim in widths:
         print(hidden_dim)
         if hidden_dim == 15:
-            max_steps_sweep = 40#00 #2000
-            max_steps_curve = 40#00 #2000
-            eval_every      = 10#00
+            max_steps_sweep = 10#00 #2000
+            max_steps_curve = 10#00 #2000
+            eval_every      = 2#00
 
             # LR grid (base grid; we optionally amplify for some models)
             # lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
@@ -543,9 +543,9 @@ for seed in seeds:
             amplify_lr_PC = 1#25#3#50    # for BP only (if you want)
         
         if hidden_dim == 20:
-            max_steps_sweep = 400#00 #2000
-            max_steps_curve = 400#00 #2000
-            eval_every      = 40#00
+            max_steps_sweep = 300#00 #2000
+            max_steps_curve = 300#00 #2000
+            eval_every      = 5#00
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
@@ -557,9 +557,9 @@ for seed in seeds:
             amplify_lr_PC = 1.4#5#3#50    # for BP only (if you want)
         
         if hidden_dim == 40:
-            max_steps_sweep = 400#00 #2000
-            max_steps_curve = 400#00 #2000
-            eval_every      = 40#00
+            max_steps_sweep = 50#00 #2000
+            max_steps_curve = 50#00 #2000
+            eval_every      = 5#00
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
@@ -670,7 +670,7 @@ agg_cur = (
 
 # ===================== PLOT: best curves, one line per width =====================
 # --- choose orderings ---
-inits_order = ["kaiming_uniform"] #["lecun_normal"]#["kaiming_uniform", "lecun_normal"]
+inits_order = ["lecun_normal"]#["kaiming_uniform", "lecun_normal"]
 models_order = ["BP", "BP (scaled lr)", "PC", "PC (scaled lr)"]
 widths_order = sorted(agg_cur["width"].unique())
 
