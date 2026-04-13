@@ -16,17 +16,17 @@ from pc_e_scaled_fixed import PCAutoencoder as PCEAutoencoder
 # Config
 # ===
 SEED = 42
-RUN_SEEDS = [0, 1]#, 3, 4]
+RUN_SEEDS = [0]#, 1]#, 3, 4]
 
 DATA_ROOT = "/Users/elenelominadze/TargetAlignment/data"
 
 BATCH_SIZE = 64
-SWEEP_STEPS = 100
-CURVE_STEPS = 100
-EVAL_EVERY = 10
+SWEEP_STEPS = 2
+CURVE_STEPS = 2
+EVAL_EVERY = 1
 
 PC_E_LR = 0.05
-LRS = [1e-3, 1]#[1e-3, 1e-1, 1]#[1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 1e-1, 1]
+LRS = [1e-3]#, 1]#[1e-3, 1e-1, 1]#[1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 1e-1, 1]
 
 
 # ===
@@ -538,9 +538,10 @@ def plot_lr_sweep(bp_results, pc_results, pc_results_scaled):
         [r["mean_test_loss"] for r in bp_results],
         yerr=[r["std_test_loss"] for r in bp_results],
         marker="o",
-        linewidth=2.5,
-        capsize=4,
+    #    linewidth=2.5,
+    #    capsize=4,
         label="BP",
+        color = '#ff7f0e',
     )
 
     plt.errorbar(
@@ -548,9 +549,10 @@ def plot_lr_sweep(bp_results, pc_results, pc_results_scaled):
         [r["mean_test_loss"] for r in pc_results],
         yerr=[r["std_test_loss"] for r in pc_results],
         marker="o",
-        linewidth=2.5,
-        capsize=4,
+    #    linewidth=2.5,
+    #    capsize=4,
         label="PC",
+        color = '#1f77b4',
     )
 
     plt.errorbar(
@@ -558,9 +560,12 @@ def plot_lr_sweep(bp_results, pc_results, pc_results_scaled):
         [r["mean_test_loss"] for r in pc_results_scaled],
         yerr=[r["std_test_loss"] for r in pc_results_scaled],
         marker="o",
-        linewidth=2.5,
-        capsize=4,
+    #    linewidth=2.5,
+    #    capsize=4,
         label="PC scaled",
+        color = '#1f77b4', 
+        linestyle = "dashed",
+        alpha=0.5,
     )
 
     plt.tick_params(axis='both')#, labelsize=18)
@@ -569,7 +574,12 @@ def plot_lr_sweep(bp_results, pc_results, pc_results_scaled):
     plt.ylabel("Final test reconstruction loss")#,fontsize=18)
     plt.title("MNIST autoencoder")#,fontsize=18)
     plt.legend()
-  #  plt.grid(True, alpha=0.3)
+    # Lighten the box (spines)
+    ax = plt.gca()
+    for spine in ax.spines.values():
+        spine.set_color('#CCCCCC')
+        spine.set_linewidth(0.8)
+    plt.grid(True, alpha=0.3)
     plt.tight_layout()
     #plt.show()
     plt.savefig('MNIST_autoencoder_lrsweep.png', dpi=300)
@@ -582,7 +592,7 @@ def plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled):
 
     plt.figure(figsize=(2.8, 3))
 
-    plt.plot(bp_steps, bp_mean, label="BP", linewidth=2.5)
+    plt.plot(bp_steps, bp_mean, label="BP", color = '#ff7f0e')#, linewidth=2.5)
     plt.fill_between(
         bp_steps,
         [m - s for m, s in zip(bp_mean, bp_std)],
@@ -590,7 +600,7 @@ def plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled):
         alpha=0.2,
     )
 
-    plt.plot(pc_steps, pc_mean, label="PC", linewidth=2.5)
+    plt.plot(pc_steps, pc_mean, label="PC", color = '#1f77b4')#, linewidth=2.5)
     plt.fill_between(
         pc_steps,
         [m - s for m, s in zip(pc_mean, pc_std)],
@@ -598,7 +608,7 @@ def plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled):
         alpha=0.2,
     )
 
-    plt.plot(pc_steps_scaled, pc_mean_scaled, label="PC_scaled", linewidth=2.5)
+    plt.plot(pc_steps_scaled, pc_mean_scaled, label="PC_scaled", color = '#1f77b4', linestyle = "dashed", alpha=0.5)#, linewidth=2.5)
     plt.fill_between(
         pc_steps_scaled,
         [m - s for m, s in zip(pc_mean_scaled, pc_std_scaled)],
@@ -611,7 +621,12 @@ def plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled):
     plt.ylabel("Test reconstruction loss")#, fontsize=18)
     plt.title("MNIST autoencoder")#,fontsize=18)
     plt.legend()
-  #  plt.grid(True, alpha=0.3)
+    plt.grid(True, alpha=0.3)
+    # Lighten the box (spines)
+    ax = plt.gca()
+    for spine in ax.spines.values():
+        spine.set_color('#CCCCCC')
+        spine.set_linewidth(0.8)
     plt.tight_layout()
     #plt.show()
     plt.savefig('MNIST_autoencoder.png', dpi=300)
