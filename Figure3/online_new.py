@@ -340,7 +340,7 @@ import matplotlib.pyplot as plt
 
 
 # ===================== CONFIG =====================
-seeds = [0]#, 1, 2, 3, 4]#, 5, 6, 7, 8, 9]
+seeds = [0, 1, 2]#, 3, 4]#, 5, 6, 7, 8, 9]
 numruns = len(seeds)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -353,7 +353,7 @@ n_test     = 2048
 batch_size = 1 #64
 
 # widths to sweep
-widths    = [15, 20, 40] #[5, 10, 20, 50, 100]  # edit as needed
+widths    = [20]# [15, 20, 40] #[5, 10, 20, 50, 100]  # edit as needed
 nm_layers = 1#5
 
 # training budgets
@@ -543,13 +543,13 @@ for seed in seeds:
         
         if hidden_dim == 20:
             print('hi')
-            max_steps_sweep = 400#00 #2000
-            max_steps_curve = 400#00 #2000
+            max_steps_sweep = 800#00 #2000
+            max_steps_curve = 800#00 #2000
             eval_every      = 100#00
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-5), 10**(-0.02), 10)# 70) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
-            lrs = np.logspace(-5, -0.02, 100)
+            lrs = np.logspace(-5, -0.02, 50)
 
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants
