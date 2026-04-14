@@ -598,6 +598,7 @@ def plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled):
         [m - s for m, s in zip(bp_mean, bp_std)],
         [m + s for m, s in zip(bp_mean, bp_std)],
         alpha=0.2,
+        color = '#ff7f0e',
     )
 
     plt.plot(pc_steps, pc_mean, label="PC", color = '#1f77b4')#, linewidth=2.5)
@@ -606,6 +607,7 @@ def plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled):
         [m - s for m, s in zip(pc_mean, pc_std)],
         [m + s for m, s in zip(pc_mean, pc_std)],
         alpha=0.2,
+        color = '#1f77b4',
     )
 
     plt.plot(pc_steps_scaled, pc_mean_scaled, label="PC_scaled", color = '#1f77b4', linestyle = "dashed", alpha=0.5)#, linewidth=2.5)
@@ -614,6 +616,7 @@ def plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled):
         [m - s for m, s in zip(pc_mean_scaled, pc_std_scaled)],
         [m + s for m, s in zip(pc_mean_scaled, pc_std_scaled)],
         alpha=0.2,
+        color = '#1f77b4',
     )
 
     plt.tick_params(axis='both')#, labelsize=18)
