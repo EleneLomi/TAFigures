@@ -16,7 +16,7 @@ from pc_e_scaled_fixed import PCAutoencoder as PCEAutoencoder
 # Config
 # ===
 SEED = 42
-RUN_SEEDS = [0]#, 1]#, 3, 4]
+RUN_SEEDS = [0, 1, 2]#, 3, 4]
 
 DATA_ROOT = "/Users/elenelominadze/TargetAlignment/data"
 
@@ -26,7 +26,7 @@ CURVE_STEPS = 100
 EVAL_EVERY = 10
 
 PC_E_LR = 0.05
-LRS = [1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 5e-2, 1e-1, 5e-1, 1]
+LRS = [1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 5e-2, 1e-1, 5e-1, 1, 3, 10]
 
 
 # ===
