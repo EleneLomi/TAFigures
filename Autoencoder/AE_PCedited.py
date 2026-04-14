@@ -531,7 +531,7 @@ def aggregate_curve_runs(runs):
 # Plotting
 # ===
 def plot_lr_sweep(bp_results, pc_results, pc_results_scaled):
-    plt.figure(figsize=(2.8, 3))
+    plt.figure(figsize=(3.5, 2.7))
 
     plt.errorbar(
         [r["lr"] for r in bp_results],
@@ -573,7 +573,7 @@ def plot_lr_sweep(bp_results, pc_results, pc_results_scaled):
     plt.xlabel("Learning rate")#,fontsize=18)
     plt.ylabel("Final test reconstruction loss")#,fontsize=18)
     plt.title("MNIST autoencoder")#,fontsize=18)
-    plt.legend()
+    #plt.legend()
     # Lighten the box (spines)
     ax = plt.gca()
     for spine in ax.spines.values():
@@ -590,7 +590,7 @@ def plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled):
     pc_steps, pc_mean, pc_std = aggregate_curve_runs(pc_runs)
     pc_steps_scaled, pc_mean_scaled, pc_std_scaled = aggregate_curve_runs(pc_runs_scaled)
 
-    plt.figure(figsize=(2.8, 3))
+    plt.figure(figsize=(3.5, 2.7))
 
     plt.plot(bp_steps, bp_mean, label="BP", color = '#ff7f0e')#, linewidth=2.5)
     plt.fill_between(
@@ -620,7 +620,7 @@ def plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled):
     plt.xlabel("Training steps")#, fontsize=18)
     plt.ylabel("Test reconstruction loss")#, fontsize=18)
     plt.title("MNIST autoencoder")#,fontsize=18)
-    plt.legend()
+    #plt.legend()
     plt.grid(True, alpha=0.3)
     # Lighten the box (spines)
     ax = plt.gca()
