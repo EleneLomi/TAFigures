@@ -340,7 +340,7 @@ import matplotlib.pyplot as plt
 
 
 # ===================== CONFIG =====================
-seeds = [0, 1, 2]#, 3, 4]#, 5, 6, 7, 8, 9]
+seeds = [0]#, 1, 2]#, 3, 4]#, 5, 6, 7, 8, 9]
 numruns = len(seeds)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -528,9 +528,9 @@ for seed in seeds:
         print(hidden_dim)
         if hidden_dim == 15:
             print('hi')
-            max_steps_sweep = 400#00 #2000
-            max_steps_curve = 400#00 #2000
-            eval_every      = 100#00
+            max_steps_sweep = 200#00 #2000
+            max_steps_curve = 200#00 #2000
+            eval_every      = 10#00
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-5), 10**(-0.02), 10) #70) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
@@ -545,7 +545,7 @@ for seed in seeds:
             print('hi')
             max_steps_sweep = 800#00 #2000
             max_steps_curve = 800#00 #2000
-            eval_every      = 100#00
+            eval_every      = 50#00
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-5), 10**(-0.02), 10)# 70) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
@@ -558,9 +558,9 @@ for seed in seeds:
             print('bye')
         if hidden_dim == 40:
             print('hi')
-            max_steps_sweep = 400#00 #2000
-            max_steps_curve = 400#00 #2000
-            eval_every      = 100#00
+            max_steps_sweep = 800#00 #2000
+            max_steps_curve = 800#00 #2000
+            eval_every      = 50#00
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-5), 10**(-0.02), 10) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
