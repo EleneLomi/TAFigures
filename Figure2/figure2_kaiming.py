@@ -388,7 +388,8 @@ def apply_init(model: nn.Module, init_name: str):
     for m in model.modules():
         if isinstance(m, (nn.Linear, nn.Conv1d, nn.Conv2d, nn.Conv3d)):
             if init_name == "kaiming_uniform":
-                nn.init.kaiming_uniform_(m.weight, a=0.0, mode="fan_in", nonlinearity="relu")
+                fan_in = nn.init._calculate_fan_in_and_fan_out(m.weight)[0]
+                nn.init.uniform_(m.weight, a = -math.sqrt(1.0 / fan_in), b=math.sqrt(1.0 / fan_in))
             elif init_name == "lecun_normal":
                 lecun_normal_(m.weight)
             else:
@@ -753,7 +754,7 @@ handles, labels = axes[0, 0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 1])
 # Save inside the same folder (figure2)
-file_path = os.path.join(script_dir, "Training_curves_final.png")
+file_path = os.path.join(script_dir, "Training_curves_final.svg")
 plt.savefig(file_path, dpi=300)
 
 # --- make figure: rows = widths, cols = inits ---
@@ -834,7 +835,7 @@ for r, width in enumerate(widths_order):
 handles, labels = axes[0, 0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 1])
-file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final.png")
+file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final.svg")
 plt.savefig(file_path_lrsweep, dpi=300)
 
 # --- compute best MSE per (width, init, model) ---
@@ -895,7 +896,7 @@ axes[0].set_ylabel(r"$\|W_{\mathrm{data}} - W_{L:1}\|_2^2$") # set_ylabel("Best 
 handles, labels = axes[0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 0.92])
-file_path_width = os.path.join(script_dir, "widths_sweep_final.png")
+file_path_width = os.path.join(script_dir, "widths_sweep_final.svg")
 plt.savefig(file_path_width, dpi=300)
 
 # ===================== OPTIONAL: print best LR summary =====================

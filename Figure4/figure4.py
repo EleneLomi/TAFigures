@@ -749,7 +749,7 @@ fig.legend(
 
 plt.tight_layout(rect=[0, 0, 1, 1])
 # Save inside the same folder (figure2)
-file_path = os.path.join(script_dir, "Training_curves_final.png")
+file_path = os.path.join(script_dir, "Training_curves_final.svg")
 plt.savefig(file_path, dpi=300)
 
 # --- make figure: rows = widths, cols = inits ---
@@ -835,7 +835,7 @@ fig.legend(
 )
 
 plt.tight_layout(rect=[0, 0, 1, 0.92])
-file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final.png")
+file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final.svg")
 plt.savefig(file_path_lrsweep, dpi=300)
 
 # --- compute best MSE per (width, init, model) ---
@@ -899,7 +899,7 @@ fig.legend(
 )
 
 plt.tight_layout(rect=[0, 0, 1, 0.92])
-file_path_width = os.path.join(script_dir, "widths_sweep_final.png")
+file_path_width = os.path.join(script_dir, "widths_sweep_final.svg")
 plt.savefig(file_path_width, dpi=300)
 
 # ===================== OPTIONAL: print best LR summary =====================

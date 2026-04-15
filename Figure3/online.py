@@ -588,7 +588,7 @@ for seed in seeds:
                 best_err = float("inf")
                 best_lr  = None
 
-                for lr0 in lrs:
+                for lr0 in tqdm(lrs):
                     # reset
                     model.load_state_dict(base_state, strict=True)
 
@@ -654,6 +654,12 @@ for seed in seeds:
 df_lr   = pd.DataFrame(lr_sweep_rows)
 df_best = pd.DataFrame(best_lr_rows)
 df_cur  = pd.DataFrame(curve_rows)
+
+# save each dataframe
+df_lr.to_csv("lr_sweep.csv", index=False)
+df_best.to_csv("best_lrs.csv", index=False)
+df_cur.to_csv("curves.csv", index=False)
+
 
 agg_lr = (
     df_lr.groupby(["width", "init", "model", "lr_used"])["test_mse"]
@@ -769,10 +775,10 @@ handles, labels = axes[0, 0].get_legend_handles_labels()
 #fig.legend(handles, labels, loc="upper center", ncol=4, frameon=True, bbox_to_anchor=(0.5, 1.01))
 
 plt.tight_layout(rect=[0, 0, 1, 1]) # 0.94])
-plt.savefig("Training_curves_final_superwide.png", dpi=300)
+plt.savefig("Training_curves_final_superwide.svg", dpi=300)
 #plt.show()
 #plt.close()
-#plt.savefig("training_curves_fullwidths.png", dpi=300)
+#plt.savefig("training_curves_fullwidths.svg", dpi=300)
 
 
 ### YOU NEED TO ADD A PLOT HERE ###
@@ -873,9 +879,15 @@ handles, labels = axes[0, 0].get_legend_handles_labels()
 ###
 
 plt.tight_layout(rect=[0, 0, 1, 0.94])
-plt.savefig("lr_sweeps_final_superwide.png", dpi=300)
+# put xaxis to log scale
+for ax in axes.flatten():
+    ax.set_xscale("log")
+# add legend for the whole figure
+handles, labels = axes[0, 0].get_legend_handles_labels()
+fig.legend(handles, labels, loc="upper center", ncol=4, frameon=True, bbox_to_anchor=(0.5, 1.01))
+plt.savefig("lr_sweeps_final_superwide.svg", dpi=300)
 #plt.show()
-#plt.savefig("training_curves_fullwidths.png", dpi=300)
+#plt.savefig("training_curves_fullwidths.svg", dpi=300)
 
 ### ADDED ###
 
@@ -951,7 +963,7 @@ handles, labels = axes[0].get_legend_handles_labels()
 #           ncol=4, frameon=True, bbox_to_anchor=(0.5, 1.05))
 
 plt.tight_layout(rect=[0, 0, 1, 1]) #0.95])
-plt.savefig("widths_sweep_final_superwide.png", dpi=300)
+plt.savefig("widths_sweep_final_superwide.svg", dpi=300)
 
 #plt.show()
 ### END ###
