@@ -582,7 +582,7 @@ def plot_lr_sweep(bp_results, pc_results, pc_results_scaled):
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
     #plt.show()
-    plt.savefig('MNIST_autoencoder_lrsweep.png', dpi=300)
+    plt.savefig('MNIST_autoencoder_lrsweep.svg', dpi=300)
 
 
 def plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled):
@@ -632,7 +632,7 @@ def plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled):
         spine.set_linewidth(0.8)
     plt.tight_layout()
     #plt.show()
-    plt.savefig('MNIST_autoencoder.png', dpi=300)
+    plt.savefig('MNIST_autoencoder.svg', dpi=300)
 
 
 # ===

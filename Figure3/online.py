@@ -769,7 +769,7 @@ handles, labels = axes[0, 0].get_legend_handles_labels()
 #fig.legend(handles, labels, loc="upper center", ncol=4, frameon=True, bbox_to_anchor=(0.5, 1.01))
 
 plt.tight_layout(rect=[0, 0, 1, 1]) # 0.94])
-plt.savefig("Training_curves_final_superwide.png", dpi=300)
+plt.savefig("Training_curves_final_superwide.svg", dpi=300)
 #plt.show()
 #plt.close()
 #plt.savefig("training_curves_fullwidths.png", dpi=300)
@@ -873,7 +873,7 @@ handles, labels = axes[0, 0].get_legend_handles_labels()
 ###
 
 plt.tight_layout(rect=[0, 0, 1, 0.94])
-plt.savefig("lr_sweeps_final_superwide.png", dpi=300)
+plt.savefig("lr_sweeps_final_superwide.svg", dpi=300)
 #plt.show()
 #plt.savefig("training_curves_fullwidths.png", dpi=300)
 
@@ -951,7 +951,7 @@ handles, labels = axes[0].get_legend_handles_labels()
 #           ncol=4, frameon=True, bbox_to_anchor=(0.5, 1.05))
 
 plt.tight_layout(rect=[0, 0, 1, 1]) #0.95])
-plt.savefig("widths_sweep_final_superwide.png", dpi=300)
+plt.savefig("widths_sweep_final_superwide.svg", dpi=300)
 
 #plt.show()
 ### END ###
