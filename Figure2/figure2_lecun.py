@@ -340,7 +340,7 @@ import matplotlib.pyplot as plt
 
 
 # ===================== CONFIG =====================
-seeds = [0, 1, 2, 3, 4]#, 5, 6, 7, 8, 9]
+seeds = [0]#, 1, 2, 3, 4]#, 5, 6, 7, 8, 9]
 numruns = len(seeds)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -353,7 +353,7 @@ n_test     = 2048
 batch_size = 64 #64
 
 # widths to sweep
-widths    = [15, 20, 40] #[5, 10, 20, 50, 100]  # edit as needed
+widths    = [20]#[15, 20, 40] #[5, 10, 20, 50, 100]  # edit as needed
 nm_layers = 1#5
 
 # training budgets
@@ -753,7 +753,7 @@ handles, labels = axes[0, 0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 1])
 # Save inside the same folder (figure2)
-file_path = os.path.join(script_dir, "Training_curves_final.png")
+file_path = os.path.join(script_dir, "Training_curves_final.svg")
 plt.savefig(file_path, dpi=300)
 
 # --- make figure: rows = widths, cols = inits ---
@@ -834,7 +834,7 @@ for r, width in enumerate(widths_order):
 handles, labels = axes[0, 0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 1])
-file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final.png")
+file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final.svg")
 plt.savefig(file_path_lrsweep, dpi=300)
 
 # --- compute best MSE per (width, init, model) ---
@@ -882,6 +882,7 @@ for c, init_name in enumerate(inits_order):
 
     ax.set_yscale("log")
     ax.set_xlabel("Width")
+    ax.set_ylim(1e-16, 1e-1)
     ax.set_title(init_name.replace("_", " "))
     ax.grid(True, alpha=0.25)
     ax.axvline(x=20, linestyle='dashed', color='grey')
@@ -895,7 +896,7 @@ axes[0].set_ylabel(r"$\|W_{\mathrm{data}} - W_{L:1}\|_2^2$") # set_ylabel("Best 
 handles, labels = axes[0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 0.92])
-file_path_width = os.path.join(script_dir, "widths_sweep_final.png")
+file_path_width = os.path.join(script_dir, "widths_sweep_final.svg")
 plt.savefig(file_path_width, dpi=300)
 
 # ===================== OPTIONAL: print best LR summary =====================

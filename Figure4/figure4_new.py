@@ -8,7 +8,7 @@ import torch.nn.functional as F
 import os
 
 epsilon = 0#1e-12#3#12
-alpha = 0#1e-5#4
+alpha = 1e-6#4
 
 # Get the directory of the current script
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -340,7 +340,7 @@ import matplotlib.pyplot as plt
 
 
 # ===================== CONFIG =====================
-seeds = [0]#, 1, 2, 3, 4]#, 5, 6, 7, 8, 9]
+seeds = [0]#, 2]#, 3, 4]#, 5, 6, 7, 8, 9]
 numruns = len(seeds)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -527,12 +527,12 @@ for seed in seeds:
     for hidden_dim in widths:
         print(hidden_dim)
         if hidden_dim == 15:
-            max_steps_sweep = 40#00 #2000
-            max_steps_curve = 40#00 #2000
-            eval_every      = 10#00
+            max_steps_sweep = 10#40#00 #2000
+            max_steps_curve = 10#40#00 #2000
+            eval_every      = 2#10#00
 
             # LR grid (base grid; we optionally amplify for some models)
-            lrs = np.logspace(10**(-3.5), 10**(-0.02), 10) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            lrs = np.logspace((-3.5), (-0.02), 50) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
            
 
             # for 1 hidden layer it was 1,1,1
@@ -542,25 +542,25 @@ for seed in seeds:
             amplify_lr_PC = 1#25#3#50    # for BP only (if you want)
         
         if hidden_dim == 20:
-            max_steps_sweep = 400#00 #2000
-            max_steps_curve = 400#00 #2000
-            eval_every      = 40#00
+            max_steps_sweep = 300#400#00 #2000
+            max_steps_curve = 300#400#00 #2000
+            eval_every      = 30#00
 
             # LR grid (base grid; we optionally amplify for some models)
-            lrs = np.logspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            lrs = np.logspace((-3.5), (-0.0), 50) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
 
             # Optional LR scaling knobs (keep if you want)
-            amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants
-            amplify_lr_PC_scaled = 2.5#50       # for "(scaled lr)" variants
-            amplify_lr_PC = 2.5#3#50    # for BP only (if you want)
+            amplify_lr_BP_scaled = .1#2       # for "(scaled lr)" variants
+            amplify_lr_PC_scaled = 2.5#1.5#50       # for "(scaled lr)" variants
+            amplify_lr_PC = 2#1.5#3#50    # for BP only (if you want)
         
         if hidden_dim == 40:
-            max_steps_sweep = 400#00 #2000
-            max_steps_curve = 400#00 #2000
-            eval_every      = 40#00
+            max_steps_sweep = 55#100#00 #2000
+            max_steps_curve = 55#100#00 #2000
+            eval_every      = 5#40#00
 
             # LR grid (base grid; we optionally amplify for some models)
-            lrs = np.logspace(10**(-3.5), 10**(-0.02), 10) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            lrs = np.logspace((-3.5), (-0.02), 50) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
 
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants

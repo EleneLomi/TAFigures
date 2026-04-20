@@ -543,8 +543,8 @@ for seed in seeds:
         
         if hidden_dim == 20:
             print('hi')
-            max_steps_sweep = 800#00 #2000
-            max_steps_curve = 800#00 #2000
+            max_steps_sweep = 1000#00 #2000
+            max_steps_curve = 1000#00 #2000
             eval_every      = 50#00
 
             # LR grid (base grid; we optionally amplify for some models)

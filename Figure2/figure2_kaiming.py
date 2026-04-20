@@ -340,7 +340,7 @@ import matplotlib.pyplot as plt
 
 
 # ===================== CONFIG =====================
-seeds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+seeds = [0, 1, 2, 3, 4]#, 5, 6, 7, 8, 9]
 numruns = len(seeds)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -813,7 +813,7 @@ for r, width in enumerate(widths_order):
         # Axes formatting
         ax.set_xscale("log")
         ax.set_yscale("log")
-        #ax.set_ylim(1e-16, 1e-1)
+        ax.set_ylim(1e-16, 1e-1)
       #  ax.set_xlim(-1, max_steps_sweep)
        # ax.set_ylim(1e-4, 1e-1)
         ax.grid(True, alpha=0.25)
@@ -882,6 +882,7 @@ for c, init_name in enumerate(inits_order):
 
     ax.set_yscale("log")
     ax.set_xlabel("Width")
+    ax.set_ylim(1e-16, 1e-1)
     ax.set_title(init_name.replace("_", " "))
     ax.grid(True, alpha=0.25)
     ax.axvline(x=20, linestyle='dashed', color='grey')
