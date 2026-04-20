@@ -340,7 +340,7 @@ import matplotlib.pyplot as plt
 
 
 # ===================== CONFIG =====================
-seeds = [0]#, 1, 2, 3, 4]#, 5, 6, 7, 8, 9]
+seeds = [0, 1, 2]#, 3, 4]#, 5, 6, 7, 8, 9]
 numruns = len(seeds)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -553,7 +553,7 @@ def fresh_models(base_state, hidden_dim):
 
 
 # ===================== EXPERIMENT =====================
-inits = ["kaiming_uniform"]
+inits = ["lecun_normal","kaiming_uniform"]
 
 lr_sweep_rows = []     # per seed, width, init, model, lr -> test_mse
 curve_rows    = []     # per seed, width, init, model, step -> test_mse
@@ -610,7 +610,7 @@ for seed in seeds:
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants
             amplify_lr_PC_scaled = 1#50       # for "(scaled lr)" variants
-            amplify_lr_PC = 1#3#50    # for BP only (if you want)
+            amplify_lr_PC = 2#3#50    # for BP only (if you want)
 
         batches_sweep = make_batches(X_train, Y_train, max_steps_sweep, seed=seed+111)
         batches_curve = make_batches(X_train, Y_train, max_steps_curve, seed=seed+111) #222)
@@ -717,7 +717,7 @@ agg_cur = (
 
 # ===================== PLOT: best curves, one line per width =====================
 # --- choose orderings ---
-inits_order = ["kaiming_uniform"]
+inits_order = ["lecun_normal","kaiming_uniform"]
 models_order = ["BP", "BP (scaled lr)", "PC", "PC (scaled lr)"]
 widths_order = sorted(agg_cur["width"].unique())
 
