@@ -340,7 +340,7 @@ import matplotlib.pyplot as plt
 
 
 # ===================== CONFIG =====================
-seeds = [0, 1, 2, 3, 4]#, 5, 6, 7, 8, 9]
+seeds = [0]#, 1, 2, 3, 4]#, 5, 6, 7, 8, 9]
 numruns = len(seeds)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -376,10 +376,25 @@ weight_decay = 0.0
 
 
 # ===================== INIT HELPERS =====================
-def lecun_normal_(tensor: torch.Tensor):
-    fan_in = nn.init._calculate_fan_in_and_fan_out(tensor)[0]
-    std = math.sqrt(1.0 / fan_in)
-    return nn.init.normal_(tensor, mean=0.0, std=std)
+#def lecun_normal_(tensor: torch.Tensor):
+#    fan_in = nn.init._calculate_fan_in_and_fan_out(tensor)[0]
+#    std = math.sqrt(1.0 / fan_in)
+#    return nn.init.normal_(tensor, mean=0.0, std=std)
+
+#def apply_init(model: nn.Module, init_name: str):
+#    """
+#    init_name: 'kaiming_uniform' or 'lecun_normal'
+#    """
+#    for m in model.modules():
+#        if isinstance(m, (nn.Linear, nn.Conv1d, nn.Conv2d, nn.Conv3d)):
+#            if init_name == "kaiming_uniform":
+#                nn.init.kaiming_uniform_(m.weight, a=0.0, mode="fan_in", nonlinearity="relu")
+#            elif init_name == "lecun_normal":
+#                lecun_normal_(m.weight)
+#            else:
+#                raise ValueError(f"Unknown init: {init_name}")
+#            if m.bias is not None:
+#                nn.init.zeros_(m.bias)
 
 def apply_init(model: nn.Module, init_name: str):
     """
@@ -387,15 +402,18 @@ def apply_init(model: nn.Module, init_name: str):
     """
     for m in model.modules():
         if isinstance(m, (nn.Linear, nn.Conv1d, nn.Conv2d, nn.Conv3d)):
-            if init_name == "kaiming_uniform":
-                nn.init.kaiming_uniform_(m.weight, a=0.0, mode="fan_in", nonlinearity="relu")
+            fan_in, fan_out = nn.init._calculate_fan_in_and_fan_out(m.weight)
+ 
+            if init_name == "kaiming_uniform":  # default for nn.Linear - use as default for fig 3 and 4
+                limit = math.sqrt(1.0 / fan_in)
+                nn.init.uniform_(m.weight, a = -limit, b=limit)
             elif init_name == "lecun_normal":
-                lecun_normal_(m.weight)
+                limit = math.sqrt(1.0 / fan_out) # for fig 2
+                nn.init.normal_(m.weight, mean=0.0, std=limit)
             else:
                 raise ValueError(f"Unknown init: {init_name}")
             if m.bias is not None:
                 nn.init.zeros_(m.bias)
-
 
 # ===================== REPRO HELPERS =====================
 def set_seed(seed: int):
@@ -407,15 +425,39 @@ def set_seed(seed: int):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
 
-def make_synthetic(seed: int):
+#def make_synthetic(seed: int):
+#    """
+#    Create train/test data with y = W_data x
+#    """
+#    g = torch.Generator().manual_seed(seed)
+
+    # W_data: [output_dim, input_dim]
+#    W_data = torch.randn(output_dim, input_dim, generator=g) / math.sqrt(input_dim)
+#    print('This is the mapping to learn', W_data)
+
+#    X_train = torch.randn(n_train, input_dim, generator=g)
+#    X_test  = torch.randn(n_test,  input_dim, generator=g)
+
+#    Y_train = X_train @ W_data.T
+#    Y_test  = X_test  @ W_data.T
+
+#    return X_train, Y_train, X_test, Y_test, W_data
+
+def make_synthetic(seed: int, rank_data: int):
     """
     Create train/test data with y = W_data x
+    where W_data has controlled rank <= rank_data
     """
     g = torch.Generator().manual_seed(seed)
 
-    # W_data: [output_dim, input_dim]
-    W_data = torch.randn(output_dim, input_dim, generator=g) / math.sqrt(input_dim)
-    print('This is the mapping to learn', W_data)
+    # A: [rank_data, input_dim]
+    # B: [output_dim, rank_data]
+    A = torch.randn(rank_data, input_dim, generator=g) / math.sqrt(input_dim)
+    B = torch.randn(output_dim, rank_data, generator=g) / math.sqrt(rank_data)
+
+    # W_data: [output_dim, input_dim], rank <= rank_data
+    W_data = B @ A
+    print("Rank-controlled mapping to learn:", W_data)
 
     X_train = torch.randn(n_train, input_dim, generator=g)
     X_test  = torch.randn(n_test,  input_dim, generator=g)
@@ -520,27 +562,27 @@ best_lr_rows  = []     # per seed, width, init, model -> best lr
 for seed in seeds:
     set_seed(seed)
 
-    X_train, Y_train, X_test, Y_test, W_data = make_synthetic(seed)
+    X_train, Y_train, X_test, Y_test, W_data = make_synthetic(seed, widths[0])
     X_train, Y_train = X_train.to(device), Y_train.to(device)
     W_data = W_data.to(device)
 
     for hidden_dim in widths:
         print(hidden_dim)
         if hidden_dim == 15:
-            max_steps_sweep = 10#00 #2000
-            max_steps_curve = 10#00 #2000
-            eval_every      = 2#00
+            max_steps_sweep = 900#0 #2000
+            max_steps_curve = 900#0 #2000
+            eval_every      = 20#00
 
             # LR grid (base grid; we optionally amplify for some models)
             # lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
-            lrs = np.logspace((-3.5), (-0.02), 80)
+            lrs = np.logspace((-3.5), (-0.0), 80)
            
 
             # for 1 hidden layer it was 1,1,1
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants
             amplify_lr_PC_scaled = 1#50       # for "(scaled lr)" variants
-            amplify_lr_PC = 1#25#3#50    # for BP only (if you want)
+            amplify_lr_PC = 2#1#25#3#50    # for BP only (if you want)
         
         if hidden_dim == 20:
             max_steps_sweep = 300#00 #2000
@@ -653,6 +695,11 @@ df_lr   = pd.DataFrame(lr_sweep_rows)
 df_best = pd.DataFrame(best_lr_rows)
 df_cur  = pd.DataFrame(curve_rows)
 
+# save each dataframe
+df_lr.to_csv("lr_sweep.csv", index=False)
+df_best.to_csv("best_lrs.csv", index=False)
+df_cur.to_csv("curves.csv", index=False)
+
 agg_lr = (
     df_lr.groupby(["width", "init", "model", "lr_used"])["test_mse"] #.
          .agg(["mean", "std"])
@@ -753,7 +800,7 @@ handles, labels = axes[0, 0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 1])
 # Save inside the same folder (figure2)
-file_path = os.path.join(script_dir, "Training_curves_final.svg")
+file_path = os.path.join(script_dir, "Training_curves_final.png")
 plt.savefig(file_path, dpi=300)
 
 # --- make figure: rows = widths, cols = inits ---
@@ -834,7 +881,7 @@ for r, width in enumerate(widths_order):
 handles, labels = axes[0, 0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 1])
-file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final.svg")
+file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final.png")
 plt.savefig(file_path_lrsweep, dpi=300)
 
 # --- compute best MSE per (width, init, model) ---
@@ -896,7 +943,7 @@ axes[0].set_ylabel(r"$\|W_{\mathrm{data}} - W_{L:1}\|_2^2$") # set_ylabel("Best 
 handles, labels = axes[0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 0.92])
-file_path_width = os.path.join(script_dir, "widths_sweep_final.svg")
+file_path_width = os.path.join(script_dir, "widths_sweep_final.png")
 plt.savefig(file_path_width, dpi=300)
 
 # ===================== OPTIONAL: print best LR summary =====================

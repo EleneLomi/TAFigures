@@ -1,0 +1,7 @@
+seed,width,init,model,best_lr
+0,15,kaiming_uniform,BP,0.32558038159675445
+0,15,kaiming_uniform,PC,0.5309830142839563
+0,20,kaiming_uniform,BP,0.3574082367696865
+0,20,kaiming_uniform,PC,1.2865277993988131
+0,40,kaiming_uniform,BP,0.34633283735106823
+0,40,kaiming_uniform,PC,0.954992586021436

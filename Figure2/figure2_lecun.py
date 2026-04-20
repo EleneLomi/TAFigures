@@ -653,6 +653,11 @@ df_lr   = pd.DataFrame(lr_sweep_rows)
 df_best = pd.DataFrame(best_lr_rows)
 df_cur  = pd.DataFrame(curve_rows)
 
+# save each dataframe
+df_lr.to_csv("lr_sweep.csv", index=False)
+df_best.to_csv("best_lrs.csv", index=False)
+df_cur.to_csv("curves.csv", index=False)
+
 agg_lr = (
     df_lr.groupby(["width", "init", "model", "lr_used"])["test_mse"] #.
          .agg(["mean", "std"])
