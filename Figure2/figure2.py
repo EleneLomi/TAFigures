@@ -340,7 +340,7 @@ import matplotlib.pyplot as plt
 
 
 # ===================== CONFIG =====================
-seeds = [0, 1, 2]#, 3, 4]#, 5, 6, 7, 8, 9]
+seeds = [0]#, 1, 2]#, 3, 4]#, 5, 6, 7, 8, 9]
 numruns = len(seeds)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -398,7 +398,7 @@ weight_decay = 0.0
 
 def apply_init(model: nn.Module, init_name: str):
     """
-    init_name: 'kaiming_uniform' or 'lecun_normal'
+    init_name: 'kaiming_uniform' or 'norm_preservation'
     """
     for m in model.modules():
         if isinstance(m, (nn.Linear, nn.Conv1d, nn.Conv2d, nn.Conv3d)):
@@ -407,7 +407,7 @@ def apply_init(model: nn.Module, init_name: str):
             if init_name == "kaiming_uniform":  # default for nn.Linear - use as default for fig 3 and 4
                 limit = math.sqrt(1.0 / fan_in)
                 nn.init.uniform_(m.weight, a = -limit, b=limit)
-            elif init_name == "lecun_normal":
+            elif init_name == "norm_preservation":
                 limit = math.sqrt(1.0 / fan_out) # for fig 2
                 nn.init.normal_(m.weight, mean=0.0, std=limit)
             else:
@@ -553,7 +553,7 @@ def fresh_models(base_state, hidden_dim):
 
 
 # ===================== EXPERIMENT =====================
-inits = ["lecun_normal","kaiming_uniform"]
+inits = ["norm_preservation","kaiming_uniform"]
 
 lr_sweep_rows = []     # per seed, width, init, model, lr -> test_mse
 curve_rows    = []     # per seed, width, init, model, step -> test_mse
@@ -717,7 +717,7 @@ agg_cur = (
 
 # ===================== PLOT: best curves, one line per width =====================
 # --- choose orderings ---
-inits_order = ["lecun_normal","kaiming_uniform"]
+inits_order = ["norm_preservation","kaiming_uniform"]
 models_order = ["BP", "BP (scaled lr)", "PC", "PC (scaled lr)"]
 widths_order = sorted(agg_cur["width"].unique())
 
@@ -800,7 +800,7 @@ handles, labels = axes[0, 0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 1])
 # Save inside the same folder (figure2)
-file_path = os.path.join(script_dir, "Training_curves_final.png")
+file_path = os.path.join(script_dir, "Training_curves_final.svg")
 plt.savefig(file_path, dpi=300)
 
 # --- make figure: rows = widths, cols = inits ---
@@ -881,7 +881,7 @@ for r, width in enumerate(widths_order):
 handles, labels = axes[0, 0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 1])
-file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final.png")
+file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final.svg")
 plt.savefig(file_path_lrsweep, dpi=300)
 
 # --- compute best MSE per (width, init, model) ---
@@ -943,7 +943,7 @@ axes[0].set_ylabel(r"$\|W_{\mathrm{data}} - W_{L:1}\|_2^2$") # set_ylabel("Best 
 handles, labels = axes[0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 0.92])
-file_path_width = os.path.join(script_dir, "widths_sweep_final.png")
+file_path_width = os.path.join(script_dir, "widths_sweep_final.svg")
 plt.savefig(file_path_width, dpi=300)
 
 # ===================== OPTIONAL: print best LR summary =====================
