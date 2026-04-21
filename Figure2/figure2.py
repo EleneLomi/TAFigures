@@ -569,8 +569,8 @@ for seed in seeds:
     for hidden_dim in widths:
         print(hidden_dim)
         if hidden_dim == 15:
-            max_steps_sweep = 900#0 #2000
-            max_steps_curve = 900#0 #2000
+            max_steps_sweep = 500#900#0 #2000
+            max_steps_curve = 500#900#0 #2000
             eval_every      = 20#00
 
             # LR grid (base grid; we optionally amplify for some models)
@@ -585,9 +585,9 @@ for seed in seeds:
             amplify_lr_PC = 2#1#25#3#50    # for BP only (if you want)
         
         if hidden_dim == 20:
-            max_steps_sweep = 300#00 #2000
-            max_steps_curve = 300#00 #2000
-            eval_every      = 50#00
+            max_steps_sweep = 500#00 #2000
+            max_steps_curve = 500#00 #2000
+            eval_every      = 20#00
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
@@ -599,9 +599,9 @@ for seed in seeds:
             amplify_lr_PC = 1.4#5#3#50    # for BP only (if you want)
         
         if hidden_dim == 40:
-            max_steps_sweep = 55#00 #2000
-            max_steps_curve = 55#00 #2000
-            eval_every      = 5#00
+            max_steps_sweep = 500#55#00 #2000
+            max_steps_curve = 500#55#00 #2000
+            eval_every      = 20#00
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
