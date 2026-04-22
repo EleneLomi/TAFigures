@@ -1,13 +1,13 @@
 seed,width,init,model,best_lr
-0,15,norm_preservation,BP,0.0263394110930014
-0,15,norm_preservation,BP (scaled lr),0.5351614829175231
-0,15,norm_preservation,PC,0.0747021898927332
-0,15,norm_preservation,PC (scaled lr),1.20176035922025
-0,20,norm_preservation,BP,0.029573933426794746
-0,20,norm_preservation,BP (scaled lr),0.6746692386752741
-0,20,norm_preservation,PC,0.0747021898927332
-0,20,norm_preservation,PC (scaled lr),1.7010887223541955
-0,40,norm_preservation,BP,0.023458650789331816
-0,40,norm_preservation,BP (scaled lr),0.4766304872700399
-0,40,norm_preservation,PC,0.06653195774591981
-0,40,norm_preservation,PC (scaled lr),1.0703229658350462
+0,15,norm_preservation,BP,0.03389429322426766
+0,15,norm_preservation,BP (scaled lr),0.8259657240259776
+0,15,norm_preservation,PC,0.08097564767984483
+0,15,norm_preservation,PC (scaled lr),1.4287427719369614
+0,20,norm_preservation,BP,0.029314912862268654
+0,20,norm_preservation,BP (scaled lr),0.7143713859684807
+0,20,norm_preservation,PC,0.08097564767984483
+0,20,norm_preservation,PC (scaled lr),1.4287427719369614
+0,40,norm_preservation,BP,0.0219286884919272
+0,40,norm_preservation,BP (scaled lr),0.46217891273900613
+0,40,norm_preservation,PC,0.060572915967588035
+0,40,norm_preservation,PC (scaled lr),1.0687548459754694

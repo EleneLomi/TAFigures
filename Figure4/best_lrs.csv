@@ -1,0 +1,13 @@
+seed,width,init,model,best_lr
+0,15,norm_preservation,BP,0.357995486332604
+0,15,norm_preservation,BP (scaled lr),0.688587577732007
+0,15,norm_preservation,PC,1.2647923027284573
+0,15,norm_preservation,PC (scaled lr),1.754122948225402
+0,20,norm_preservation,BP,0.3727593720314938
+0,20,norm_preservation,BP (scaled lr),0.03
+0,20,norm_preservation,PC,1.4393713460023028
+0,20,norm_preservation,PC (scaled lr),0.2
+0,40,norm_preservation,BP,0.1580430892527874
+0,40,norm_preservation,BP (scaled lr),0.11395534331762594
+0,40,norm_preservation,PC,0.3039884919240364
+0,40,norm_preservation,PC (scaled lr),0.21918777420506538

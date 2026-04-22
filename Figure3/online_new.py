@@ -535,13 +535,13 @@ for seed in seeds:
         print(hidden_dim)
         if hidden_dim == 15:
             print('hi')
-            max_steps_sweep = 200#00 #2000
-            max_steps_curve = 200#00 #2000
-            eval_every      = 10#00
+            max_steps_sweep = 800#200#00 #2000
+            max_steps_curve = 800#200#00 #2000
+            eval_every      = 50#00
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-5), 10**(-0.02), 10) #70) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
-            lrs = np.logspace(-5,-0.02,100)
+            lrs = np.logspace(-5,-0.02,80)
 
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants
@@ -550,13 +550,13 @@ for seed in seeds:
         
         if hidden_dim == 20:
             print('hi')
-            max_steps_sweep = 1000#00 #2000
-            max_steps_curve = 1000#00 #2000
+            max_steps_sweep = 800#1000#00 #2000
+            max_steps_curve = 800#1000#00 #2000
             eval_every      = 50#00
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-5), 10**(-0.02), 10)# 70) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
-            lrs = np.logspace(-5, -0.02, 100)
+            lrs = np.logspace(-5, -0.02, 80)
 
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants
@@ -572,7 +572,7 @@ for seed in seeds:
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-5), 10**(-0.02), 10) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
             #lrs = np.linspace(10**(-5), 10**(-0.02), 10)#70)
-            lrs = np.logspace(-5, -0.02, 100)
+            lrs = np.logspace(-5, -0.02, 80)
             
             
 
@@ -783,7 +783,7 @@ handles, labels = axes[0, 0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 1])
 # Save inside the same folder (figure2)
-file_path = os.path.join(script_dir, "Training_curves_final.svg")
+file_path = os.path.join(script_dir, "Training_curves_final.png")
 plt.savefig(file_path, dpi=300)
 
 # --- make figure: rows = widths, cols = inits ---
@@ -864,7 +864,7 @@ for r, width in enumerate(widths_order):
 handles, labels = axes[0, 0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 1])
-file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final.svg")
+file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final.png")
 plt.savefig(file_path_lrsweep, dpi=300)
 
 # --- compute best MSE per (width, init, model) ---
@@ -925,7 +925,7 @@ axes[0].set_ylabel(r"$\|W_{\mathrm{data}} - W_{L:1}\|_2^2$") # set_ylabel("Best 
 handles, labels = axes[0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 0.92])
-file_path_width = os.path.join(script_dir, "widths_sweep_final.svg")
+file_path_width = os.path.join(script_dir, "widths_sweep_final.png")
 plt.savefig(file_path_width, dpi=300)
 
 # ===================== OPTIONAL: print best LR summary =====================

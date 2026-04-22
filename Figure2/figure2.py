@@ -401,7 +401,7 @@ weight_decay = 0.0
 
 def apply_init(model: nn.Module, init_name: str):
     """
-    init_name: 'kaiming_uniform' or 'norm_preservation'
+    init_name: 'kaiming_uniform', 'lecun normal' or 'norm_preservation'
     """
     for m in model.modules():
         if isinstance(m, (nn.Linear, nn.Conv1d, nn.Conv2d, nn.Conv3d)):
@@ -412,6 +412,9 @@ def apply_init(model: nn.Module, init_name: str):
                 nn.init.uniform_(m.weight, a = -limit, b=limit)
             elif init_name == "norm_preservation":
                 limit = math.sqrt(1.0 / fan_out) # for fig 2
+                nn.init.normal_(m.weight, mean=0.0, std=limit)
+            elif init_name == "lecun_normal":
+                limit = math.sqrt(1.0 / fan_in) # for fig 2
                 nn.init.normal_(m.weight, mean=0.0, std=limit)
             else:
                 raise ValueError(f"Unknown init: {init_name}")
