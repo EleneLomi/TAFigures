@@ -10,23 +10,24 @@ from lightning import Callback, LightningModule, Trainer, seed_everything
 from torchvision import datasets, transforms
 
 from pc_e_scaled_fixed import PCAutoencoder as PCEAutoencoder
+from bp_ae import BPAutoencoder 
 
 
 # ===
 # Config
 # ===
 SEED = 42
-RUN_SEEDS = [0, 1, 2]#, 3, 4]
+RUN_SEEDS = [0]#, 1, 2]#, 3, 4]
 
 DATA_ROOT = "/Users/elenelominadze/TargetAlignment/data"
 
 BATCH_SIZE = 64
-SWEEP_STEPS = 100
-CURVE_STEPS = 100
-EVAL_EVERY = 10
+SWEEP_STEPS = 2#100
+CURVE_STEPS = 2#100
+EVAL_EVERY = 1#10
 
 PC_E_LR = 0.05
-LRS = [1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 5e-2, 1e-1, 5e-1, 1, 3, 10]
+LRS = [1]#[1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 5e-2, 1e-1, 5e-1, 1, 3, 10]
 
 
 # ===
@@ -150,30 +151,30 @@ def flatten_if_needed(x):
 # ===
 # BP autoencoder model
 # ===
-class BPAutoencoder(LightningModule):
-    def __init__(self, architecture, w_lr=1e-3, flatten_input=True):
-        super().__init__()
-        self.save_hyperparameters(ignore=["architecture"])
-        self.net = nn.Sequential(*architecture)
-        self.w_lr = w_lr
-        self.flatten_input = flatten_input
+#class BPAutoencoder(LightningModule):
+#    def __init__(self, architecture, w_lr=1e-3, flatten_input=True):
+#        super().__init__()
+#        self.save_hyperparameters(ignore=["architecture"])
+#        self.net = nn.Sequential(*architecture)
+#        self.w_lr = w_lr
+#        self.flatten_input = flatten_input
 
-    def forward(self, x):
-        if self.flatten_input:
-            x = flatten_if_needed(x)
-        return self.net(x)
+#    def forward(self, x):
+#        if self.flatten_input:
+#            x = flatten_if_needed(x)
+#        return self.net(x)
 
-    def configure_optimizers(self):
-        return torch.optim.SGD(self.parameters(), lr=self.w_lr)
+#    def configure_optimizers(self):
+#        return torch.optim.SGD(self.parameters(), lr=self.w_lr)
 
-    def training_step(self, batch, batch_idx):
-        x, _ = batch
-        target = flatten_if_needed(x) if self.flatten_input else x
-        outputs = self(x)
+#    def training_step(self, batch, batch_idx):
+#        x, _ = batch
+#        target = flatten_if_needed(x) if self.flatten_input else x
+#        outputs = self(x)
 
-        loss = 0.5 * F.mse_loss(outputs, target, reduction="sum") #F.mse_loss(outputs, target) 
-        self.log("train_loss", loss, prog_bar=True, on_step=True, on_epoch=False)
-        return loss
+#        loss = 0.5 * F.mse_loss(outputs, target, reduction="sum") #F.mse_loss(outputs, target) 
+#        self.log("train_loss", loss, prog_bar=True, on_step=True, on_epoch=False)
+#        return loss
 
 
 # ===
@@ -184,6 +185,15 @@ def make_bp_model(w_lr, reference_arch):
     return BPAutoencoder(
         architecture=arch,
         w_lr=w_lr,
+        flatten_input=True,
+    )
+
+def make_bp_model_scaled(w_lr, reference_arch):
+    arch = clone_architecture_from_reference(reference_arch)
+    return BPAutoencoder(
+        architecture=arch,
+        w_lr=w_lr,
+        scale_method='covariance',
         flatten_input=True,
     )
 
@@ -308,11 +318,13 @@ def sweep_learning_rates_matched_multi(
     run_seeds,
 ):
     bp_results = []
+    bp_results_scaled = []
     pc_results = []
     pc_results_scaled = []
 
     for lr in lrs:
         bp_losses = []
+        bp_losses_scaled = []
         pc_losses = []
         pc_losses_scaled = []
 
@@ -334,6 +346,7 @@ def sweep_learning_rates_matched_multi(
             train_loader_bp = make_loader_from_fixed_batches(train_dataset, fixed_batches, num_workers=0)
             train_loader_pc = make_loader_from_fixed_batches(train_dataset, fixed_batches, num_workers=0)
             ## ADDED
+            train_loader_bp_scaled = make_loader_from_fixed_batches(train_dataset, fixed_batches, num_workers=0)
             train_loader_pc_scaled = make_loader_from_fixed_batches(train_dataset, fixed_batches, num_workers=0)
 
 
@@ -341,10 +354,12 @@ def sweep_learning_rates_matched_multi(
             pc_model = make_pc_model(lr, reference_arch)
             ## ADDED
             pc_model_scaled = make_pc_model_scaled(lr, reference_arch)
+            bp_model_scaled = make_bp_model_scaled(lr, reference_arch)
 
             trainer_bp = make_trainer(max_steps=max_steps, is_pc=False)
             trainer_pc = make_trainer(max_steps=max_steps, is_pc=True)
             trainer_pc_scaled = make_trainer(max_steps=max_steps, is_pc=True)
+            trainer_bp_scaled = make_trainer(max_steps=max_steps, is_pc=False)
 
             print(f"[seed={run_seed}] Training BP | lr={lr:.5g}")
             trainer_bp.fit(bp_model, train_dataloaders=train_loader_bp)
@@ -361,6 +376,11 @@ def sweep_learning_rates_matched_multi(
             pc_test_loss_scaled = compute_test_loss(pc_model_scaled, test_loader)
             pc_losses_scaled.append(pc_test_loss_scaled)
 
+            print(f"[seed={run_seed}] Training BP scaled | lr={lr:.5g}")
+            trainer_bp_scaled.fit(bp_model_scaled, train_dataloaders=train_loader_bp_scaled)
+            bp_test_loss_scaled = compute_test_loss(bp_model_scaled, test_loader)
+            bp_losses_scaled.append(bp_test_loss_scaled)
+
             print(
                 f"[seed={run_seed}] lr={lr:.5g} | "
                 f"BP test loss={bp_test_loss:.6f} | "
@@ -375,6 +395,9 @@ def sweep_learning_rates_matched_multi(
 
         pc_mean_scaled = float(torch.tensor(pc_losses_scaled).mean())
         pc_std_scaled = float(torch.tensor(pc_losses_scaled).std(unbiased=False))
+
+        bp_mean_scaled = float(torch.tensor(bp_losses_scaled).mean())
+        bp_std_scaled = float(torch.tensor(bp_losses_scaled).std(unbiased=False))
 
         bp_results.append({
             "lr": lr,
@@ -397,23 +420,33 @@ def sweep_learning_rates_matched_multi(
             "all_test_losses": pc_losses_scaled,
         })
 
+        bp_results_scaled.append({
+            "lr": lr,
+            "mean_test_loss": bp_mean_scaled,
+            "std_test_loss": bp_std_scaled,
+            "all_test_losses": bp_losses_scaled,
+        })
 
         print(
             f"\nLR {lr:.5g} summary | "
             f"BP mean={bp_mean:.6f} ± {bp_std:.6f} | "
             f"PC mean={pc_mean:.6f} ± {pc_std:.6f}\n"
             f"PC scaled mean={pc_mean_scaled:.6f} ± {pc_std_scaled:.6f}\n"
+            f"BP scaled mean={bp_mean_scaled:.6f} ± {bp_std_scaled:.6f}\n"
         )
 
     bp_best = min(bp_results, key=lambda d: d["mean_test_loss"])
     pc_best = min(pc_results, key=lambda d: d["mean_test_loss"])
     pc_best_scaled = min(pc_results_scaled, key=lambda d: d["mean_test_loss"])
+    bp_best_scaled = min(bp_results_scaled, key=lambda d: d["mean_test_loss"])
+
 
     print(f"Best BP lr: {bp_best['lr']:.5g} with mean test loss={bp_best['mean_test_loss']:.6f}")
     print(f"Best PC lr: {pc_best['lr']:.5g} with mean test loss={pc_best['mean_test_loss']:.6f}")
     print(f"Best PC scaled lr: {pc_best_scaled['lr']:.5g} with mean test loss={pc_best_scaled['mean_test_loss']:.6f}")
+    print(f"Best BP scaled lr: {bp_best_scaled['lr']:.5g} with mean test loss={bp_best_scaled['mean_test_loss']:.6f}")
 
-    return bp_results, bp_best, pc_results, pc_best, pc_results_scaled, pc_best_scaled
+    return bp_results, bp_best, pc_results, pc_best, pc_results_scaled, pc_best_scaled, bp_results_scaled, bp_best_scaled
 
 
 # ===
@@ -425,6 +458,7 @@ def run_final_curves_multi(
     bp_best_lr,
     pc_best_lr,
     pc_best_lr_scaled,
+    bp_best_lr_scaled,
     curve_steps,
     batch_size,
     eval_every,
@@ -433,6 +467,7 @@ def run_final_curves_multi(
     bp_runs = []
     pc_runs = []
     pc_runs_scaled = []
+    bp_runs_scaled = []
 
     for run_seed in run_seeds:
         print(f"\n=== Final curves | seed {run_seed} ===")
@@ -452,10 +487,12 @@ def run_final_curves_multi(
         train_loader_bp = make_loader_from_fixed_batches(train_dataset, fixed_batches, num_workers=0)
         train_loader_pc = make_loader_from_fixed_batches(train_dataset, fixed_batches, num_workers=0)
         train_loader_pc_scaled = make_loader_from_fixed_batches(train_dataset, fixed_batches, num_workers=0)
+        train_loader_bp_scaled = make_loader_from_fixed_batches(train_dataset, fixed_batches, num_workers=0)
 
         bp_model = make_bp_model(bp_best_lr, reference_arch)
         pc_model = make_pc_model(pc_best_lr, reference_arch)
         pc_model_scaled = make_pc_model_scaled(pc_best_lr_scaled, reference_arch)
+        bp_model_scaled = make_bp_model_scaled(bp_best_lr_scaled, reference_arch)
 
         bp_callback = TestLossCallback(
             test_loader=test_loader,
@@ -473,6 +510,12 @@ def run_final_curves_multi(
             name=f"PC scaled seed {run_seed}",
         )
 
+        bp_callback_scaled = TestLossCallback(
+            test_loader=test_loader,
+            eval_every=eval_every,
+            name=f"BP scaled seed {run_seed}",
+        )
+
         trainer_bp = make_trainer(
             max_steps=curve_steps,
             callbacks=[bp_callback],
@@ -488,6 +531,11 @@ def run_final_curves_multi(
             callbacks=[pc_callback_scaled],
             is_pc=True,
         )
+        trainer_bp_scaled = make_trainer(
+            max_steps=curve_steps,
+            callbacks=[bp_callback_scaled],
+            is_pc=False,
+        )
 
         print(f"[seed={run_seed}] Training BP with best LR={bp_best_lr:.5g}")
         trainer_bp.fit(bp_model, train_dataloaders=train_loader_bp)
@@ -497,6 +545,10 @@ def run_final_curves_multi(
 
         print(f"[seed={run_seed}] Training PC scaled with best LR={pc_best_lr_scaled:.5g}")
         trainer_pc_scaled.fit(pc_model_scaled, train_dataloaders=train_loader_pc_scaled)
+
+        print(f"[seed={run_seed}] Training BP scaled with best LR={bp_best_lr_scaled:.5g}")
+        trainer_bp_scaled.fit(bp_model_scaled, train_dataloaders=train_loader_bp_scaled)
+
 
         bp_runs.append({
             "steps": bp_callback.steps,
@@ -510,8 +562,12 @@ def run_final_curves_multi(
             "steps": pc_callback_scaled.steps,
             "test_losses": pc_callback_scaled.test_losses,
         })
+        bp_runs_scaled.append({
+            "steps": bp_callback_scaled.steps,
+            "test_losses": bp_callback_scaled.test_losses,
+        })
 
-    return bp_runs, pc_runs, pc_runs_scaled
+    return bp_runs, pc_runs, pc_runs_scaled, bp_runs_scaled
 
 
 # ===
@@ -530,7 +586,7 @@ def aggregate_curve_runs(runs):
 # ===
 # Plotting
 # ===
-def plot_lr_sweep(bp_results, pc_results, pc_results_scaled):
+def plot_lr_sweep(bp_results, pc_results, pc_results_scaled, bp_results_scaled):
     plt.figure(figsize=(3.5, 2.7))
 
     plt.errorbar(
@@ -568,6 +624,19 @@ def plot_lr_sweep(bp_results, pc_results, pc_results_scaled):
         alpha=0.5,
     )
 
+    plt.errorbar(
+        [r["lr"] for r in bp_results_scaled],
+        [r["mean_test_loss"] for r in bp_results_scaled],
+        yerr=[r["std_test_loss"] for r in bp_results_scaled],
+        marker="o",
+    #    linewidth=2.5,
+    #    capsize=4,
+        label="BP scaled",
+        color = '#ff7f0e', 
+        linestyle = "dashed",
+        alpha=0.5,
+    )
+
     plt.tick_params(axis='both')#, labelsize=18)
     plt.xscale("log")
     plt.xlabel("Learning rate")#,fontsize=18)
@@ -582,13 +651,14 @@ def plot_lr_sweep(bp_results, pc_results, pc_results_scaled):
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
     #plt.show()
-    plt.savefig('MNIST_autoencoder_lrsweep.svg', dpi=300)
+    plt.savefig('MNIST_autoencoder_lrsweep.png', dpi=300)
 
 
-def plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled):
+def plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled, bp_runs_scaled):
     bp_steps, bp_mean, bp_std = aggregate_curve_runs(bp_runs)
     pc_steps, pc_mean, pc_std = aggregate_curve_runs(pc_runs)
     pc_steps_scaled, pc_mean_scaled, pc_std_scaled = aggregate_curve_runs(pc_runs_scaled)
+    bp_steps_scaled, bp_mean_scaled, bp_std_scaled = aggregate_curve_runs(bp_runs_scaled)
 
     plt.figure(figsize=(3.5, 2.7))
 
@@ -619,6 +689,15 @@ def plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled):
         color = '#1f77b4',
     )
 
+    plt.plot(bp_steps_scaled, bp_mean_scaled, label="BP_scaled", color = '#ff7f0e', linestyle = "dashed", alpha=0.5)#, linewidth=2.5)
+    plt.fill_between(
+        bp_steps_scaled,
+        [m - s for m, s in zip(bp_mean_scaled, bp_std_scaled)],
+        [m + s for m, s in zip(bp_mean_scaled, bp_std_scaled)],
+        alpha=0.2,
+        color = '#ff7f0e',
+    )
+
     plt.tick_params(axis='both')#, labelsize=18)
     plt.xlabel("Training steps")#, fontsize=18)
     plt.ylabel("Test reconstruction loss")#, fontsize=18)
@@ -632,7 +711,7 @@ def plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled):
         spine.set_linewidth(0.8)
     plt.tight_layout()
     #plt.show()
-    plt.savefig('MNIST_autoencoder.svg', dpi=300)
+    plt.savefig('MNIST_autoencoder.png', dpi=300)
 
 
 # ===
@@ -654,7 +733,7 @@ def main():
     # ----
     # 1) LR sweep with matched initialization + minibatches
     # ----
-    bp_results, bp_best, pc_results, pc_best, pc_results_scaled, pc_best_scaled  = sweep_learning_rates_matched_multi(
+    bp_results, bp_best, pc_results, pc_best, pc_results_scaled, pc_best_scaled, bp_results_scaled, bp_best_scaled  = sweep_learning_rates_matched_multi(
         train_dataset=train_dataset,
         test_loader=test_loader,
         lrs=LRS,
@@ -663,24 +742,25 @@ def main():
         run_seeds=RUN_SEEDS,
     )
 
-    plot_lr_sweep(bp_results, pc_results, pc_results_scaled)
+    plot_lr_sweep(bp_results, pc_results, pc_results_scaled, bp_results_scaled)
 
     # ----
     # 2) Final curves with best LRs and matched minibatches
     # ----
-    bp_runs, pc_runs, pc_runs_scaled = run_final_curves_multi(
+    bp_runs, pc_runs, pc_runs_scaled, bp_runs_scaled = run_final_curves_multi(
         train_dataset=train_dataset,
         test_loader=test_loader,
         bp_best_lr=bp_best["lr"],
         pc_best_lr=pc_best["lr"],
         pc_best_lr_scaled=pc_best_scaled["lr"],
+        bp_best_lr_scaled=bp_best_scaled["lr"],
         curve_steps=CURVE_STEPS,
         batch_size=BATCH_SIZE,
         eval_every=EVAL_EVERY,
         run_seeds=RUN_SEEDS,
     )
 
-    plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled)
+    plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled, bp_runs_scaled)
 
 
 if __name__ == "__main__":
