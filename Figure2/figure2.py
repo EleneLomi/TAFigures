@@ -6,6 +6,9 @@ from tqdm import tqdm
 import numpy as np
 import torch.nn.functional as F
 import os
+from pathlib import Path
+
+base_dir = Path(__file__).parent
 
 epsilon = 1e-12#3#12
 alpha = 1e-5#4
@@ -696,9 +699,9 @@ df_best = pd.DataFrame(best_lr_rows)
 df_cur  = pd.DataFrame(curve_rows)
 
 # save each dataframe
-df_lr.to_csv("lr_sweep.csv", index=False)
-df_best.to_csv("best_lrs.csv", index=False)
-df_cur.to_csv("curves.csv", index=False)
+df_lr.to_csv(base_dir / "lr_sweep.csv", index=False)
+df_best.to_csv(base_dir / "best_lrs.csv", index=False)
+df_cur.to_csv(base_dir / "curves.csv", index=False)
 
 agg_lr = (
     df_lr.groupby(["width", "init", "model", "lr_used"])["test_mse"] #.
