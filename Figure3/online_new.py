@@ -10,7 +10,7 @@ from pathlib import Path
 
 base_dir = Path(__file__).parent
 
-epsilon = 0#1e-12#3#12
+epsilon = 0#1e-12#3#12 #MAKE NONZERO
 alpha = 0#1e-5#4
 
 # Get the directory of the current script
@@ -343,7 +343,7 @@ import matplotlib.pyplot as plt
 
 
 # ===================== CONFIG =====================
-seeds = [0]#, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+seeds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 numruns = len(seeds)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

@@ -17,17 +17,17 @@ from bp_ae import BPAutoencoder
 # Config
 # ===
 SEED = 42
-RUN_SEEDS = [0]#, 1, 2]#, 3, 4]
+RUN_SEEDS = [0, 1, 2]#, 3, 4]
 
 DATA_ROOT = "/Users/elenelominadze/TargetAlignment/data"
 
 BATCH_SIZE = 64
-SWEEP_STEPS = 2#100
-CURVE_STEPS = 2#100
-EVAL_EVERY = 1#10
+SWEEP_STEPS = 200#100
+CURVE_STEPS = 200#100
+EVAL_EVERY = 20#10
 
 PC_E_LR = 0.05
-LRS = [1]#[1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 5e-2, 1e-1, 5e-1, 1, 3, 10]
+LRS = [1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 5e-2, 1e-1, 5e-1, 1, 3, 10]
 
 
 # ===
@@ -642,7 +642,7 @@ def plot_lr_sweep(bp_results, pc_results, pc_results_scaled, bp_results_scaled):
     plt.xlabel("Learning rate")#,fontsize=18)
     plt.ylabel("Final test reconstruction loss")#,fontsize=18)
     plt.title("MNIST autoencoder")#,fontsize=18)
-    #plt.legend()
+    plt.legend()
     # Lighten the box (spines)
     ax = plt.gca()
     for spine in ax.spines.values():
@@ -651,7 +651,7 @@ def plot_lr_sweep(bp_results, pc_results, pc_results_scaled, bp_results_scaled):
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
     #plt.show()
-    plt.savefig('MNIST_autoencoder_lrsweep.png', dpi=300)
+    plt.savefig('MNIST_autoencoder_lrsweep.svg', dpi=300)
 
 
 def plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled, bp_runs_scaled):
@@ -702,7 +702,7 @@ def plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled, bp_runs_scaled
     plt.xlabel("Training steps")#, fontsize=18)
     plt.ylabel("Test reconstruction loss")#, fontsize=18)
     plt.title("MNIST autoencoder")#,fontsize=18)
-    #plt.legend()
+    plt.legend()
     plt.grid(True, alpha=0.3)
     # Lighten the box (spines)
     ax = plt.gca()
@@ -711,7 +711,7 @@ def plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled, bp_runs_scaled
         spine.set_linewidth(0.8)
     plt.tight_layout()
     #plt.show()
-    plt.savefig('MNIST_autoencoder.png', dpi=300)
+    plt.savefig('MNIST_autoencoder.svg', dpi=300)
 
 
 # ===
