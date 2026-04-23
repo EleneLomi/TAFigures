@@ -11,7 +11,7 @@ from pathlib import Path
 base_dir = Path(__file__).parent
 
 epsilon = 0#1e-12#3#12
-alpha = 1e-6#4
+alpha = 1e-5#4
 
 # Get the directory of the current script
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -346,7 +346,7 @@ import matplotlib.pyplot as plt
 
 
 # ===================== CONFIG =====================
-seeds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+seeds = [0, 1]#, 2, 3, 4, 5, 6, 7, 8, 9]
 numruns = len(seeds)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -546,7 +546,7 @@ for seed in seeds:
             eval_every      = 20#10#00
 
             # LR grid (base grid; we optionally amplify for some models)
-            lrs = np.logspace((-3.5), (-0.02), 50) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            lrs = np.logspace((-3.5), (-0.02), 100) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
            
 
             # for 1 hidden layer it was 1,1,1
@@ -561,10 +561,10 @@ for seed in seeds:
             eval_every      = 30#00
 
             # LR grid (base grid; we optionally amplify for some models)
-            lrs = np.logspace((-3.5), (-0.0), 50) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            lrs = np.logspace((-3.5), (-0.0), 100) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
 
             # Optional LR scaling knobs (keep if you want)
-            amplify_lr_BP_scaled = .03#2       # for "(scaled lr)" variants
+            amplify_lr_BP_scaled = .15#2       # for "(scaled lr)" variants
             amplify_lr_PC_scaled = 2#1.6#1.5#50       # for "(scaled lr)" variants
             amplify_lr_PC = 2#1.6#1.5#3#50    # for BP only (if you want)
         
@@ -574,7 +574,7 @@ for seed in seeds:
             eval_every      = 20#5#40#00
 
             # LR grid (base grid; we optionally amplify for some models)
-            lrs = np.logspace((-3.5), (-0.02), 50) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            lrs = np.logspace((-3.5), (-0.02), 100) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
 
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants
