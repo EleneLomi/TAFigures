@@ -346,7 +346,7 @@ import matplotlib.pyplot as plt
 
 
 # ===================== CONFIG =====================
-seeds = [0, 1, 2, 3]#, 4, 5, 6, 7, 8, 9]
+seeds = [3,5,9]#, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 numruns = len(seeds)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -359,7 +359,7 @@ n_test     = 2048
 batch_size = 64 #64
 
 # widths to sweep
-widths    = [15, 20, 40] #[5, 10, 20, 50, 100]  # edit as needed
+widths    = [15]#[15, 20, 40] #[5, 10, 20, 50, 100]  # edit as needed
 nm_layers = 1#5
 
 # training budgets
@@ -571,15 +571,21 @@ best_lr_rows  = []     # per seed, width, init, model -> best lr
 for seed in seeds:
     set_seed(seed)
 
+    max_steps_sweep = 500#900#0 #2000
+    max_steps_curve = 500
+
     X_train, Y_train, X_test, Y_test, W_data = make_synthetic(seed, widths[0])
     X_train, Y_train = X_train.to(device), Y_train.to(device)
     W_data = W_data.to(device)
+    batches_sweep = make_batches(X_train, Y_train, max_steps_sweep, seed=seed+111)
+    batches_curve = make_batches(X_train, Y_train, max_steps_curve, seed=seed+111) #222)
+
 
     for hidden_dim in widths:
         print(hidden_dim)
         if hidden_dim == 15:
-            max_steps_sweep = 500#900#0 #2000
-            max_steps_curve = 500#900#0 #2000
+        #    max_steps_sweep = 500#900#0 #2000
+        #    max_steps_curve = 500#900#0 #2000
             eval_every      = 20#00
 
             # LR grid (base grid; we optionally amplify for some models)
@@ -594,8 +600,8 @@ for seed in seeds:
             amplify_lr_PC = 2#1#25#3#50    # for BP only (if you want)
         
         if hidden_dim == 20:
-            max_steps_sweep = 500#00 #2000
-            max_steps_curve = 500#00 #2000
+        #    max_steps_sweep = 500#00 #2000
+        #    max_steps_curve = 500#00 #2000
             eval_every      = 20#00
 
             # LR grid (base grid; we optionally amplify for some models)
@@ -608,8 +614,8 @@ for seed in seeds:
             amplify_lr_PC = 1.4#5#3#50    # for BP only (if you want)
         
         if hidden_dim == 40:
-            max_steps_sweep = 500#55#00 #2000
-            max_steps_curve = 500#55#00 #2000
+        #    max_steps_sweep = 500#55#00 #2000
+        #    max_steps_curve = 500#55#00 #2000
             eval_every      = 20#00
 
             # LR grid (base grid; we optionally amplify for some models)
@@ -620,9 +626,6 @@ for seed in seeds:
             amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants
             amplify_lr_PC_scaled = 1#50       # for "(scaled lr)" variants
             amplify_lr_PC = 2#3#50    # for BP only (if you want)
-
-        batches_sweep = make_batches(X_train, Y_train, max_steps_sweep, seed=seed+111)
-        batches_curve = make_batches(X_train, Y_train, max_steps_curve, seed=seed+111) #222)
 
         for init_name in inits:
             # --- base init state for this (seed, width, init) ---
