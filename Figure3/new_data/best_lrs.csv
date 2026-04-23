@@ -1,0 +1,121 @@
+seed,width,init,model,best_lr
+0,15,norm_preservation,BP,0.033205660340860116
+0,15,norm_preservation,BP (scaled lr),0.8505443611770976
+0,15,norm_preservation,PC,0.08387573977728316
+0,15,norm_preservation,PC (scaled lr),1.3493384773505481
+0,20,norm_preservation,BP,0.029573933426794742
+0,20,norm_preservation,BP (scaled lr),0.6746692386752741
+0,20,norm_preservation,PC,0.08387573977728316
+0,20,norm_preservation,PC (scaled lr),1.7010887223541953
+0,40,norm_preservation,BP,0.023458650789331816
+0,40,norm_preservation,BP (scaled lr),0.4766304872700399
+0,40,norm_preservation,PC,0.06653195774591981
+0,40,norm_preservation,PC (scaled lr),1.0703229658350462
+1,15,norm_preservation,BP,0.033205660340860116
+1,15,norm_preservation,BP (scaled lr),0.8505443611770976
+1,15,norm_preservation,PC,0.09417581644244245
+1,15,norm_preservation,PC (scaled lr),1.7010887223541953
+1,20,norm_preservation,BP,0.033205660340860116
+1,20,norm_preservation,BP (scaled lr),0.7575197136807059
+1,20,norm_preservation,PC,0.09417581644244245
+1,20,norm_preservation,PC (scaled lr),1.7010887223541953
+1,40,norm_preservation,BP,0.020892961308540407
+1,40,norm_preservation,BP (scaled lr),0.4245010686434
+1,40,norm_preservation,PC,0.05925530975545681
+1,40,norm_preservation,PC (scaled lr),1.2017603592202497
+2,15,norm_preservation,BP,0.03728336920085077
+2,15,norm_preservation,BP (scaled lr),0.7575197136807059
+2,15,norm_preservation,PC,0.08387573977728316
+2,15,norm_preservation,PC (scaled lr),1.7010887223541953
+2,20,norm_preservation,BP,0.033205660340860116
+2,20,norm_preservation,BP (scaled lr),0.8505443611770976
+2,20,norm_preservation,PC,0.08387573977728316
+2,20,norm_preservation,PC (scaled lr),1.7010887223541953
+2,40,norm_preservation,BP,0.020892961308540407
+2,40,norm_preservation,BP (scaled lr),0.5351614829175231
+2,40,norm_preservation,PC,0.05925530975545681
+2,40,norm_preservation,PC (scaled lr),1.2017603592202497
+3,15,norm_preservation,BP,0.03728336920085077
+3,15,norm_preservation,BP (scaled lr),0.6746692386752741
+3,15,norm_preservation,PC,0.06653195774591981
+3,15,norm_preservation,PC (scaled lr),1.7010887223541953
+3,20,norm_preservation,BP,0.033205660340860116
+3,20,norm_preservation,BP (scaled lr),0.7575197136807059
+3,20,norm_preservation,PC,0.09417581644244245
+3,20,norm_preservation,PC (scaled lr),1.7010887223541953
+3,40,norm_preservation,BP,0.016572725589759005
+3,40,norm_preservation,BP (scaled lr),0.4766304872700399
+3,40,norm_preservation,PC,0.0527745139805459
+3,40,norm_preservation,PC (scaled lr),0.9532609745400799
+4,15,norm_preservation,BP,0.029573933426794742
+4,15,norm_preservation,BP (scaled lr),0.6008801796101249
+4,15,norm_preservation,PC,0.09417581644244245
+4,15,norm_preservation,PC (scaled lr),1.7010887223541953
+4,20,norm_preservation,BP,0.033205660340860116
+4,20,norm_preservation,BP (scaled lr),0.6008801796101249
+4,20,norm_preservation,PC,0.09417581644244245
+4,20,norm_preservation,PC (scaled lr),1.7010887223541953
+4,40,norm_preservation,BP,0.0263394110930014
+4,40,norm_preservation,BP (scaled lr),0.5351614829175231
+4,40,norm_preservation,PC,0.0527745139805459
+4,40,norm_preservation,PC (scaled lr),1.0703229658350462
+5,15,norm_preservation,BP,0.029573933426794742
+5,15,norm_preservation,BP (scaled lr),0.5351614829175231
+5,15,norm_preservation,PC,0.08387573977728316
+5,15,norm_preservation,PC (scaled lr),1.7010887223541953
+5,20,norm_preservation,BP,0.033205660340860116
+5,20,norm_preservation,BP (scaled lr),0.6746692386752741
+5,20,norm_preservation,PC,0.08387573977728316
+5,20,norm_preservation,PC (scaled lr),1.7010887223541953
+5,40,norm_preservation,BP,0.023458650789331816
+5,40,norm_preservation,BP (scaled lr),0.4766304872700399
+5,40,norm_preservation,PC,0.0527745139805459
+5,40,norm_preservation,PC (scaled lr),0.9532609745400799
+6,15,norm_preservation,BP,0.029573933426794742
+6,15,norm_preservation,BP (scaled lr),0.8505443611770976
+6,15,norm_preservation,PC,0.08387573977728316
+6,15,norm_preservation,PC (scaled lr),1.7010887223541953
+6,20,norm_preservation,BP,0.0263394110930014
+6,20,norm_preservation,BP (scaled lr),0.6746692386752741
+6,20,norm_preservation,PC,0.08387573977728316
+6,20,norm_preservation,PC (scaled lr),1.7010887223541953
+6,40,norm_preservation,BP,0.023458650789331816
+6,40,norm_preservation,BP (scaled lr),0.5351614829175231
+6,40,norm_preservation,PC,0.05925530975545681
+6,40,norm_preservation,PC (scaled lr),1.2017603592202497
+7,15,norm_preservation,BP,0.033205660340860116
+7,15,norm_preservation,BP (scaled lr),0.6746692386752741
+7,15,norm_preservation,PC,0.0747021898927332
+7,15,norm_preservation,PC (scaled lr),1.7010887223541953
+7,20,norm_preservation,BP,0.04186182731190769
+7,20,norm_preservation,BP (scaled lr),0.6008801796101249
+7,20,norm_preservation,PC,0.09417581644244245
+7,20,norm_preservation,PC (scaled lr),1.7010887223541953
+7,40,norm_preservation,BP,0.029573933426794742
+7,40,norm_preservation,BP (scaled lr),0.7575197136807059
+7,40,norm_preservation,PC,0.05925530975545681
+7,40,norm_preservation,PC (scaled lr),1.2017603592202497
+8,15,norm_preservation,BP,0.033205660340860116
+8,15,norm_preservation,BP (scaled lr),0.8505443611770976
+8,15,norm_preservation,PC,0.09417581644244245
+8,15,norm_preservation,PC (scaled lr),1.5150394273614118
+8,20,norm_preservation,BP,0.033205660340860116
+8,20,norm_preservation,BP (scaled lr),0.6746692386752741
+8,20,norm_preservation,PC,0.09417581644244245
+8,20,norm_preservation,PC (scaled lr),1.3493384773505481
+8,40,norm_preservation,BP,0.023458650789331816
+8,40,norm_preservation,BP (scaled lr),0.5351614829175231
+8,40,norm_preservation,PC,0.06653195774591981
+8,40,norm_preservation,PC (scaled lr),1.2017603592202497
+9,15,norm_preservation,BP,0.033205660340860116
+9,15,norm_preservation,BP (scaled lr),0.8505443611770976
+9,15,norm_preservation,PC,0.06653195774591981
+9,15,norm_preservation,PC (scaled lr),1.7010887223541953
+9,20,norm_preservation,BP,0.033205660340860116
+9,20,norm_preservation,BP (scaled lr),0.7575197136807059
+9,20,norm_preservation,PC,0.08387573977728316
+9,20,norm_preservation,PC (scaled lr),1.7010887223541953
+9,40,norm_preservation,BP,0.023458650789331816
+9,40,norm_preservation,BP (scaled lr),0.4766304872700399
+9,40,norm_preservation,PC,0.05925530975545681
+9,40,norm_preservation,PC (scaled lr),1.2017603592202497
