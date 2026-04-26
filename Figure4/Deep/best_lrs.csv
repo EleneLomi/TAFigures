@@ -1,0 +1,41 @@
+seed,width,init,model,best_lr
+0,20,norm_preservation,BP,0.023865897868585808
+0,20,norm_preservation,BP (scaled lr),0.007571488133762319
+0,20,norm_preservation,PC,0.8353064254005033
+0,20,norm_preservation,PC (scaled lr),0.8353064254005033
+1,20,norm_preservation,BP,0.023865897868585808
+1,20,norm_preservation,BP (scaled lr),0.007571488133762319
+1,20,norm_preservation,PC,2.2083507056806764
+1,20,norm_preservation,PC (scaled lr),0.8353064254005033
+2,20,norm_preservation,BP,0.023865897868585808
+2,20,norm_preservation,BP (scaled lr),0.002863907744230297
+2,20,norm_preservation,PC,0.8353064254005033
+2,20,norm_preservation,PC (scaled lr),0.8353064254005033
+3,20,norm_preservation,BP,0.023865897868585808
+3,20,norm_preservation,BP (scaled lr),0.007571488133762319
+3,20,norm_preservation,PC,0.8353064254005033
+3,20,norm_preservation,PC (scaled lr),0.8353064254005033
+4,20,norm_preservation,BP,0.023865897868585808
+4,20,norm_preservation,BP (scaled lr),0.007571488133762319
+4,20,norm_preservation,PC,0.8353064254005033
+4,20,norm_preservation,PC (scaled lr),0.8353064254005033
+5,20,norm_preservation,BP,0.023865897868585808
+5,20,norm_preservation,BP (scaled lr),0.007571488133762319
+5,20,norm_preservation,PC,2.2083507056806764
+5,20,norm_preservation,PC (scaled lr),0.8353064254005033
+6,20,norm_preservation,BP,0.023865897868585808
+6,20,norm_preservation,BP (scaled lr),0.002863907744230297
+6,20,norm_preservation,PC,0.8353064254005033
+6,20,norm_preservation,PC (scaled lr),0.8353064254005033
+7,20,norm_preservation,BP,0.023865897868585808
+7,20,norm_preservation,BP (scaled lr),0.002863907744230297
+7,20,norm_preservation,PC,0.8353064254005033
+7,20,norm_preservation,PC (scaled lr),0.8353064254005033
+8,20,norm_preservation,BP,0.023865897868585808
+8,20,norm_preservation,BP (scaled lr),0.007571488133762319
+8,20,norm_preservation,PC,0.8353064254005033
+8,20,norm_preservation,PC (scaled lr),0.8353064254005033
+9,20,norm_preservation,BP,0.023865897868585808
+9,20,norm_preservation,BP (scaled lr),0.002863907744230297
+9,20,norm_preservation,PC,0.8353064254005033
+9,20,norm_preservation,PC (scaled lr),0.8353064254005033

@@ -11,7 +11,7 @@ from pathlib import Path
 base_dir = Path(__file__).parent
 
 epsilon = 0#1e-12#3#12
-alpha = 1e-5#4
+alpha = 1e-4#4
 
 # Get the directory of the current script
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -346,7 +346,7 @@ import matplotlib.pyplot as plt
 
 
 # ===================== CONFIG =====================
-seeds = [0, 1]#, 2, 3, 4, 5, 6, 7, 8, 9]
+seeds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 numruns = len(seeds)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -359,8 +359,8 @@ n_test     = 2048
 batch_size = 64
 
 # widths to sweep
-widths    = [15, 20, 40] #[5, 10, 20, 50, 100]  # edit as needed
-nm_layers = 1#5
+widths    = [20] #[5, 10, 20, 50, 100]  # edit as needed
+nm_layers = 8#5
 
 # training budgets
 max_steps_sweep = 100#00 #2000
@@ -534,7 +534,7 @@ best_lr_rows  = []     # per seed, width, init, model -> best lr
 for seed in seeds:
     set_seed(seed)
 
-    X_train, Y_train, X_test, Y_test, W_data = make_synthetic(seed, widths[0])
+    X_train, Y_train, X_test, Y_test, W_data = make_synthetic(seed, 15)
     X_train, Y_train = X_train.to(device), Y_train.to(device)
     W_data = W_data.to(device)
 
@@ -561,12 +561,12 @@ for seed in seeds:
             eval_every      = 30#00
 
             # LR grid (base grid; we optionally amplify for some models)
-            lrs = np.logspace((-3.5), (-0.0), 100) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            lrs = np.logspace((-5), (-1.2), 10) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
 
             # Optional LR scaling knobs (keep if you want)
-            amplify_lr_BP_scaled = .15#2       # for "(scaled lr)" variants
-            amplify_lr_PC_scaled = 2#1.6#1.5#50       # for "(scaled lr)" variants
-            amplify_lr_PC = 2#1.6#1.5#3#50    # for BP only (if you want)
+            amplify_lr_BP_scaled = .12#2       # for "(scaled lr)" variants
+            amplify_lr_PC_scaled = 35#1.6#1.5#50       # for "(scaled lr)" variants
+            amplify_lr_PC = 35#1.6#1.5#3#50    # for BP only (if you want)
         
         if hidden_dim == 40:
             max_steps_sweep = 300#55#100#00 #2000
@@ -769,7 +769,7 @@ handles, labels = axes[0, 0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 1])
 # Save inside the same folder (figure2)
-file_path = os.path.join(script_dir, "Training_curves_final.svg")
+file_path = os.path.join(script_dir, "Training_curves_final.png")
 plt.savefig(file_path, dpi=300)
 
 # --- make figure: rows = widths, cols = inits ---
@@ -850,7 +850,7 @@ for r, width in enumerate(widths_order):
 handles, labels = axes[0, 0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 1])
-file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final.svg")
+file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final.png")
 plt.savefig(file_path_lrsweep, dpi=300)
 
 # --- compute best MSE per (width, init, model) ---
@@ -911,7 +911,7 @@ axes[0].set_ylabel(r"$\|W_{\mathrm{data}} - W_{L:1}\|_2^2$") # set_ylabel("Best 
 handles, labels = axes[0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 0.92])
-file_path_width = os.path.join(script_dir, "widths_sweep_final.svg")
+file_path_width = os.path.join(script_dir, "widths_sweep_final.png")
 plt.savefig(file_path_width, dpi=300)
 
 # ===================== OPTIONAL: print best LR summary =====================
