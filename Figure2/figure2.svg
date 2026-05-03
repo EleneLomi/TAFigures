@@ -25,9 +25,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showguides="true"
-     inkscape:zoom="1.2006206"
-     inkscape:cx="251.12012"
-     inkscape:cy="294.0146"
+     inkscape:zoom="1.3229475"
+     inkscape:cx="204.46767"
+     inkscape:cy="195.01907"
      inkscape:window-width="1837"
      inkscape:window-height="867"
      inkscape:window-x="1512"
@@ -10872,153 +10872,6 @@
        style="stroke-linecap:butt;stroke-linejoin:round"
        transform="matrix(0.20127392,0,0,0.20127392,102.97894,-10.539497)" />
     <g
-       id="axes_1-4"
-       style="stroke-linecap:butt;stroke-linejoin:round"
-       transform="matrix(0.20736448,0,0,0.20736448,161.96492,62.614806)">
-      <g
-         id="matplotlib.axis_2-0"
-         style="stroke-linecap:butt;stroke-linejoin:round">
-        <g
-           id="ytick_4-6"
-           style="stroke-linecap:butt;stroke-linejoin:round"
-           transform="matrix(1.0776973,0,0,1.0776973,-45.339625,-19.742798)">
-          <g
-             id="line2d_19-5"
-             style="stroke-linecap:butt;stroke-linejoin:round" />
-        </g>
-      </g>
-      <g
-         id="text_15"
-         style="stroke-linecap:butt;stroke-linejoin:round"
-         transform="matrix(0,-1.0776973,1.0776973,0,-794.39366,281.58312)">
-        <!-- norm preservation -->
-        <g
-           transform="matrix(0.12,0,0,-0.12,107.0966,37.296)"
-           id="g98"
-           style="stroke-linecap:butt;stroke-linejoin:round">
-          <defs
-             id="defs82">
-            <path
-               id="path602"
-               d="M 3513,2113 V 0 h -575 v 2094 q 0,497 -194,743 -194,247 -581,247 -466,0 -735,-297 -269,-296 -269,-809 V 0 H 581 v 3500 h 578 v -544 q 207,316 486,472 280,156 646,156 603,0 912,-373 310,-373 310,-1098 z"
-               transform="scale(0.015625)" />
-            <path
-               id="path603"
-               d="m 1959,3097 q -462,0 -731,-361 -269,-361 -269,-989 0,-628 267,-989 268,-361 733,-361 460,0 728,362 269,363 269,988 0,622 -269,986 -268,364 -728,364 z m 0,487 q 750,0 1178,-488 429,-487 429,-1349 Q 3566,888 3137,398 2709,-91 1959,-91 1206,-91 779,398 353,888 353,1747 q 0,862 426,1349 427,488 1180,488 z"
-               transform="scale(0.015625)" />
-            <path
-               id="path604"
-               d="m 2631,2963 q -97,56 -211,82 -114,27 -251,27 -488,0 -749,-317 -261,-317 -261,-911 V 0 H 581 v 3500 h 578 v -544 q 182,319 472,473 291,155 707,155 59,0 131,-8 72,-7 159,-23 z"
-               transform="scale(0.015625)" />
-            <path
-               id="path605"
-               d="m 3328,2828 q 216,388 516,572 300,184 706,184 547,0 844,-383 297,-382 297,-1088 V 0 h -578 v 2094 q 0,503 -179,746 -178,244 -543,244 -447,0 -707,-297 -259,-296 -259,-809 V 0 h -578 v 2094 q 0,506 -178,748 -178,242 -550,242 -441,0 -701,-298 -259,-298 -259,-808 V 0 H 581 v 3500 h 578 v -544 q 197,322 472,475 275,153 653,153 382,0 649,-194 267,-193 395,-562 z"
-               transform="scale(0.015625)" />
-            <path
-               id="path606"
-               transform="scale(0.015625)"
-               d="" />
-            <path
-               id="path607"
-               d="M 1159,525 V -1331 H 581 v 4831 h 578 v -531 q 182,312 458,463 277,152 661,152 638,0 1036,-506 399,-506 399,-1331 0,-825 -399,-1332 -398,-506 -1036,-506 -384,0 -661,152 -276,152 -458,464 z m 1957,1222 q 0,634 -261,995 -261,361 -717,361 -457,0 -718,-361 -261,-361 -261,-995 0,-634 261,-995 261,-361 718,-361 456,0 717,361 261,361 261,995 z"
-               transform="scale(0.015625)" />
-            <path
-               id="path608"
-               d="M 3597,1894 V 1613 H 953 q 38,-594 358,-905 320,-311 892,-311 331,0 642,81 311,81 618,244 V 178 Q 3153,47 2828,-22 2503,-91 2169,-91 1331,-91 842,396 353,884 353,1716 q 0,859 464,1363 464,505 1252,505 706,0 1117,-455 411,-454 411,-1235 z m -575,169 q -6,471 -264,752 -258,282 -683,282 -481,0 -770,-272 -289,-272 -333,-766 z"
-               transform="scale(0.015625)" />
-            <path
-               id="path609"
-               d="m 2834,3397 v -544 q -243,125 -506,187 -262,63 -544,63 -428,0 -642,-131 -214,-131 -214,-394 0,-200 153,-314 153,-114 616,-217 l 197,-44 q 612,-131 870,-370 258,-239 258,-667 0,-488 -386,-773 Q 2250,-91 1575,-91 1294,-91 989,-36 684,19 347,128 v 594 q 319,-166 628,-249 309,-82 613,-82 406,0 624,139 219,139 219,392 0,234 -158,359 -157,125 -692,241 l -200,47 q -534,112 -772,345 -237,233 -237,639 0,494 350,762 350,269 994,269 318,0 599,-47 282,-46 519,-140 z"
-               transform="scale(0.015625)" />
-            <path
-               id="path610"
-               d="M 191,3500 H 800 L 1894,563 2988,3500 h 609 L 2284,0 h -781 z"
-               transform="scale(0.015625)" />
-          </defs>
-          <use
-             xlink:href="#DejaVuSans-6f-0"
-             transform="matrix(1.1213588,0,0,1.1213588,31.114524,-16.862453)"
-             id="use83"
-             style="stroke-linecap:butt;stroke-linejoin:round" />
-          <use
-             xlink:href="#DejaVuSans-72-3"
-             transform="matrix(1.1213588,0,0,1.1213588,99.721102,-16.862453)"
-             id="use84"
-             style="stroke-linecap:butt;stroke-linejoin:round" />
-          <use
-             xlink:href="#DejaVuSans-6d-2"
-             transform="matrix(1.1213588,0,0,1.1213588,143.86146,-16.862453)"
-             id="use85"
-             style="stroke-linecap:butt;stroke-linejoin:round" />
-          <use
-             xlink:href="#DejaVuSans-20-3"
-             transform="translate(261.33594)"
-             id="use86"
-             style="stroke-linecap:butt;stroke-linejoin:round" />
-          <use
-             xlink:href="#DejaVuSans-70-3"
-             transform="matrix(1.1213588,0,0,1.1213588,288.74015,-16.862453)"
-             id="use87"
-             style="stroke-linecap:butt;stroke-linejoin:round" />
-          <use
-             xlink:href="#DejaVuSans-72-3"
-             transform="matrix(1.1213588,0,0,1.1213588,359.92015,-16.862453)"
-             id="use88"
-             style="stroke-linecap:butt;stroke-linejoin:round" />
-          <use
-             xlink:href="#DejaVuSans-65-2"
-             transform="matrix(1.1213588,0,0,1.1213588,403.49983,-16.862453)"
-             id="use89"
-             style="stroke-linecap:butt;stroke-linejoin:round" />
-          <use
-             xlink:href="#DejaVuSans-73-1"
-             transform="matrix(1.1213588,0,0,1.1213588,472.48969,-16.862453)"
-             id="use90"
-             style="stroke-linecap:butt;stroke-linejoin:round" />
-          <use
-             xlink:href="#DejaVuSans-65-2"
-             transform="matrix(1.1213588,0,0,1.1213588,530.91204,-16.862453)"
-             id="use91"
-             style="stroke-linecap:butt;stroke-linejoin:round" />
-          <use
-             xlink:href="#DejaVuSans-72-3"
-             transform="matrix(1.1213588,0,0,1.1213588,599.90189,-16.862453)"
-             id="use92"
-             style="stroke-linecap:butt;stroke-linejoin:round" />
-          <use
-             xlink:href="#DejaVuSans-76-9"
-             transform="matrix(1.1213588,0,0,1.1213588,646.00464,-16.862453)"
-             id="use93"
-             style="stroke-linecap:butt;stroke-linejoin:round" />
-          <use
-             xlink:href="#DejaVuSans-61-0"
-             transform="matrix(1.1213588,0,0,1.1213588,712.3663,-16.862453)"
-             id="use94"
-             style="stroke-linecap:butt;stroke-linejoin:round" />
-          <use
-             xlink:href="#DejaVuSans-74-0"
-             transform="matrix(1.1213588,0,0,1.1213588,781.08238,-16.862453)"
-             id="use95"
-             style="stroke-linecap:butt;stroke-linejoin:round" />
-          <use
-             xlink:href="#DejaVuSans-69-6"
-             transform="matrix(1.1213588,0,0,1.1213588,825.04972,-16.862453)"
-             id="use96"
-             style="stroke-linecap:butt;stroke-linejoin:round" />
-          <use
-             xlink:href="#DejaVuSans-6f-0"
-             transform="matrix(1.1213588,0,0,1.1213588,856.20466,-16.862453)"
-             id="use97"
-             style="stroke-linecap:butt;stroke-linejoin:round" />
-          <use
-             xlink:href="#DejaVuSans-6e-8"
-             transform="matrix(1.1213588,0,0,1.1213588,924.81124,-16.862453)"
-             id="use98"
-             style="stroke-linecap:butt;stroke-linejoin:round" />
-        </g>
-      </g>
-    </g>
-    <g
        id="figure_1"
        style="stroke-linecap:butt;stroke-linejoin:round"
        transform="matrix(0.35277777,0,0,0.35277777,283.08112,-40.447124)">
@@ -21326,7 +21179,7 @@
                    sodipodi:role="line"
                    id="tspan119">B</tspan><tspan
                    sodipodi:role="line"
-                   id="tspan120"></tspan></text>
+                   id="tspan120" /></text>
               <text
                  xml:space="preserve"
                  style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.9329px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;fill:#000000;stroke:#000000;stroke-width:0.850394;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
@@ -21336,9 +21189,9 @@
                    sodipodi:role="line"
                    id="tspan121">C</tspan><tspan
                    sodipodi:role="line"
-                   id="tspan122"></tspan><tspan
+                   id="tspan122" /><tspan
                    sodipodi:role="line"
-                   id="tspan123"></tspan></text>
+                   id="tspan123" /></text>
               <text
                  xml:space="preserve"
                  style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.9329px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;fill:#000000;stroke:#000000;stroke-width:0.850394;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
@@ -21348,7 +21201,7 @@
                    sodipodi:role="line"
                    id="tspan124">D</tspan><tspan
                    sodipodi:role="line"
-                   id="tspan125"></tspan></text>
+                   id="tspan125" /></text>
               <text
                  xml:space="preserve"
                  style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.9329px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;fill:#000000;stroke:#000000;stroke-width:0.850394;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
@@ -21842,15 +21695,14 @@
          y="28.307999">Eight hidden layers</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:3.07168px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.000967458;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
-       x="-98.451279"
-       y="5.987751"
-       id="text414-00"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       x="-100.28692"
+       y="6.500948"
+       id="text414-2"
        transform="rotate(-90)"><tspan
          sodipodi:role="line"
-         id="tspan414-8"
-         style="font-size:3.07168px;fill:#000000;stroke:#000000;stroke-width:0.000967458;stroke-dasharray:none;stroke-opacity:1"
-         x="-98.451279"
-         y="5.987751">N</tspan></text>
+         id="tspan1"
+         x="-100.28692"
+         y="6.500948">Norm preservation</tspan></text>
   </g>
 </svg>

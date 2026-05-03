@@ -24,13 +24,13 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     inkscape:zoom="0.54655297"
-     inkscape:cx="531.51298"
-     inkscape:cy="328.42196"
+     inkscape:zoom="0.5004563"
+     inkscape:cx="602.4502"
+     inkscape:cy="386.64714"
      inkscape:window-width="1467"
      inkscape:window-height="706"
-     inkscape:window-x="1725"
-     inkscape:window-y="112"
+     inkscape:window-x="2029"
+     inkscape:window-y="75"
      inkscape:window-maximized="0"
      inkscape:current-layer="layer1" />
   <defs
@@ -2692,7 +2692,8 @@
           </g>
           <g
              id="text_6"
-             style="stroke-linecap:butt;stroke-linejoin:round">
+             style="stroke-linecap:butt;stroke-linejoin:round"
+             transform="matrix(1.1565384,0,0,1.1565384,-4.3233866,-40.360287)">
             <!-- $\|W_{\mathrm{data}} - W_{L:1}\|_2^2$ -->
             <g
                transform="matrix(0,-0.1,-0.1,0,24.960889,141.39)"
@@ -2801,6 +2802,18 @@
                  style="stroke-linecap:butt;stroke-linejoin:round" />
             </g>
           </g>
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.0382px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.52569;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+             x="-173.017"
+             y="25.421818"
+             id="text414-1-00"
+             transform="rotate(-90)"><tspan
+               sodipodi:role="line"
+               id="tspan1-6"
+               x="-173.017"
+               y="25.421818"
+               style="stroke-width:2.52569">Error</tspan></text>
         </g>
         <g
            id="line2d_23"
@@ -2854,7 +2867,8 @@
         </g>
         <g
            id="text_7"
-           style="stroke-linecap:butt;stroke-linejoin:round">
+           style="stroke-linecap:butt;stroke-linejoin:round"
+           transform="matrix(1.3790327,0,0,1.3790327,-55.762999,-8.3143183)">
           <!-- norm preservation -->
           <g
              transform="matrix(0.12,0,0,-0.12,114.29661,19.44)"
@@ -3402,7 +3416,8 @@
         </g>
         <g
            id="text_8"
-           style="stroke-linecap:butt;stroke-linejoin:round">
+           style="stroke-linecap:butt;stroke-linejoin:round"
+           transform="matrix(1.460464,0,0,1.460464,-171.61514,-10.100565)">
           <!-- kaiming uniform -->
           <g
              transform="matrix(0.12,0,0,-0.12,341.13616,19.44)"
@@ -4025,7 +4040,8 @@
           </g>
           <g
              id="text_14"
-             style="stroke-linecap:butt;stroke-linejoin:round">
+             style="stroke-linecap:butt;stroke-linejoin:round"
+             transform="matrix(1.2054566,0,0,1.2054566,-5.6744449,-80.4056)">
             <!-- $\|W_{\mathrm{data}} - W_{L:1}\|_2^2$ -->
             <g
                transform="matrix(0,-0.1,-0.1,0,24.960889,310.89)"
@@ -4103,6 +4119,18 @@
                  style="stroke-linecap:butt;stroke-linejoin:round" />
             </g>
           </g>
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.0382px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.52569;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+             x="-346.48193"
+             y="25.907448"
+             id="text414-1-8"
+             transform="rotate(-90)"><tspan
+               sodipodi:role="line"
+               id="tspan1-9"
+               x="-346.48193"
+               y="25.907448"
+               style="stroke-width:2.52569">Error</tspan></text>
         </g>
         <g
            id="line2d_71"
@@ -4929,7 +4957,8 @@
           </g>
           <g
              id="text_21"
-             style="stroke-linecap:butt;stroke-linejoin:round">
+             style="stroke-linecap:butt;stroke-linejoin:round"
+             transform="matrix(1.3346692,0,0,1.3346692,-58.23908,-179.37235)">
             <!-- Training steps -->
             <g
                transform="matrix(0.1,0,0,-0.1,134.98551,547.91656)"
@@ -5314,7 +5343,8 @@
           </g>
           <g
              id="text_27"
-             style="stroke-linecap:butt;stroke-linejoin:round">
+             style="stroke-linecap:butt;stroke-linejoin:round"
+             transform="matrix(1.2837258,0,0,1.2837258,-7.8361382,-150.91833)">
             <!-- $\|W_{\mathrm{data}} - W_{L:1}\|_2^2$ -->
             <g
                transform="matrix(0,-0.1,-0.1,0,24.960889,480.39)"
@@ -5392,6 +5422,18 @@
                  style="stroke-linecap:butt;stroke-linejoin:round" />
             </g>
           </g>
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.0382px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.52569;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+             x="-519.62646"
+             y="24.905127"
+             id="text414-1-0"
+             transform="rotate(-90)"><tspan
+               sodipodi:role="line"
+               id="tspan1-93"
+               x="-519.62646"
+               y="24.905127"
+               style="stroke-width:2.52569">Error</tspan></text>
         </g>
         <g
            id="line2d_119"
@@ -5800,7 +5842,8 @@
           </g>
           <g
              id="text_34"
-             style="stroke-linecap:butt;stroke-linejoin:round">
+             style="stroke-linecap:butt;stroke-linejoin:round"
+             transform="matrix(1.3796088,0,0,1.3796088,-145.06461,-205.10951)">
             <!-- Training steps -->
             <g
                transform="matrix(0.1,0,0,-0.1,355.40507,547.91656)"
@@ -7148,7 +7191,8 @@
           </g>
           <g
              id="text_7-5"
-             style="stroke-linecap:butt;stroke-linejoin:round">
+             style="stroke-linecap:butt;stroke-linejoin:round"
+             transform="matrix(1.4192156,0,0,1.4192156,-13.588331,-65.612301)">
             <!-- $\|W_{\mathrm{data}} - W_{L:1}\|_2^2$ -->
             <g
                transform="matrix(0,-0.1,-0.1,0,24.915889,137.54067)"
@@ -8820,7 +8864,8 @@
         </g>
         <g
            id="text_8-7"
-           style="stroke-linecap:butt;stroke-linejoin:round">
+           style="stroke-linecap:butt;stroke-linejoin:round"
+           transform="matrix(1.4671236,0,0,1.4671236,-74.173823,-10.246648)">
           <!-- norm preservation -->
           <g
              transform="matrix(0.12,0,0,-0.12,114.26286,19.44)"
@@ -11359,7 +11404,8 @@
         </g>
         <g
            id="text_9-1"
-           style="stroke-linecap:butt;stroke-linejoin:round">
+           style="stroke-linecap:butt;stroke-linejoin:round"
+           transform="matrix(1.5441485,0,0,1.5441485,-202.44748,-11.936238)">
           <!-- kaiming uniform -->
           <g
              transform="matrix(0.12,0,0,-0.12,341.12491,19.44)"
@@ -12453,7 +12499,8 @@
           </g>
           <g
              id="text_16-9"
-             style="stroke-linecap:butt;stroke-linejoin:round">
+             style="stroke-linecap:butt;stroke-linejoin:round"
+             transform="matrix(1.3385972,0,0,1.3385972,-11.365384,-113.58315)">
             <!-- $\|W_{\mathrm{data}} - W_{L:1}\|_2^2$ -->
             <g
                transform="matrix(0,-0.1,-0.1,0,24.915889,309.234)"
@@ -17287,7 +17334,8 @@
           </g>
           <g
              id="text_21-5"
-             style="stroke-linecap:butt;stroke-linejoin:round">
+             style="stroke-linecap:butt;stroke-linejoin:round"
+             transform="matrix(1.4045365,0,0,1.4045365,-73.985121,-217.23858)">
             <!-- Learning rates (log) -->
             <g
                transform="matrix(0.1,0,0,-0.1,120.51582,544.60456)"
@@ -17718,7 +17766,8 @@
           </g>
           <g
              id="text_28-1"
-             style="stroke-linecap:butt;stroke-linejoin:round">
+             style="stroke-linecap:butt;stroke-linejoin:round"
+             transform="matrix(1.4192156,0,0,1.4192156,-11.559324,-206.05004)">
             <!-- $\|W_{\mathrm{data}} - W_{L:1}\|_2^2$ -->
             <g
                transform="matrix(0,-0.1,-0.1,0,24.915889,480.92733)"
@@ -20138,7 +20187,8 @@
           </g>
           <g
              id="text_33-4"
-             style="stroke-linecap:butt;stroke-linejoin:round">
+             style="stroke-linecap:butt;stroke-linejoin:round"
+             transform="matrix(1.3976963,0,0,1.3976963,-158.13394,-213.56536)">
             <!-- Learning rates (log) -->
             <g
                transform="matrix(0.1,0,0,-0.1,340.95788,544.60456)"
@@ -21985,39 +22035,72 @@
        id="path414-5" />
     <text
        xml:space="preserve"
-       style="font-size:4.23357px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.666702;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
-       x="54.365162"
-       y="28.824413"
+       style="font-size:4.81842px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.758804;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       x="48.015156"
+       y="28.703617"
        id="text414"><tspan
          sodipodi:role="line"
          id="tspan414"
-         style="font-size:4.23357px;fill:#000000;stroke:none;stroke-width:0.666703"
-         x="54.365162"
-         y="28.824413">Training Curves for Varying Widths</tspan></text>
+         style="font-size:4.81842px;fill:#000000;stroke:none;stroke-width:0.758805"
+         x="48.015156"
+         y="28.703617">Training Curves for Varying Widths</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23357px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.666702;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       x="-181.16241"
+       y="162.29613"
+       id="text414-1"
+       transform="rotate(-90)"><tspan
+         sodipodi:role="line"
+         id="tspan1"
+         x="-181.16241"
+         y="162.29613">Error</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23357px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.666702;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       x="-135.3019"
+       y="162.09261"
+       id="text414-1-7"
+       transform="rotate(-90)"><tspan
+         sodipodi:role="line"
+         id="tspan1-1"
+         x="-135.3019"
+         y="162.09261">Error</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23357px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.666702;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       x="-91.645645"
+       y="161.29884"
+       id="text414-1-6"
+       transform="rotate(-90)"><tspan
+         sodipodi:role="line"
+         id="tspan1-7"
+         x="-91.645645"
+         y="161.29884">Error</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:4.23357px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.666702;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
        x="-81.192764"
-       y="17.20335"
+       y="16.145016"
        id="text414-8"
        transform="rotate(-90)"><tspan
          sodipodi:role="line"
          id="tspan414-7"
          style="font-size:4.23357px;fill:#000000;stroke:none;stroke-width:0.666703"
          x="-81.192764"
-         y="17.20335">Wdith = 15</tspan></text>
+         y="16.145016">Wdith = 15</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:4.23357px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.666702;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
        x="-125.76518"
-       y="16.613592"
+       y="16.084425"
        id="text414-8-5"
        transform="rotate(-90)"><tspan
          sodipodi:role="line"
          id="tspan414-7-1"
          style="font-size:4.23357px;fill:#000000;stroke:none;stroke-width:0.666703"
          x="-125.76518"
-         y="16.613592">Wdith = 20</tspan></text>
+         y="16.084425">Wdith = 20</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:4.23357px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.666702;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
@@ -22032,19 +22115,48 @@
          y="16.445686">Wdith = 40</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.11464px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.666702;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
-       x="207.60342"
-       y="29.792103"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01549px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.784129;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       x="199.32755"
+       y="29.63809"
        id="text414-0"><tspan
          sodipodi:role="line"
          id="tspan415"
-         x="207.60342"
-         y="29.792103"
-         style="font-size:4.23357px;stroke-width:0.666702">Learning Rate Sweeps</tspan><tspan
+         x="199.32755"
+         y="29.63809"
+         style="font-size:4.97924px;stroke-width:0.784129">Learning Rate Sweeps</tspan><tspan
          sodipodi:role="line"
          id="tspan416"
-         x="207.60342"
-         y="36.185402"
-         style="stroke-width:0.666702" /></text>
+         x="199.32755"
+         y="37.157452"
+         style="stroke-width:0.784129" /></text>
+    <path
+       d="m 37.942298,86.883271 h 18.819351 c 0.439618,0 0.658379,-0.21966 0.658379,-0.658076 V 76.212808 c 0,-0.439615 -0.218761,-0.658377 -0.658367,-0.658377 H 37.942298 c -0.438402,0 -0.658366,0.218762 -0.658366,0.658377 v 10.012387 c 0,0.438416 0.219964,0.658076 0.658366,0.658076 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#cccccc;stroke-width:0.299261;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       opacity="0.8"
+       id="path134-0" />
+    <path
+       id="path135-2"
+       d="m 38.60038,78.89658 h 6.583746"
+       style="fill:none;stroke:#ff7f0e;stroke-width:0.448892;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path136-4"
+       d="m 48.05974,80.048139 v -2.355484 h 0.883716 c 0.180154,0 0.323799,0.02332 0.43272,0.07122 0.108585,0.04785 0.193925,0.120595 0.255879,0.219955 0.0607,0.09936 0.09241,0.203204 0.09241,0.310935 0,0.100548 -0.02692,0.195116 -0.08205,0.285195 -0.05475,0.08889 -0.13676,0.160108 -0.24779,0.215169 0.142752,0.04068 0.252579,0.112221 0.328588,0.213671 0.07726,0.100548 0.115832,0.219961 0.115832,0.356722 0,0.109827 -0.02368,0.212774 -0.07028,0.30854 -0.04672,0.09366 -0.103796,0.167284 -0.172972,0.218757 -0.06885,0.05115 -0.154425,0.08978 -0.25826,0.116713 -0.103019,0.02574 -0.230435,0.03859 -0.380072,0.03859 z m 0.310922,-1.36523 h 0.509649 c 0.13795,0 0.237307,-0.0096 0.298368,-0.02812 0.07804,-0.02332 0.13795,-0.06194 0.178653,-0.11701 0.03986,-0.0548 0.05953,-0.123896 0.05953,-0.205594 0,-0.0784 -0.01864,-0.14724 -0.05591,-0.207091 -0.0374,-0.05955 -0.09124,-0.100548 -0.161298,-0.122692 -0.06911,-0.02095 -0.188243,-0.03264 -0.357617,-0.03264 h -0.47134 z m 0,1.086916 h 0.586849 c 0.10056,0 0.172079,-0.0035 0.212782,-0.01048 0.07157,-0.01281 0.131078,-0.03379 0.180154,-0.06435 0.04789,-0.03021 0.08762,-0.07361 0.117903,-0.130777 0.03171,-0.05745 0.04698,-0.123896 0.04698,-0.198709 0,-0.08768 -0.02252,-0.163696 -0.06678,-0.229235 -0.04543,-0.06554 -0.10742,-0.111031 -0.188231,-0.136762 -0.07959,-0.02574 -0.193925,-0.03981 -0.344753,-0.03981 h -0.544954 z"
+       style="fill:#262626;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.299261;stroke-linecap:butt;stroke-linejoin:round" />
+    <path
+       id="path137-0"
+       d="m 50.26798,80.048139 v -2.355484 h 0.888504 c 0.156523,0 0.275914,0.0069 0.358821,0.02216 0.115832,0.01886 0.212769,0.05625 0.289982,0.109827 0.07959,0.05387 0.142454,0.129882 0.189434,0.228038 0.04789,0.09696 0.07248,0.204697 0.07248,0.321409 0,0.199906 -0.06432,0.369585 -0.191828,0.508741 -0.127222,0.137665 -0.357618,0.20799 -0.6919,0.20799 h -0.604502 v 0.957335 z m 0.310935,-1.23565 h 0.608993 c 0.202299,0 0.34505,-0.03744 0.430339,-0.112221 0.08412,-0.07601 0.12748,-0.181054 0.12748,-0.316618 0,-0.09936 -0.02576,-0.183745 -0.07597,-0.252576 -0.04905,-0.07123 -0.114668,-0.11701 -0.196307,-0.140355 -0.05267,-0.01407 -0.149637,-0.02095 -0.291185,-0.02095 h -0.603311 z"
+       style="fill:#262626;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.299261;stroke-linecap:butt;stroke-linejoin:round" />
+    <path
+       id="path138-0"
+       d="m 38.60038,83.552787 h 6.583746"
+       style="fill:none;stroke:#1f77b4;stroke-width:0.448892;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path139-5"
+       d="m 48.072605,84.705544 v -2.356682 h 0.888504 c 0.156509,0 0.275913,0.0069 0.358808,0.02216 0.114667,0.01972 0.211578,0.05595 0.289994,0.109827 0.07843,0.05508 0.141549,0.129881 0.189422,0.228038 0.04789,0.09696 0.07118,0.204396 0.07118,0.321409 0,0.199906 -0.06316,0.36929 -0.190624,0.508447 -0.128387,0.139156 -0.358808,0.207983 -0.691887,0.207983 H 48.3835 v 0.958834 z m 0.310935,-1.236847 h 0.608992 c 0.202299,0 0.345051,-0.03743 0.430327,-0.112221 0.08412,-0.07482 0.126315,-0.181356 0.126315,-0.31692 0,-0.09815 -0.02446,-0.182251 -0.07481,-0.252576 -0.05035,-0.07003 -0.115832,-0.116712 -0.196319,-0.138856 -0.05268,-0.01407 -0.149624,-0.02124 -0.291172,-0.02124 h -0.603311 z"
+       style="fill:#262626;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.299261;stroke-linecap:butt;stroke-linejoin:round" />
+    <path
+       id="path140-6"
+       d="m 51.948932,83.878987 0.312138,0.0784 c -0.06523,0.255869 -0.183455,0.45099 -0.352828,0.585656 -0.169685,0.134366 -0.377678,0.202 -0.623074,0.202 -0.253769,0 -0.460559,-0.05115 -0.619773,-0.155317 -0.158904,-0.102942 -0.280405,-0.252578 -0.363597,-0.448889 -0.08283,-0.196319 -0.123856,-0.406998 -0.123856,-0.631444 0,-0.245396 0.04698,-0.459367 0.140358,-0.642811 0.0937,-0.182253 0.226836,-0.321409 0.399808,-0.415076 0.172985,-0.09577 0.36361,-0.14245 0.57159,-0.14245 0.236116,0 0.433639,0.05955 0.595235,0.179858 0.160107,0.119405 0.272328,0.288786 0.336664,0.506351 l -0.307635,0.07243 c -0.05474,-0.171779 -0.134365,-0.29687 -0.238511,-0.375272 -0.103796,-0.0784 -0.234925,-0.11701 -0.391435,-0.11701 -0.181358,0 -0.333376,0.0434 -0.454877,0.129882 -0.121527,0.08768 -0.20679,0.203493 -0.255866,0.350734 -0.04905,0.144838 -0.07364,0.295665 -0.07364,0.451284 0,0.201103 0.02899,0.375272 0.08775,0.524903 0.0572,0.149629 0.14842,0.261858 0.271125,0.335474 0.123856,0.07362 0.257069,0.111031 0.401012,0.111031 0.174175,0 0.322596,-0.05028 0.442906,-0.150828 0.121526,-0.101751 0.204693,-0.250182 0.246586,-0.448889 z"
+       style="fill:#262626;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.299261;stroke-linecap:butt;stroke-linejoin:round" />
   </g>
 </svg>

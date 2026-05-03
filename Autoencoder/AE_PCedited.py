@@ -639,6 +639,7 @@ def plot_lr_sweep(bp_results, pc_results, pc_results_scaled, bp_results_scaled):
 
     plt.tick_params(axis='both')#, labelsize=18)
     plt.xscale("log")
+    plt.yscale("log")
     plt.xlabel("Learning rate")#,fontsize=18)
     plt.ylabel("Final test reconstruction loss")#,fontsize=18)
     plt.title("MNIST autoencoder")#,fontsize=18)
@@ -699,6 +700,7 @@ def plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled, bp_runs_scaled
     )
 
     plt.tick_params(axis='both')#, labelsize=18)
+    plt.yscale("log")
     plt.xlabel("Training steps")#, fontsize=18)
     plt.ylabel("Test reconstruction loss")#, fontsize=18)
     plt.title("MNIST autoencoder")#,fontsize=18)
