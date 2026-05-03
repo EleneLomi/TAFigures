@@ -843,7 +843,7 @@ for r, width in enumerate(widths_order):
         # Axes formatting
         ax.set_xscale("log")
         ax.set_yscale("log")
-        #ax.set_ylim(1e-16, 1e-1)
+        ax.set_ylim(1e-16, 1e-1)
       #  ax.set_xlim(-1, max_steps_sweep)
        # ax.set_ylim(1e-4, 1e-1)
         ax.grid(True, alpha=0.25)
