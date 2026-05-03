@@ -501,9 +501,9 @@ def fresh_models(base_state, hidden_dim):
     Create BP / BP_scaled / PC / PC_scaled and load identical weights (base_state).
     """
     bp        = BP_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers)
-    bp_scaled = BP_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers, scale_method="covariance")
+    bp_scaled = BP_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers, scale_method="norm")
     pc        = PC_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers)
-    pc_scaled = PC_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers, scale_method="covariance")
+    pc_scaled = PC_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers, scale_method="norm")
 
     models = [
         ("BP", bp),

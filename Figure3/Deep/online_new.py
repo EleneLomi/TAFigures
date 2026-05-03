@@ -10,8 +10,8 @@ from pathlib import Path
 
 base_dir = Path(__file__).parent
 
-epsilon = 0#1e-12#3#12 #MAKE NONZERO
-alpha = 0#1e-5#4
+epsilon = 1e-11#3#12 #MAKE NONZERO
+alpha = 1e-4#4
 
 # Get the directory of the current script
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -501,9 +501,9 @@ def fresh_models(base_state, hidden_dim):
     Create BP / BP_scaled / PC / PC_scaled and load identical weights (base_state).
     """
     bp        = BP_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers)
-    bp_scaled = BP_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers, scale_method="covariance")
+    bp_scaled = BP_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers, scale_method="norm")
     pc        = PC_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers)
-    pc_scaled = PC_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers, scale_method="covariance")
+    pc_scaled = PC_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers, scale_method="norm")
 
     models = [
         ("BP", bp),
@@ -550,17 +550,17 @@ for seed in seeds:
         
         if hidden_dim == 20:
             print('hi')
-            max_steps_sweep = 14000#800#1000#00 #2000
-            max_steps_curve = 14000#800#1000#00 #2000
-            eval_every      = 1000#50#00
+            max_steps_sweep = 6400#14000#800#1000#00 #2000
+            max_steps_curve = 6400#14000#800#1000#00 #2000
+            eval_every      = 640#1000#50#00
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-5), 10**(-0.02), 10)# 70) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
-            lrs = np.logspace(-5, -2, 10)#np.logspace(-5, -2, 10)
+            lrs = np.logspace(-5, -2, 5)#20)#np.logspace(-5, -2, 10)
 
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = 5#2       # for "(scaled lr)" variants
-            amplify_lr_PC_scaled = 105#85#55#3#50       # for "(scaled lr)" variants
+            amplify_lr_PC_scaled = 55#105#85#55#3#50       # for "(scaled lr)" variants
             amplify_lr_PC = 40#35#3#50    # for BP only (if you want)
             print('bye')
         if hidden_dim == 40:
@@ -783,7 +783,7 @@ handles, labels = axes[0, 0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 1])
 # Save inside the same folder (figure2)
-file_path = os.path.join(script_dir, "Training_curves_final2.png")#, "Training_curves_final.svg")
+file_path = os.path.join(script_dir, "Training_curves_final3.png")#, "Training_curves_final.svg")
 plt.savefig(file_path, dpi=300)
 
 # --- make figure: rows = widths, cols = inits ---
@@ -864,7 +864,7 @@ for r, width in enumerate(widths_order):
 handles, labels = axes[0, 0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 1])
-file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final2.png")#, "lr_sweeps_final.svg")
+file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final3.png")#, "lr_sweeps_final.svg")
 plt.savefig(file_path_lrsweep, dpi=300)
 
 # --- compute best MSE per (width, init, model) ---
@@ -925,7 +925,7 @@ axes[0].set_ylabel(r"$\|W_{\mathrm{data}} - W_{L:1}\|_2^2$") # set_ylabel("Best 
 handles, labels = axes[0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 0.92])
-file_path_width = os.path.join(script_dir, "widths_sweep_final2.png")#, "widths_sweep_final.svg")
+file_path_width = os.path.join(script_dir, "widths_sweep_final3.png")#, "widths_sweep_final.svg")
 plt.savefig(file_path_width, dpi=300)
 
 # ===================== OPTIONAL: print best LR summary =====================

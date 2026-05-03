@@ -1,13 +1,37 @@
 seed,width,init,model,best_lr
-0,15,norm_preservation,BP,0.03389429322426766
-0,15,norm_preservation,BP (scaled lr),0.8259657240259776
-0,15,norm_preservation,PC,0.08097564767984483
-0,15,norm_preservation,PC (scaled lr),1.4287427719369614
-0,20,norm_preservation,BP,0.029314912862268654
-0,20,norm_preservation,BP (scaled lr),0.7143713859684807
-0,20,norm_preservation,PC,0.08097564767984483
-0,20,norm_preservation,PC (scaled lr),1.4287427719369614
-0,40,norm_preservation,BP,0.0219286884919272
-0,40,norm_preservation,BP (scaled lr),0.46217891273900613
-0,40,norm_preservation,PC,0.060572915967588035
-0,40,norm_preservation,PC (scaled lr),1.0687548459754694
+0,15,norm_preservation,BP,0.02089296130854041
+0,15,norm_preservation,BP (scaled lr),0.954992586021436
+0,15,norm_preservation,PC,0.0747021898927332
+0,15,norm_preservation,PC (scaled lr),1.8696689112912896
+0,20,norm_preservation,BP,0.02089296130854041
+0,20,norm_preservation,BP (scaled lr),0.954992586021436
+0,20,norm_preservation,PC,0.0747021898927332
+0,20,norm_preservation,PC (scaled lr),1.909985172042872
+0,40,norm_preservation,BP,0.02089296130854041
+0,40,norm_preservation,BP (scaled lr),0.2670955587558985
+0,40,norm_preservation,PC,0.02089296130854041
+0,40,norm_preservation,PC (scaled lr),0.534191117511797
+1,15,norm_preservation,BP,0.02089296130854041
+1,15,norm_preservation,BP (scaled lr),0.2670955587558985
+1,15,norm_preservation,PC,0.0747021898927332
+1,15,norm_preservation,PC (scaled lr),1.8696689112912896
+1,20,norm_preservation,BP,0.02089296130854041
+1,20,norm_preservation,BP (scaled lr),0.2670955587558985
+1,20,norm_preservation,PC,0.0747021898927332
+1,20,norm_preservation,PC (scaled lr),1.909985172042872
+1,40,norm_preservation,BP,0.02089296130854041
+1,40,norm_preservation,BP (scaled lr),0.2670955587558985
+1,40,norm_preservation,PC,0.02089296130854041
+1,40,norm_preservation,PC (scaled lr),0.534191117511797
+2,15,norm_preservation,BP,0.02089296130854041
+2,15,norm_preservation,BP (scaled lr),0.954992586021436
+2,15,norm_preservation,PC,0.0747021898927332
+2,15,norm_preservation,PC (scaled lr),0.5229153292491324
+2,20,norm_preservation,BP,0.02089296130854041
+2,20,norm_preservation,BP (scaled lr),0.954992586021436
+2,20,norm_preservation,PC,0.0747021898927332
+2,20,norm_preservation,PC (scaled lr),1.909985172042872
+2,40,norm_preservation,BP,0.02089296130854041
+2,40,norm_preservation,BP (scaled lr),0.2670955587558985
+2,40,norm_preservation,PC,0.02089296130854041
+2,40,norm_preservation,PC (scaled lr),0.534191117511797
