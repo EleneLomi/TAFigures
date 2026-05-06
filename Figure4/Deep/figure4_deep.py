@@ -234,7 +234,7 @@ class PC_MLP(nn.Module):
         except RuntimeError:
         # Not numerically SPD -> signal "stop learning"
             pred = x @ previous_activity.T
-            return pred, torch.zeros_like(variance)  # precision unavailable, not OK
+            return pred, torch.zeros_like(variance)  
 
   #      L = torch.linalg.cholesky(variance)
         precision = torch.cholesky_inverse(L)
@@ -310,7 +310,6 @@ def train(model, x, y, lr=1e-3, epochs=1, verbose=True):
 """
 Width sweep + LR sweep per width + plot best test_MSE curve for each width.
 
-If your models are elsewhere, change the import line below.
 """
 
 import math

@@ -7,8 +7,8 @@ import numpy as np
 import torch.nn.functional as F
 import os
 
-epsilon = 0#1e-12#3#12
-alpha = 0#1e-5#4
+epsilon = 0
+alpha = 0
 
 # Get the directory of the current script
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -175,11 +175,7 @@ class BP_MLP(nn.Module):
             eps = choose_epsilon_from_eigs(cov, mode="floor", alpha=alpha)
             reg_cov = cov + eps * torch.eye(cov.shape[0], device=cov.device, dtype=cov.dtype)
             self.scalings.append(stable_inverse(reg_cov).float())
-      #  self.scalings = [
-      #      stable_inverse(cov + epsilon * torch.eye(cov.shape[0], device=cov.device, dtype=cov.dtype)).float() 
-      #      for cov in covariances]
-       # self.scalings = [(stable_inverse(cov)).float() for cov in covariances]
-        #+epsilon*torch.ones_like(cov)
+
 
     def register_hook(self):
         self.remove_hooks()
@@ -226,17 +222,13 @@ class PC_MLP(nn.Module):
             previous_activity = previous_activity @ layer.weight
             variance += previous_activity @ previous_activity.t()
         previous_activity = previous_activity @ self.layers[0].weight
-        # invert variance
-       # eigvals = torch.linalg.eigvalsh(variance) 
-       # print("min eig:", eigvals.min().item(), "max eig:", eigvals.max().item())
-       # print("cond ~", (eigvals.max() / eigvals.min().clamp_min(1e-30)).item())
-
+  
         try:
             L = torch.linalg.cholesky(variance)
         except RuntimeError:
         # Not numerically SPD -> signal "stop learning"
             pred = x @ previous_activity.T
-            return pred, torch.zeros_like(variance)  # precision unavailable, not OK
+            return pred, torch.zeros_like(variance) 
 
   #      L = torch.linalg.cholesky(variance)
         precision = torch.cholesky_inverse(L)
@@ -282,11 +274,7 @@ class PC_MLP(nn.Module):
             eps = choose_epsilon_from_eigs(cov, mode="floor", alpha=alpha)
             reg_cov = cov + eps * torch.eye(cov.shape[0], device=cov.device, dtype=cov.dtype)
             self.scalings.append(stable_inverse(reg_cov).float())
-    #    self.scalings = [
-    #        stable_inverse(cov + epsilon * torch.eye(cov.shape[0], device=cov.device, dtype=cov.dtype)).float() 
-    #        for cov in covariances]
-    #    self.scalings = [(stable_inverse(cov)).float() for cov in covariances]
-    #+epsilon*torch.ones_like(cov)
+
 
     def register_hook(self):
         self.remove_hooks()
@@ -316,12 +304,6 @@ def train(model, x, y, lr=1e-3, epochs=1, verbose=True):
 """
 Width sweep + LR sweep per width + plot best test_MSE curve for each width.
 
-Assumptions:
-- You have two model classes available: BP_MLP and PC_MLP
-- Each model implements: loss(xb, yb) -> (loss_tensor, aux_dict_or_any)
-- Models are stacks of nn.Linear layers (bias OK), and we compare effective W_eff to W_data.
-
-If your models are elsewhere, change the import line below.
 """
 
 import math
@@ -333,13 +315,8 @@ import torch.nn.functional as F
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# ------------------- your models must be available -------------------
-# from your_code import BP_MLP, PC_MLP
-# e.g.:
-# from models import BP_MLP, PC_MLP
 
-
-# ===================== CONFIG =====================
+#  CONFIG
 seeds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 numruns = len(seeds)
 
@@ -375,7 +352,7 @@ optimizer_kwargs = dict(momentum=0.0)
 weight_decay = 0.0
 
 
-# ===================== INIT HELPERS =====================
+#  INIT HELPERS 
 def lecun_normal_(tensor: torch.Tensor):
     fan_in = nn.init._calculate_fan_in_and_fan_out(tensor)[0]
     std = math.sqrt(1.0 / fan_in)
@@ -397,7 +374,7 @@ def apply_init(model: nn.Module, init_name: str):
                 nn.init.zeros_(m.bias)
 
 
-# ===================== REPRO HELPERS =====================
+# REPRO HELPERS
 def set_seed(seed: int):
     random.seed(seed)
     np.random.seed(seed)
@@ -439,7 +416,7 @@ def make_batches(X, Y, steps, seed):
     return batches
 
 
-# ===================== METRIC: compare effective W to W_data =====================
+# METRIC: compare effective W to W_data
 @torch.no_grad()
 def effective_matrix_from_linears(model: nn.Module, device=None, dtype=None):
     """
@@ -478,7 +455,7 @@ def test_mse(model, W_data):
     return F.mse_loss(W_eff, W_data, reduction="mean").item() #THINK THIS SHOULD BE SUM
 
 
-# ===================== TRAIN STEP =====================
+#  TRAIN STEP
 def train_step(model, xb, yb, optimizer):
     model.train()
     optimizer.zero_grad(set_to_none=True)
@@ -488,7 +465,7 @@ def train_step(model, xb, yb, optimizer):
     return float(loss.item())
 
 
-# ===================== MODEL FACTORY =====================
+# MODEL FACTORY
 def fresh_models(base_state, hidden_dim):
     """
     Create BP / BP_scaled / PC / PC_scaled and load identical weights (base_state).
@@ -510,7 +487,7 @@ def fresh_models(base_state, hidden_dim):
     return models
 
 
-# ===================== EXPERIMENT =====================
+#  EXPERIMENT 
 inits = ["lecun_normal"] #["kaiming_uniform", "lecun_normal"]
 
 lr_sweep_rows = []     # per seed, width, init, model, lr -> test_mse
@@ -562,9 +539,6 @@ for seed in seeds:
             max_steps_curve = 800#00 #2000
             eval_every      = 50#00
 
-            # LR grid (base grid; we optionally amplify for some models)
-            #lrs = np.linspace(10**(-5), 10**(-0.02), 10) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
-            #lrs = np.linspace(10**(-5), 10**(-0.02), 10)#70)
             lrs = np.logspace(-5, -0.02, 100)
             
             
@@ -579,8 +553,6 @@ for seed in seeds:
             max_steps_curve = 400#00 #2000
             eval_every      = 100#00
 
-            # LR grid (base grid; we optionally amplify for some models)
-            #lrs = np.linspace(10**(-5), 10**(-0.02), 10) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
             lrs = np.logspace((-5), (-0.02), 100)#70)
             
 
