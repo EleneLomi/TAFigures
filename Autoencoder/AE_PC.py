@@ -18,7 +18,7 @@ from bp_ae import BPAutoencoder
 SEED = 42
 RUN_SEEDS = [0, 1, 2]#, 3, 4]
 
-DATA_ROOT = "/Users/elenelominadze/TargetAlignment/data"
+DATA_ROOT = "./data"
 
 BATCH_SIZE = 64
 SWEEP_STEPS = 200#100
