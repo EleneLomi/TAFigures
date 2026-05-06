@@ -381,27 +381,6 @@ optimizer_kwargs = dict(momentum=0.0)
 weight_decay = 0.0
 
 
-# ===================== INIT HELPERS =====================
-#def lecun_normal_(tensor: torch.Tensor):
-#    fan_in = nn.init._calculate_fan_in_and_fan_out(tensor)[0]
-#    std = math.sqrt(1.0 / fan_in)
-#    return nn.init.normal_(tensor, mean=0.0, std=std)
-
-#def apply_init(model: nn.Module, init_name: str):
-#    """
-#    init_name: 'kaiming_uniform' or 'lecun_normal'
-#    """
-#    for m in model.modules():
-#        if isinstance(m, (nn.Linear, nn.Conv1d, nn.Conv2d, nn.Conv3d)):
-#            if init_name == "kaiming_uniform":
-#                nn.init.kaiming_uniform_(m.weight, a=0.0, mode="fan_in", nonlinearity="relu")
-#            elif init_name == "lecun_normal":
-#                lecun_normal_(m.weight)
-#            else:
-#                raise ValueError(f"Unknown init: {init_name}")
-#            if m.bias is not None:
-#                nn.init.zeros_(m.bias)
-
 def apply_init(model: nn.Module, init_name: str):
     """
     init_name: 'kaiming_uniform', 'lecun normal' or 'norm_preservation'
@@ -590,28 +569,28 @@ for seed in seeds:
 
             # LR grid (base grid; we optionally amplify for some models)
             # lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
-            lrs = np.logspace((-3.5), (-0.0), 20)
+            lrs = np.logspace((-3.5), (-0.0), 100)
            
 
             # for 1 hidden layer it was 1,1,1
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants
             amplify_lr_PC_scaled = 1#50       # for "(scaled lr)" variants
-            amplify_lr_PC = 5#1#25#3#50    # for BP only (if you want)
+            amplify_lr_PC = 2#1#25#3#50    # for BP only (if you want)
         
         if hidden_dim == 20:
         #    max_steps_sweep = 500#00 #2000
         #    max_steps_curve = 500#00 #2000
-            eval_every      = 100#00
+            eval_every      = 20#00
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
             lrs = np.logspace((-3.5), (0.1), 20)
 
             # Optional LR scaling knobs (keep if you want)
-           # amplify_lr_BP_scaled = .2#2       # for "(scaled lr)" variants
-           # amplify_lr_PC_scaled = 2.5#50       # for "(scaled lr)" variants
-            amplify_lr_PC = 5#5#3#50    # for BP only (if you want)
+            amplify_lr_BP_scaled = .2#2       # for "(scaled lr)" variants
+            amplify_lr_PC_scaled = 2.5#50       # for "(scaled lr)" variants
+            amplify_lr_PC = 1.4#5#3#50    # for BP only (if you want)
         
         if hidden_dim == 40:
         #    max_steps_sweep = 500#55#00 #2000
@@ -620,7 +599,7 @@ for seed in seeds:
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
-            lrs = np.logspace((-3.5), (-0.02), 50)
+            lrs = np.logspace((-3.5), (-0.02), 100)
 
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants
@@ -708,9 +687,9 @@ df_best = pd.DataFrame(best_lr_rows)
 df_cur  = pd.DataFrame(curve_rows)
 
 # save each dataframe
-#df_lr.to_csv(base_dir / "lr_sweep.csv", index=False)
-#df_best.to_csv(base_dir / "best_lrs.csv", index=False)
-#df_cur.to_csv(base_dir / "curves.csv", index=False)
+df_lr.to_csv(base_dir / "lr_sweep.csv", index=False)
+df_best.to_csv(base_dir / "best_lrs.csv", index=False)
+df_cur.to_csv(base_dir / "curves.csv", index=False)
 
 agg_lr = (
     df_lr.groupby(["width", "init", "model", "lr_used"])["test_mse"] #.
@@ -812,7 +791,7 @@ handles, labels = axes[0, 0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 1])
 # Save inside the same folder (figure2)
-file_path = os.path.join(script_dir, "Training_curves_final2.svg")
+file_path = os.path.join(script_dir, "Training_curves_final.svg")
 plt.savefig(file_path, dpi=300)
 
 # --- make figure: rows = widths, cols = inits ---
@@ -893,7 +872,7 @@ for r, width in enumerate(widths_order):
 handles, labels = axes[0, 0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 1])
-file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final2.svg")
+file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final.svg")
 plt.savefig(file_path_lrsweep, dpi=300)
 
 # --- compute best MSE per (width, init, model) ---
@@ -955,7 +934,7 @@ axes[0].set_ylabel(r"$\|W_{\mathrm{data}} - W_{L:1}\|_2^2$") # set_ylabel("Best 
 handles, labels = axes[0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 0.92])
-file_path_width = os.path.join(script_dir, "widths_sweep_final2.svg")
+file_path_width = os.path.join(script_dir, "widths_sweep_final.svg")
 plt.savefig(file_path_width, dpi=300)
 
 # ===================== OPTIONAL: print best LR summary =====================
