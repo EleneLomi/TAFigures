@@ -107,18 +107,7 @@ class BPAutoencoder(LightningModule):
             eps = choose_epsilon_from_eigs(cov, mode="floor", alpha=alpha)
             reg_cov = cov + eps * torch.eye(cov.shape[0], device=cov.device, dtype=cov.dtype)
             self.scalings.append(stable_inverse(reg_cov).float())
-      #  self.scalings = [
-      #      stable_inverse(cov + epsilon * torch.eye(cov.shape[0], device=cov.device, dtype=cov.dtype)).float() 
-      #      for cov in covariances]
-       # self.scalings = [(stable_inverse(cov)).float() for cov in covariances]
-        #+epsilon*torch.ones_like(cov)
 
-    #def register_hook(self):
-    #    self.remove_hooks()
-    #    with torch.no_grad():
-    #        for layer_idx, layer in enumerate(self.layers):
-    #            handle = layer.weight.register_hook(lambda grad, idx=layer_idx: grad @ self.scalings[idx])
-    #            self._hook_handles.append(handle)
 
     def register_hook(self):
         self.remove_hooks()
@@ -129,11 +118,6 @@ class BPAutoencoder(LightningModule):
                 if m is not block and hasattr(m, "weight") and m.weight is not None:
                     weight_layers.append(m)
 
-    #    print("num hooked layers:", len(weight_layers))
-    #    print("num scalings:", len(self.scalings))
-    #    for i, layer in enumerate(weight_layers):
-    #        print(f"layer {i} weight shape: {tuple(layer.weight.shape)}")
-    #        print(f"scaling {i} shape: {tuple(self.scalings[i].shape)}")
 
         for layer_idx, layer in enumerate(weight_layers):
             def hook_fn(grad, idx=layer_idx):
