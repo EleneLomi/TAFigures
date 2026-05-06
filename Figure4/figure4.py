@@ -10,15 +10,15 @@ from pathlib import Path
 
 base_dir = Path(__file__).parent
 
-epsilon = 0#1e-12#3#12
-alpha = 1e-5#4
+epsilon = 0
+alpha = 1e-5
 
 # Get the directory of the current script
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 def init_model_gaus(model):
-    # LeCun initialization - Should be better than default init
+    # LeCun initialization 
     with torch.no_grad():
         for layer in model.layers:
             n_out = layer.weight.size(0)
@@ -45,17 +45,14 @@ def choose_epsilon_from_eigs(cov, mode="relative", alpha=1e-5, kappa_target=1e5)
 
     if mode == "relative":
         eps = alpha * lam_max
-        #eps=1e-11
 
     elif mode == "floor":
         floor = alpha * lam_max
         eps = torch.clamp(floor - lam_min, min=0.0)
-        #eps=1e-11
 
     elif mode == "condition":
         eps = (lam_max - kappa_target * lam_min) / (kappa_target - 1.0)
         eps = torch.clamp(eps, min=0.0)
-        #eps=1e-11
 
     else:
         raise ValueError("mode must be 'relative', 'floor', or 'condition'")
@@ -181,11 +178,7 @@ class BP_MLP(nn.Module):
             eps = choose_epsilon_from_eigs(cov, mode="floor", alpha=alpha)
             reg_cov = cov + eps * torch.eye(cov.shape[0], device=cov.device, dtype=cov.dtype)
             self.scalings.append(stable_inverse(reg_cov).float())
-      #  self.scalings = [
-      #      stable_inverse(cov + epsilon * torch.eye(cov.shape[0], device=cov.device, dtype=cov.dtype)).float() 
-      #      for cov in covariances]
-       # self.scalings = [(stable_inverse(cov)).float() for cov in covariances]
-        #+epsilon*torch.ones_like(cov)
+
 
     def register_hook(self):
         self.remove_hooks()
@@ -232,19 +225,14 @@ class PC_MLP(nn.Module):
             previous_activity = previous_activity @ layer.weight
             variance += previous_activity @ previous_activity.t()
         previous_activity = previous_activity @ self.layers[0].weight
-        # invert variance
-       # eigvals = torch.linalg.eigvalsh(variance) 
-       # print("min eig:", eigvals.min().item(), "max eig:", eigvals.max().item())
-       # print("cond ~", (eigvals.max() / eigvals.min().clamp_min(1e-30)).item())
 
         try:
             L = torch.linalg.cholesky(variance)
         except RuntimeError:
         # Not numerically SPD -> signal "stop learning"
             pred = x @ previous_activity.T
-            return pred, torch.zeros_like(variance)  # precision unavailable, not OK
+            return pred, torch.zeros_like(variance) 
 
-  #      L = torch.linalg.cholesky(variance)
         precision = torch.cholesky_inverse(L)
         return x @ previous_activity.T, precision
 
@@ -288,11 +276,7 @@ class PC_MLP(nn.Module):
             eps = choose_epsilon_from_eigs(cov, mode="floor", alpha=alpha)
             reg_cov = cov + eps * torch.eye(cov.shape[0], device=cov.device, dtype=cov.dtype)
             self.scalings.append(stable_inverse(reg_cov).float())
-    #    self.scalings = [
-    #        stable_inverse(cov + epsilon * torch.eye(cov.shape[0], device=cov.device, dtype=cov.dtype)).float() 
-    #        for cov in covariances]
-    #    self.scalings = [(stable_inverse(cov)).float() for cov in covariances]
-    #+epsilon*torch.ones_like(cov)
+
 
     def register_hook(self):
         self.remove_hooks()
@@ -322,12 +306,6 @@ def train(model, x, y, lr=1e-3, epochs=1, verbose=True):
 """
 Width sweep + LR sweep per width + plot best test_MSE curve for each width.
 
-Assumptions:
-- You have two model classes available: BP_MLP and PC_MLP
-- Each model implements: loss(xb, yb) -> (loss_tensor, aux_dict_or_any)
-- Models are stacks of nn.Linear layers (bias OK), and we compare effective W_eff to W_data.
-
-If your models are elsewhere, change the import line below.
 """
 
 import math
@@ -339,14 +317,9 @@ import torch.nn.functional as F
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# ------------------- your models must be available -------------------
-# from your_code import BP_MLP, PC_MLP
-# e.g.:
-# from models import BP_MLP, PC_MLP
 
-
-# ===================== CONFIG =====================
-seeds = [0, 1]#, 2, 3, 4, 5, 6, 7, 8, 9]
+#  CONFIG 
+seeds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 numruns = len(seeds)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -371,9 +344,9 @@ eval_every      = 10#00
 lrs = np.linspace(10**(-4), 10**(-1.7), 10)#np.linspace(10**(-3.5), 10**(-0.02), 10) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
 
 # Optional LR scaling knobs (keep if you want)
-amplify_lr_BP_scaled = .8#3#2       # for "(scaled lr)" variants
-amplify_lr_PC_scaled = 15#3#50       # for "(scaled lr)" variants
-amplify_lr_PC = 15#3#50    # for BP only (if you want)
+amplify_lr_BP_scaled = .8       # for "(scaled lr)" variants
+amplify_lr_PC_scaled = 15      # for "(scaled lr)" variants
+amplify_lr_PC = 15    # for BP only (if you want)
 
 # optimizer choice
 optimizer_cls = torch.optim.SGD
@@ -381,7 +354,7 @@ optimizer_kwargs = dict(momentum=0.0)
 weight_decay = 0.0
 
 
-# ===================== INIT HELPERS =====================
+#  INIT HELPERS 
 def apply_init(model: nn.Module, init_name: str):
     """
     init_name: 'kaiming_uniform', 'lecun normal' or 'norm_preservation'
@@ -404,7 +377,7 @@ def apply_init(model: nn.Module, init_name: str):
             if m.bias is not None:
                 nn.init.zeros_(m.bias)
 
-# ===================== REPRO HELPERS =====================
+#  REPRO HELPERS 
 def set_seed(seed: int):
     random.seed(seed)
     np.random.seed(seed)
@@ -421,14 +394,10 @@ def make_synthetic(seed: int, rank_data: int):
     """
     g = torch.Generator().manual_seed(seed)
 
-    # A: [rank_data, input_dim]
-    # B: [output_dim, rank_data]
     A = torch.randn(rank_data, input_dim, generator=g) / math.sqrt(input_dim)
     B = torch.randn(output_dim, rank_data, generator=g) / math.sqrt(rank_data)
 
-    # W_data: [output_dim, input_dim], rank <= rank_data
     W_data = B @ A
-    print("Rank-controlled mapping to learn:", W_data)
 
     X_train = torch.randn(n_train, input_dim, generator=g)
     X_test  = torch.randn(n_test,  input_dim, generator=g)
@@ -453,7 +422,7 @@ def make_batches(X, Y, steps, seed):
     return batches
 
 
-# ===================== METRIC: compare effective W to W_data =====================
+# METRIC: compare effective W to W_data 
 @torch.no_grad()
 def effective_matrix_from_linears(model: nn.Module, device=None, dtype=None):
     """
@@ -492,7 +461,7 @@ def test_mse(model, W_data):
     return F.mse_loss(W_eff, W_data, reduction="mean").item() #THINK THIS SHOULD BE SUM
 
 
-# ===================== TRAIN STEP =====================
+#  TRAIN STEP 
 def train_step(model, xb, yb, optimizer):
     model.train()
     optimizer.zero_grad(set_to_none=True)
@@ -502,7 +471,7 @@ def train_step(model, xb, yb, optimizer):
     return float(loss.item())
 
 
-# ===================== MODEL FACTORY =====================
+# MODEL FACTORY 
 def fresh_models(base_state, hidden_dim):
     """
     Create BP / BP_scaled / PC / PC_scaled and load identical weights (base_state).
@@ -524,7 +493,7 @@ def fresh_models(base_state, hidden_dim):
     return models
 
 
-# ===================== EXPERIMENT =====================
+# EXPERIMENT 
 inits = ["norm_preservation"] #["kaiming_uniform", "lecun_normal"]
 
 lr_sweep_rows = []     # per seed, width, init, model, lr -> test_mse
@@ -541,45 +510,44 @@ for seed in seeds:
     for hidden_dim in widths:
         print(hidden_dim)
         if hidden_dim == 15:
-            max_steps_sweep = 300#40#00 #2000
-            max_steps_curve = 300#40#00 #2000
-            eval_every      = 20#10#00
+            max_steps_sweep = 300
+            max_steps_curve = 300
+            eval_every      = 20
 
             # LR grid (base grid; we optionally amplify for some models)
-            lrs = np.logspace((-3.5), (-0.02), 100) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
-           
+            lrs = np.logspace((-3.5), (-0.02), 100)
 
-            # for 1 hidden layer it was 1,1,1
+            
             # Optional LR scaling knobs (keep if you want)
-            amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants
-            amplify_lr_PC_scaled = 3#1#50       # for "(scaled lr)" variants
-            amplify_lr_PC = 3#1#25#3#50    # for BP only (if you want)
+            amplify_lr_BP_scaled = 1   # for "(scaled lr)" variants
+            amplify_lr_PC_scaled = 3      # for "(scaled lr)" variants
+            amplify_lr_PC = 3  # for BP only 
         
         if hidden_dim == 20:
-            max_steps_sweep = 300#400#00 #2000
-            max_steps_curve = 300#400#00 #2000
-            eval_every      = 30#00
+            max_steps_sweep = 300
+            max_steps_curve = 300
+            eval_every      = 30
 
             # LR grid (base grid; we optionally amplify for some models)
-            lrs = np.logspace((-3.5), (-0.0), 100) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            lrs = np.logspace((-3.5), (-0.0), 100) 
 
             # Optional LR scaling knobs (keep if you want)
-            amplify_lr_BP_scaled = .15#2       # for "(scaled lr)" variants
-            amplify_lr_PC_scaled = 2#1.6#1.5#50       # for "(scaled lr)" variants
-            amplify_lr_PC = 2#1.6#1.5#3#50    # for BP only (if you want)
+            amplify_lr_BP_scaled = .15      # for "(scaled lr)" variants
+            amplify_lr_PC_scaled = 2       # for "(scaled lr)" variants
+            amplify_lr_PC = 2   # for BP only (if you want)
         
         if hidden_dim == 40:
-            max_steps_sweep = 300#55#100#00 #2000
-            max_steps_curve = 300#55#100#00 #2000
-            eval_every      = 20#5#40#00
+            max_steps_sweep = 300
+            max_steps_curve = 300
+            eval_every      = 20
 
             # LR grid (base grid; we optionally amplify for some models)
-            lrs = np.logspace((-3.5), (-0.02), 100) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
+            lrs = np.logspace((-3.5), (-0.02), 100)
 
             # Optional LR scaling knobs (keep if you want)
-            amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants
-            amplify_lr_PC_scaled = 1#50       # for "(scaled lr)" variants
-            amplify_lr_PC = 1#3#50    # for BP only (if you want)
+            amplify_lr_BP_scaled = 1      # for "(scaled lr)" variants
+            amplify_lr_PC_scaled = 1       # for "(scaled lr)" variants
+            amplify_lr_PC = 1    # for BP only (if you want)
 
         batches_sweep = make_batches(X_train, Y_train, max_steps_sweep, seed=seed+111)
         batches_curve = make_batches(X_train, Y_train, max_steps_curve, seed=seed+111) #222)
@@ -609,8 +577,7 @@ for seed in seeds:
                         lr *= amplify_lr_PC_scaled
                     if model_name == "BP (scaled lr)":
                         lr *= amplify_lr_BP_scaled
-                    #if "scaled" in model_name:
-                    #    lr *= amplify_lr
+
 
                     opt = optimizer_cls(model.parameters(), lr=lr, weight_decay=weight_decay, **optimizer_kwargs)
 
@@ -647,7 +614,6 @@ for seed in seeds:
                     "steps": 0, "test_mse": test_mse(model, W_data)
                 })
 
-                #print(model,'and', test_mse(model, W_data))
 
                 for step, (xb, yb) in enumerate(batches_curve, start=1):
                     train_step(model, xb, yb, opt)
@@ -659,7 +625,7 @@ for seed in seeds:
                         })
 
 
-# ===================== AGGREGATE (mean/std over seeds) =====================
+# AGGREGATE (mean/std over seeds) 
 df_lr   = pd.DataFrame(lr_sweep_rows)
 df_best = pd.DataFrame(best_lr_rows)
 df_cur  = pd.DataFrame(curve_rows)
@@ -914,7 +880,7 @@ plt.tight_layout(rect=[0, 0, 1, 0.92])
 file_path_width = os.path.join(script_dir, "widths_sweep_final.svg")
 plt.savefig(file_path_width, dpi=300)
 
-# ===================== OPTIONAL: print best LR summary =====================
+# OPTIONAL: print best LR summary 
 print("\nBest LR per (width, init, model): mean ± std over seeds")
 summary = (
     df_best.groupby(["width", "init", "model"])["best_lr"]
