@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader, Sampler
 from lightning import Callback, LightningModule, Trainer, seed_everything
 from torchvision import datasets, transforms
 
-from pc_e_scaled_fixed import PCAutoencoder as PCEAutoencoder
+from pc_e import PCAutoencoder as PCEAutoencoder
 from bp_ae import BPAutoencoder 
 
 
