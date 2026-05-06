@@ -40,14 +40,14 @@ def make_mnist_datasets(root=DATA_ROOT):
     train_dataset = datasets.MNIST(
         root=root,
         train=True,
-        download=False,
+        download=True,
         transform=transform,
     )
 
     test_dataset = datasets.MNIST(
         root=root,
         train=False,
-        download=False,
+        download=True,
         transform=transform,
     )
 
