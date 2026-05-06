@@ -1,1 +1,1 @@
-Repository containing learning dynamics of predictive coding and backpropagation with and without rescaling. Sections
+Repository containing learning dynamics of predictive coding and backpropagation with and without rescaling.
