@@ -343,7 +343,7 @@ import matplotlib.pyplot as plt
 
 
 # ===================== CONFIG =====================
-seeds = [0]#, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+seeds = [1]#, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 numruns = len(seeds)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -550,18 +550,18 @@ for seed in seeds:
         
         if hidden_dim == 20:
             print('hi')
-            max_steps_sweep = 6400#14000#800#1000#00 #2000
-            max_steps_curve = 6400#14000#800#1000#00 #2000
-            eval_every      = 640#1000#50#00
+            max_steps_sweep = 8000#6400#14000#800#1000#00 #2000
+            max_steps_curve = 8000#6400#14000#800#1000#00 #2000
+            eval_every      = 2000#640#1000#50#00
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-5), 10**(-0.02), 10)# 70) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
-            lrs = np.logspace(-5, -2, 5)#20)#np.logspace(-5, -2, 10)
+            np.logspace(-4, -0.02, 5)#lrs = np.logspace(-5, -2, 5)#20)#np.logspace(-5, -2, 10)
 
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = 5#2       # for "(scaled lr)" variants
-            amplify_lr_PC_scaled = 55#105#85#55#3#50       # for "(scaled lr)" variants
-            amplify_lr_PC = 40#35#3#50    # for BP only (if you want)
+            amplify_lr_PC_scaled = 1#55#105#85#55#3#50       # for "(scaled lr)" variants
+            amplify_lr_PC = 5#40#35#3#50    # for BP only (if you want)
             print('bye')
         if hidden_dim == 40:
             print('hi')

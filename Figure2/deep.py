@@ -346,7 +346,7 @@ import matplotlib.pyplot as plt
 
 
 # ===================== CONFIG =====================
-seeds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+seeds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 numruns = len(seeds)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -602,7 +602,7 @@ for seed in seeds:
         if hidden_dim == 20:
         #    max_steps_sweep = 500#00 #2000
         #    max_steps_curve = 500#00 #2000
-            eval_every      = 20#00
+            eval_every      = 100#00
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
@@ -812,7 +812,7 @@ handles, labels = axes[0, 0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 1])
 # Save inside the same folder (figure2)
-file_path = os.path.join(script_dir, "Training_curves_final.svg")
+file_path = os.path.join(script_dir, "Training_curves_final2.svg")
 plt.savefig(file_path, dpi=300)
 
 # --- make figure: rows = widths, cols = inits ---
@@ -893,7 +893,7 @@ for r, width in enumerate(widths_order):
 handles, labels = axes[0, 0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 1])
-file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final.svg")
+file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final2.svg")
 plt.savefig(file_path_lrsweep, dpi=300)
 
 # --- compute best MSE per (width, init, model) ---
@@ -955,7 +955,7 @@ axes[0].set_ylabel(r"$\|W_{\mathrm{data}} - W_{L:1}\|_2^2$") # set_ylabel("Best 
 handles, labels = axes[0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 0.92])
-file_path_width = os.path.join(script_dir, "widths_sweep_final.svg")
+file_path_width = os.path.join(script_dir, "widths_sweep_final2.svg")
 plt.savefig(file_path_width, dpi=300)
 
 # ===================== OPTIONAL: print best LR summary =====================

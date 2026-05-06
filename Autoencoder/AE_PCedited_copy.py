@@ -22,14 +22,15 @@ RUN_SEEDS = [0, 1, 2]#, 3, 4]
 
 DATA_ROOT = "/Users/elenelominadze/TargetAlignment/data"
 
-BATCH_SIZE = 64
-SWEEP_STEPS = 2#200#100
-CURVE_STEPS = 2#200#100
-EVAL_EVERY = 1#20#10
+BATCH_SIZE = 1
+SWEEP_STEPS = 800#200#100
+CURVE_STEPS = 800#200#100
+EVAL_EVERY = 80#20#10
 
 PC_E_LR = 0.05
-LRS = [1e-1,1]#[1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 5e-2, 1e-1, 5e-1, 1, 3, 10]
-
+LRS = [1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 5e-2, 1e-1]#[1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 5e-2, 1e-1, 5e-1, 1, 3, 10]
+SCALEDPC_AMPLIFY = 50
+SCALEDBP_AMPLIFY = 5
 
 # ===
 # Data
@@ -317,6 +318,8 @@ def sweep_learning_rates_matched_multi(
     max_steps,
     batch_size,
     run_seeds,
+    pcscaled_amplify,
+    bpscaled_amplify,
 ):
     bp_results = []
     bp_results_scaled = []
@@ -354,8 +357,8 @@ def sweep_learning_rates_matched_multi(
             bp_model = make_bp_model(lr, reference_arch)
             pc_model = make_pc_model(lr, reference_arch)
             ## ADDED
-            pc_model_scaled = make_pc_model_scaled(lr, reference_arch)
-            bp_model_scaled = make_bp_model_scaled(lr, reference_arch)
+            pc_model_scaled = make_pc_model_scaled(lr*pcscaled_amplify, reference_arch)
+            bp_model_scaled = make_bp_model_scaled(lr*bpscaled_amplify, reference_arch)
 
             trainer_bp = make_trainer(max_steps=max_steps, is_pc=False)
             trainer_pc = make_trainer(max_steps=max_steps, is_pc=True)
@@ -372,12 +375,12 @@ def sweep_learning_rates_matched_multi(
             pc_test_loss = compute_test_loss(pc_model, test_loader)
             pc_losses.append(pc_test_loss)
 
-            print(f"[seed={run_seed}] Training PC scaled | lr={lr:.5g}")
+            print(f"[seed={run_seed}] Training PC scaled | lr={lr*pcscaled_amplify:.5g}")
             trainer_pc_scaled.fit(pc_model_scaled, train_dataloaders=train_loader_pc_scaled)
             pc_test_loss_scaled = compute_test_loss(pc_model_scaled, test_loader)
             pc_losses_scaled.append(pc_test_loss_scaled)
 
-            print(f"[seed={run_seed}] Training BP scaled | lr={lr:.5g}")
+            print(f"[seed={run_seed}] Training BP scaled | lr={lr*bpscaled_amplify:.5g}")
             trainer_bp_scaled.fit(bp_model_scaled, train_dataloaders=train_loader_bp_scaled)
             bp_test_loss_scaled = compute_test_loss(bp_model_scaled, test_loader)
             bp_losses_scaled.append(bp_test_loss_scaled)
@@ -415,14 +418,14 @@ def sweep_learning_rates_matched_multi(
         })
 
         pc_results_scaled.append({
-            "lr": lr,
+            "lr": lr*pcscaled_amplify,
             "mean_test_loss": pc_mean_scaled,
             "std_test_loss": pc_std_scaled,
             "all_test_losses": pc_losses_scaled,
         })
 
         bp_results_scaled.append({
-            "lr": lr,
+            "lr": lr*bpscaled_amplify,
             "mean_test_loss": bp_mean_scaled,
             "std_test_loss": bp_std_scaled,
             "all_test_losses": bp_losses_scaled,
@@ -737,6 +740,8 @@ def main():
         max_steps=SWEEP_STEPS,
         batch_size=BATCH_SIZE,
         run_seeds=RUN_SEEDS,
+        pcscaled_amplify=SCALEDPC_AMPLIFY,
+        bpscaled_amplify=SCALEDBP_AMPLIFY,
     )
 
     plot_lr_sweep(bp_results, pc_results, pc_results_scaled, bp_results_scaled)

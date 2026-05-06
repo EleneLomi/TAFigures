@@ -1,5 +1,5 @@
 seed,width,init,model,best_lr
-0,512,norm_preservation,BP,5.623413251903491e-05
-0,512,norm_preservation,BP (scaled lr),0.05
-0,512,norm_preservation,PC,0.0004
-0,512,norm_preservation,PC (scaled lr),0.00309287728854692
+1,20,norm_preservation,BP,0.004511694033264178
+1,20,norm_preservation,BP (scaled lr),0.05564617541580222
+1,20,norm_preservation,PC,0.09976311574844399
+1,20,norm_preservation,PC (scaled lr),0.0001
