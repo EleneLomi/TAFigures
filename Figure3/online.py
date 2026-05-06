@@ -392,7 +392,7 @@ def make_synthetic(seed: int):
 
     # W_data: [output_dim, input_dim]
     W_data = torch.randn(output_dim, input_dim, generator=g) / math.sqrt(input_dim)
-    print('This is the mapping to learn', W_data)
+    
 
     X_train = torch.randn(n_train, input_dim, generator=g)
     X_test  = torch.randn(n_test,  input_dim, generator=g)
@@ -504,7 +504,6 @@ for seed in seeds:
     for hidden_dim in widths:
         print(hidden_dim)
         if hidden_dim == 15:
-            print('hi')
             max_steps_sweep = 200#00 #2000
             max_steps_curve = 200#00 #2000
             eval_every      = 10#00
@@ -519,7 +518,7 @@ for seed in seeds:
             amplify_lr_PC = 1#3#50    # for BP only (if you want)
         
         if hidden_dim == 20:
-            print('hi')
+            
             max_steps_sweep = 800#00 #2000
             max_steps_curve = 800#00 #2000
             eval_every      = 50#00
@@ -532,9 +531,9 @@ for seed in seeds:
             amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants
             amplify_lr_PC_scaled = 2#3#50       # for "(scaled lr)" variants
             amplify_lr_PC = 1#3#50    # for BP only (if you want)
-            print('bye')
+            
         if hidden_dim == 40:
-            print('hi')
+            
             max_steps_sweep = 800#00 #2000
             max_steps_curve = 800#00 #2000
             eval_every      = 50#00
@@ -548,7 +547,7 @@ for seed in seeds:
             amplify_lr_PC_scaled = 2#50       # for "(scaled lr)" variants
             amplify_lr_PC = 1#3#50    # for BP only (if you want)
         if hidden_dim == 100:
-            print('hi')
+            
             max_steps_sweep = 400#00 #2000
             max_steps_curve = 400#00 #2000
             eval_every      = 100#00
