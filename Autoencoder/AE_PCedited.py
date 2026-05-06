@@ -13,9 +13,8 @@ from pc_e import PCAutoencoder as PCEAutoencoder
 from bp_ae import BPAutoencoder 
 
 
-# ===
 # Config
-# ===
+
 SEED = 42
 RUN_SEEDS = [0, 1, 2]#, 3, 4]
 
@@ -30,9 +29,8 @@ PC_E_LR = 0.05
 LRS = [1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 5e-2, 1e-1, 5e-1, 1, 3, 10]
 
 
-# ===
 # Data
-# ===
+
 def make_mnist_datasets(root=DATA_ROOT):
     transform = transforms.Compose([
         transforms.ToTensor(),
@@ -56,9 +54,8 @@ def make_mnist_datasets(root=DATA_ROOT):
     return train_dataset, test_dataset
 
 
-# ===
-# Fixed minibatch machinery
-# ===
+# Fixed minibatches
+
 class FixedBatchSampler(Sampler):
     def __init__(self, batches):
         self.batches = batches
@@ -102,14 +99,12 @@ def make_loader_from_fixed_batches(dataset, fixed_batches, num_workers=0):
     )
 
 
-# ===
-# Initialization
-# ===
+# Initialisation
+
 class MyLinear(nn.Linear):
     def reset_parameters(self):
         fan_in = self.weight.size(1)
-        std = math.sqrt(2.0 / fan_in) #WE NEED TO MULTIPLY BY SQRT 2
-        ###std = math.sqrt(1.0 / fan_in)  # LeCun normal
+        std = math.sqrt(2.0 / fan_in) 
         nn.init.normal_(self.weight, mean=0.0, std=std)
         if self.bias is not None:
             nn.init.zeros_(self.bias)
@@ -123,7 +118,7 @@ class LinearOutput(nn.Linear):
             nn.init.zeros_(self.bias)
 
 def make_architecture():
-    # Small autoencoder: 784 -> 128 -> 32 -> 128 -> 784
+    # 784 -> 128 -> 32 -> 128 -> 784
     return [
         nn.Sequential(MyLinear(28 * 28, 128), nn.ReLU()),#nn.GELU()),
         nn.Sequential(MyLinear(128, 32), nn.ReLU()),# nn.GELU()),
@@ -139,47 +134,16 @@ def clone_architecture_from_reference(reference_arch):
     return new_arch
 
 
-# ===
 # Helpers
-# ===
+
 def flatten_if_needed(x):
     if x.ndim > 2:
         return x.view(x.size(0), -1)
     return x
 
 
-# ===
-# BP autoencoder model
-# ===
-#class BPAutoencoder(LightningModule):
-#    def __init__(self, architecture, w_lr=1e-3, flatten_input=True):
-#        super().__init__()
-#        self.save_hyperparameters(ignore=["architecture"])
-#        self.net = nn.Sequential(*architecture)
-#        self.w_lr = w_lr
-#        self.flatten_input = flatten_input
+# Make models
 
-#    def forward(self, x):
-#        if self.flatten_input:
-#            x = flatten_if_needed(x)
-#        return self.net(x)
-
-#    def configure_optimizers(self):
-#        return torch.optim.SGD(self.parameters(), lr=self.w_lr)
-
-#    def training_step(self, batch, batch_idx):
-#        x, _ = batch
-#        target = flatten_if_needed(x) if self.flatten_input else x
-#        outputs = self(x)
-
-#        loss = 0.5 * F.mse_loss(outputs, target, reduction="sum") #F.mse_loss(outputs, target) 
-#        self.log("train_loss", loss, prog_bar=True, on_step=True, on_epoch=False)
-#        return loss
-
-
-# ===
-# Model factories
-# ===
 def make_bp_model(w_lr, reference_arch):
     arch = clone_architecture_from_reference(reference_arch)
     return BPAutoencoder(
@@ -205,8 +169,6 @@ def make_pc_model(w_lr, reference_arch):
         iters=32,
         e_lr=PC_E_LR,
         w_lr=w_lr,
-        #scale_method='covariance', #ADDED HERE
-       # use_cross_entropy=False,
         flatten_input=True,
     )
 
@@ -217,15 +179,13 @@ def make_pc_model_scaled(w_lr, reference_arch):
         iters=32,
         e_lr=PC_E_LR,
         w_lr=w_lr,
-        scale_method='covariance', #ADDED HERE
-       # use_cross_entropy=False,
+        scale_method='covariance', 
         flatten_input=True,
     )
 
 
-# ===
 # Evaluation
-# ===
+
 @torch.no_grad()
 def compute_test_loss(model, test_loader):
     """
@@ -242,7 +202,6 @@ def compute_test_loss(model, test_loader):
         x = x.to(device)
         target = flatten_if_needed(x)
         if isinstance(model, PCEAutoencoder):
-        #    print("got to here")
             model.forward(x=x)
             outputs = model.y_pred(x)
         else:
@@ -251,7 +210,6 @@ def compute_test_loss(model, test_loader):
         loss = F.mse_loss(outputs, target, reduction="sum")
         total_loss += loss.item()
         total_n += x.size(0)
-        finalsize = x.size(0)
 
     if was_training:
         model.train()
@@ -259,9 +217,8 @@ def compute_test_loss(model, test_loader):
     return total_loss / total_n
 
 
-# ===
 # Callback for training curves
-# ===
+
 class TestLossCallback(Callback):
     def __init__(self, test_loader, eval_every=50, name="model"):
         super().__init__()
@@ -289,9 +246,8 @@ class TestLossCallback(Callback):
             self._evaluate(trainer, pl_module)
 
 
-# ===
 # Trainer helper
-# ===
+
 def make_trainer(max_steps, callbacks=None, is_pc=False):
     return Trainer(
         max_steps=max_steps,
@@ -306,9 +262,8 @@ def make_trainer(max_steps, callbacks=None, is_pc=False):
     )
 
 
-# ===
-# Multi-run matched LR sweep
-# ===
+# Multi-run LR sweep
+
 def sweep_learning_rates_matched_multi(
     train_dataset,
     test_loader,
@@ -332,7 +287,7 @@ def sweep_learning_rates_matched_multi(
             print(f"\n=== LR {lr:.5g} | seed {run_seed} ===")
             seed_everything(run_seed)
 
-            # same initialization for BP and PC within this seed
+            # same initialisation for BP and PC within this seed
             reference_arch = make_architecture()
 
             # same minibatch order for BP and PC within this seed
@@ -345,14 +300,12 @@ def sweep_learning_rates_matched_multi(
 
             train_loader_bp = make_loader_from_fixed_batches(train_dataset, fixed_batches, num_workers=0)
             train_loader_pc = make_loader_from_fixed_batches(train_dataset, fixed_batches, num_workers=0)
-            ## ADDED
             train_loader_bp_scaled = make_loader_from_fixed_batches(train_dataset, fixed_batches, num_workers=0)
             train_loader_pc_scaled = make_loader_from_fixed_batches(train_dataset, fixed_batches, num_workers=0)
 
 
             bp_model = make_bp_model(lr, reference_arch)
             pc_model = make_pc_model(lr, reference_arch)
-            ## ADDED
             pc_model_scaled = make_pc_model_scaled(lr, reference_arch)
             bp_model_scaled = make_bp_model_scaled(lr, reference_arch)
 
@@ -449,9 +402,8 @@ def sweep_learning_rates_matched_multi(
     return bp_results, bp_best, pc_results, pc_best, pc_results_scaled, pc_best_scaled, bp_results_scaled, bp_best_scaled
 
 
-# ===
 # Multi-run final curves
-# ===
+
 def run_final_curves_multi(
     train_dataset,
     test_loader,
@@ -473,10 +425,8 @@ def run_final_curves_multi(
         print(f"\n=== Final curves | seed {run_seed} ===")
         seed_everything(run_seed)
 
-        # same initialization for BP and PC within this seed
         reference_arch = make_architecture()
 
-        # same minibatch order for BP and PC within this seed
         fixed_batches = make_fixed_batches(
             dataset_size=len(train_dataset),
             batch_size=batch_size,
@@ -570,9 +520,8 @@ def run_final_curves_multi(
     return bp_runs, pc_runs, pc_runs_scaled, bp_runs_scaled
 
 
-# ===
 # Aggregation
-# ===
+
 def aggregate_curve_runs(runs):
     steps = runs[0]["steps"]
     losses = torch.tensor([r["test_losses"] for r in runs], dtype=torch.float32)
@@ -583,9 +532,8 @@ def aggregate_curve_runs(runs):
     return steps, mean, std
 
 
-# ===
 # Plotting
-# ===
+
 def plot_lr_sweep(bp_results, pc_results, pc_results_scaled, bp_results_scaled):
     plt.figure(figsize=(3.5, 2.7))
 
@@ -716,9 +664,8 @@ def plot_test_loss_curves_multi(bp_runs, pc_runs, pc_runs_scaled, bp_runs_scaled
     plt.savefig('MNIST_autoencoder.svg', dpi=300)
 
 
-# ===
 # Main
-# ===
+
 def main():
     seed_everything(SEED)
 
@@ -732,9 +679,9 @@ def main():
         pin_memory=torch.cuda.is_available(),
     )
 
-    # ----
+
     # 1) LR sweep with matched initialization + minibatches
-    # ----
+
     bp_results, bp_best, pc_results, pc_best, pc_results_scaled, pc_best_scaled, bp_results_scaled, bp_best_scaled  = sweep_learning_rates_matched_multi(
         train_dataset=train_dataset,
         test_loader=test_loader,
@@ -746,9 +693,8 @@ def main():
 
     plot_lr_sweep(bp_results, pc_results, pc_results_scaled, bp_results_scaled)
 
-    # ----
     # 2) Final curves with best LRs and matched minibatches
-    # ----
+    
     bp_runs, pc_runs, pc_runs_scaled, bp_runs_scaled = run_final_curves_multi(
         train_dataset=train_dataset,
         test_loader=test_loader,
