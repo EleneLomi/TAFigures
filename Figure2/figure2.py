@@ -39,20 +39,23 @@ def stable_inverse(cov):
     return torch.linalg.pinv(cov, rcond=1e-6) #NOTE THAT I CHANGED THIS 
 
 def choose_epsilon_from_eigs(cov, mode="relative", alpha=1e-5, kappa_target=1e5):
-    eigs = torch.linalg.eigvalsh(cov.double())
-    lam_min = eigs.min()
-    lam_max = eigs.max()
+    #eigs = torch.linalg.eigvalsh(cov.double())
+    #lam_min = eigs.min()
+    #lam_max = eigs.max()
 
     if mode == "relative":
-        eps = alpha * lam_max
+        #eps = alpha * lam_max
+        eps=1e-11
 
     elif mode == "floor":
-        floor = alpha * lam_max
-        eps = torch.clamp(floor - lam_min, min=0.0)
+        #floor = alpha * lam_max
+        #eps = torch.clamp(floor - lam_min, min=0.0)
+        eps=1e-11
 
     elif mode == "condition":
-        eps = (lam_max - kappa_target * lam_min) / (kappa_target - 1.0)
-        eps = torch.clamp(eps, min=0.0)
+        #eps = (lam_max - kappa_target * lam_min) / (kappa_target - 1.0)
+        #eps = torch.clamp(eps, min=0.0)
+        eps=1e-11
 
     else:
         raise ValueError("mode must be 'relative', 'floor', or 'condition'")
@@ -343,7 +346,7 @@ import matplotlib.pyplot as plt
 
 
 # ===================== CONFIG =====================
-seeds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+seeds = [3,5,9]#, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 numruns = len(seeds)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -356,7 +359,7 @@ n_test     = 2048
 batch_size = 64 #64
 
 # widths to sweep
-widths    = [15, 20, 40] #[5, 10, 20, 50, 100]  # edit as needed
+widths    = [15]#[15, 20, 40] #[5, 10, 20, 50, 100]  # edit as needed
 nm_layers = 1#5
 
 # training budgets
@@ -568,20 +571,26 @@ best_lr_rows  = []     # per seed, width, init, model -> best lr
 for seed in seeds:
     set_seed(seed)
 
+    max_steps_sweep = 500#900#0 #2000
+    max_steps_curve = 500
+
     X_train, Y_train, X_test, Y_test, W_data = make_synthetic(seed, widths[0])
     X_train, Y_train = X_train.to(device), Y_train.to(device)
     W_data = W_data.to(device)
+    batches_sweep = make_batches(X_train, Y_train, max_steps_sweep, seed=seed+111)
+    batches_curve = make_batches(X_train, Y_train, max_steps_curve, seed=seed+111) #222)
+
 
     for hidden_dim in widths:
         print(hidden_dim)
         if hidden_dim == 15:
-            max_steps_sweep = 500#900#0 #2000
-            max_steps_curve = 500#900#0 #2000
+        #    max_steps_sweep = 500#900#0 #2000
+        #    max_steps_curve = 500#900#0 #2000
             eval_every      = 20#00
 
             # LR grid (base grid; we optionally amplify for some models)
             # lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
-            lrs = np.logspace((-3.5), (-0.0), 80)
+            lrs = np.logspace((-3.5), (-0.0), 100)
            
 
             # for 1 hidden layer it was 1,1,1
@@ -591,13 +600,13 @@ for seed in seeds:
             amplify_lr_PC = 2#1#25#3#50    # for BP only (if you want)
         
         if hidden_dim == 20:
-            max_steps_sweep = 500#00 #2000
-            max_steps_curve = 500#00 #2000
+        #    max_steps_sweep = 500#00 #2000
+        #    max_steps_curve = 500#00 #2000
             eval_every      = 20#00
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
-            lrs = np.logspace((-3.5), (0.1), 80)
+            lrs = np.logspace((-3.5), (0.1), 100)
 
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = .2#2       # for "(scaled lr)" variants
@@ -605,21 +614,18 @@ for seed in seeds:
             amplify_lr_PC = 1.4#5#3#50    # for BP only (if you want)
         
         if hidden_dim == 40:
-            max_steps_sweep = 500#55#00 #2000
-            max_steps_curve = 500#55#00 #2000
+        #    max_steps_sweep = 500#55#00 #2000
+        #    max_steps_curve = 500#55#00 #2000
             eval_every      = 20#00
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-3.5), 10**(-0.02), 5) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
-            lrs = np.logspace((-3.5), (-0.02), 80)
+            lrs = np.logspace((-3.5), (-0.02), 100)
 
             # Optional LR scaling knobs (keep if you want)
             amplify_lr_BP_scaled = 1#2       # for "(scaled lr)" variants
             amplify_lr_PC_scaled = 1#50       # for "(scaled lr)" variants
             amplify_lr_PC = 2#3#50    # for BP only (if you want)
-
-        batches_sweep = make_batches(X_train, Y_train, max_steps_sweep, seed=seed+111)
-        batches_curve = make_batches(X_train, Y_train, max_steps_curve, seed=seed+111) #222)
 
         for init_name in inits:
             # --- base init state for this (seed, width, init) ---
@@ -702,9 +708,9 @@ df_best = pd.DataFrame(best_lr_rows)
 df_cur  = pd.DataFrame(curve_rows)
 
 # save each dataframe
-df_lr.to_csv(base_dir / "lr_sweep.csv", index=False)
-df_best.to_csv(base_dir / "best_lrs.csv", index=False)
-df_cur.to_csv(base_dir / "curves.csv", index=False)
+#df_lr.to_csv(base_dir / "lr_sweep.csv", index=False)
+#df_best.to_csv(base_dir / "best_lrs.csv", index=False)
+#df_cur.to_csv(base_dir / "curves.csv", index=False)
 
 agg_lr = (
     df_lr.groupby(["width", "init", "model", "lr_used"])["test_mse"] #.
@@ -806,7 +812,7 @@ handles, labels = axes[0, 0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 1])
 # Save inside the same folder (figure2)
-file_path = os.path.join(script_dir, "Training_curves_final.svg")
+file_path = os.path.join(script_dir, "Training_curves_final.png")
 plt.savefig(file_path, dpi=300)
 
 # --- make figure: rows = widths, cols = inits ---
@@ -887,7 +893,7 @@ for r, width in enumerate(widths_order):
 handles, labels = axes[0, 0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 1])
-file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final.svg")
+file_path_lrsweep = os.path.join(script_dir, "lr_sweeps_final.png")
 plt.savefig(file_path_lrsweep, dpi=300)
 
 # --- compute best MSE per (width, init, model) ---
@@ -949,7 +955,7 @@ axes[0].set_ylabel(r"$\|W_{\mathrm{data}} - W_{L:1}\|_2^2$") # set_ylabel("Best 
 handles, labels = axes[0].get_legend_handles_labels()
 
 plt.tight_layout(rect=[0, 0, 1, 0.92])
-file_path_width = os.path.join(script_dir, "widths_sweep_final.svg")
+file_path_width = os.path.join(script_dir, "widths_sweep_final.png")
 plt.savefig(file_path_width, dpi=300)
 
 # ===================== OPTIONAL: print best LR summary =====================
