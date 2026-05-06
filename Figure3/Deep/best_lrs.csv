@@ -1,0 +1,41 @@
+seed,width,init,model,best_lr
+0,20,lecun_normal,BP,0.006309573444801936
+0,20,lecun_normal,BP (scaled lr),0.039810717055349734
+0,20,lecun_normal,PC,0.07962143411069947
+0,20,lecun_normal,PC (scaled lr),0.3981071705534973
+1,20,lecun_normal,BP,0.006309573444801936
+1,20,lecun_normal,BP (scaled lr),0.039810717055349734
+1,20,lecun_normal,PC,0.07962143411069947
+1,20,lecun_normal,PC (scaled lr),0.3981071705534973
+2,20,lecun_normal,BP,0.006309573444801936
+2,20,lecun_normal,BP (scaled lr),0.039810717055349734
+2,20,lecun_normal,PC,0.07962143411069947
+2,20,lecun_normal,PC (scaled lr),0.3981071705534973
+3,20,lecun_normal,BP,0.006309573444801936
+3,20,lecun_normal,BP (scaled lr),0.039810717055349734
+3,20,lecun_normal,PC,0.07962143411069947
+3,20,lecun_normal,PC (scaled lr),0.3981071705534973
+4,20,lecun_normal,BP,0.006309573444801936
+4,20,lecun_normal,BP (scaled lr),0.039810717055349734
+4,20,lecun_normal,PC,0.07962143411069947
+4,20,lecun_normal,PC (scaled lr),0.3981071705534973
+5,20,lecun_normal,BP,0.006309573444801936
+5,20,lecun_normal,BP (scaled lr),0.039810717055349734
+5,20,lecun_normal,PC,0.07962143411069947
+5,20,lecun_normal,PC (scaled lr),0.3981071705534973
+6,20,lecun_normal,BP,0.006309573444801936
+6,20,lecun_normal,BP (scaled lr),0.039810717055349734
+6,20,lecun_normal,PC,0.07962143411069947
+6,20,lecun_normal,PC (scaled lr),0.3981071705534973
+7,20,lecun_normal,BP,0.006309573444801936
+7,20,lecun_normal,BP (scaled lr),0.039810717055349734
+7,20,lecun_normal,PC,0.07962143411069947
+7,20,lecun_normal,PC (scaled lr),0.3981071705534973
+8,20,lecun_normal,BP,0.002511886431509582
+8,20,lecun_normal,BP (scaled lr),0.039810717055349734
+8,20,lecun_normal,PC,0.07962143411069947
+8,20,lecun_normal,PC (scaled lr),0.3981071705534973
+9,20,lecun_normal,BP,0.006309573444801936
+9,20,lecun_normal,BP (scaled lr),0.039810717055349734
+9,20,lecun_normal,PC,0.07962143411069947
+9,20,lecun_normal,PC (scaled lr),0.3981071705534973

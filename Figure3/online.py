@@ -6,11 +6,8 @@ from tqdm import tqdm
 import numpy as np
 import torch.nn.functional as F
 import os
-from pathlib import Path
 
-base_dir = Path(__file__).parent
-
-epsilon = 0#1e-12#3#12 #MAKE NONZERO
+epsilon = 0#1e-12#3#12
 alpha = 0#1e-5#4
 
 # Get the directory of the current script
@@ -379,24 +376,26 @@ weight_decay = 0.0
 
 
 # ===================== INIT HELPERS =====================
+def lecun_normal_(tensor: torch.Tensor):
+    fan_in = nn.init._calculate_fan_in_and_fan_out(tensor)[0]
+    std = math.sqrt(1.0 / fan_in)
+    return nn.init.normal_(tensor, mean=0.0, std=std)
+
 def apply_init(model: nn.Module, init_name: str):
     """
-    init_name: 'kaiming_uniform' or 'norm_preservation'
+    init_name: 'kaiming_uniform' or 'lecun_normal'
     """
     for m in model.modules():
         if isinstance(m, (nn.Linear, nn.Conv1d, nn.Conv2d, nn.Conv3d)):
-            fan_in, fan_out = nn.init._calculate_fan_in_and_fan_out(m.weight)
- 
-            if init_name == "kaiming_uniform":  # default for nn.Linear - use as default for fig 3 and 4
-                limit = math.sqrt(1.0 / fan_in)
-                nn.init.uniform_(m.weight, a = -limit, b=limit)
-            elif init_name == "norm_preservation":
-                limit = math.sqrt(1.0 / fan_out) # for fig 2
-                nn.init.normal_(m.weight, mean=0.0, std=limit)
+            if init_name == "kaiming_uniform":
+                nn.init.kaiming_uniform_(m.weight, a=0.0, mode="fan_in", nonlinearity="relu")
+            elif init_name == "lecun_normal":
+                lecun_normal_(m.weight)
             else:
                 raise ValueError(f"Unknown init: {init_name}")
             if m.bias is not None:
                 nn.init.zeros_(m.bias)
+
 
 # ===================== REPRO HELPERS =====================
 def set_seed(seed: int):
@@ -408,21 +407,15 @@ def set_seed(seed: int):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
 
-def make_synthetic(seed: int, rank_data: int):
+def make_synthetic(seed: int):
     """
     Create train/test data with y = W_data x
-    where W_data has controlled rank <= rank_data
     """
     g = torch.Generator().manual_seed(seed)
 
-    # A: [rank_data, input_dim]
-    # B: [output_dim, rank_data]
-    A = torch.randn(rank_data, input_dim, generator=g) / math.sqrt(input_dim)
-    B = torch.randn(output_dim, rank_data, generator=g) / math.sqrt(rank_data)
-
-    # W_data: [output_dim, input_dim], rank <= rank_data
-    W_data = B @ A
-    print("Rank-controlled mapping to learn:", W_data)
+    # W_data: [output_dim, input_dim]
+    W_data = torch.randn(output_dim, input_dim, generator=g) / math.sqrt(input_dim)
+    print('This is the mapping to learn', W_data)
 
     X_train = torch.randn(n_train, input_dim, generator=g)
     X_test  = torch.randn(n_test,  input_dim, generator=g)
@@ -501,9 +494,9 @@ def fresh_models(base_state, hidden_dim):
     Create BP / BP_scaled / PC / PC_scaled and load identical weights (base_state).
     """
     bp        = BP_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers)
-    bp_scaled = BP_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers, scale_method="norm")
+    bp_scaled = BP_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers, scale_method="covariance")
     pc        = PC_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers)
-    pc_scaled = PC_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers, scale_method="norm")
+    pc_scaled = PC_MLP(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, nm_layers=nm_layers, scale_method="covariance")
 
     models = [
         ("BP", bp),
@@ -518,7 +511,7 @@ def fresh_models(base_state, hidden_dim):
 
 
 # ===================== EXPERIMENT =====================
-inits = ["norm_preservation"] #["kaiming_uniform", "lecun_normal"]
+inits = ["lecun_normal"] #["kaiming_uniform", "lecun_normal"]
 
 lr_sweep_rows = []     # per seed, width, init, model, lr -> test_mse
 curve_rows    = []     # per seed, width, init, model, step -> test_mse
@@ -527,7 +520,7 @@ best_lr_rows  = []     # per seed, width, init, model -> best lr
 for seed in seeds:
     set_seed(seed)
 
-    X_train, Y_train, X_test, Y_test, W_data = make_synthetic(seed, widths[0])
+    X_train, Y_train, X_test, Y_test, W_data = make_synthetic(seed)
     X_train, Y_train = X_train.to(device), Y_train.to(device)
     W_data = W_data.to(device)
 
@@ -535,9 +528,9 @@ for seed in seeds:
         print(hidden_dim)
         if hidden_dim == 15:
             print('hi')
-            max_steps_sweep = 800#200#00 #2000
-            max_steps_curve = 800#200#00 #2000
-            eval_every      = 50#00
+            max_steps_sweep = 200#00 #2000
+            max_steps_curve = 200#00 #2000
+            eval_every      = 10#00
 
             # LR grid (base grid; we optionally amplify for some models)
             #lrs = np.linspace(10**(-5), 10**(-0.02), 10) #70) #(-2.9, -0.04, 15)  # ~ 1e-4 ... 1.6e-1
@@ -550,8 +543,8 @@ for seed in seeds:
         
         if hidden_dim == 20:
             print('hi')
-            max_steps_sweep = 800#1000#00 #2000
-            max_steps_curve = 800#1000#00 #2000
+            max_steps_sweep = 800#00 #2000
+            max_steps_curve = 800#00 #2000
             eval_every      = 50#00
 
             # LR grid (base grid; we optionally amplify for some models)
@@ -611,7 +604,7 @@ for seed in seeds:
                 best_err = float("inf")
                 best_lr  = None
 
-                for lr0 in lrs:
+                for lr0 in tqdm(lrs):
                     # reset
                     model.load_state_dict(base_state, strict=True)
 
@@ -678,10 +671,11 @@ df_lr   = pd.DataFrame(lr_sweep_rows)
 df_best = pd.DataFrame(best_lr_rows)
 df_cur  = pd.DataFrame(curve_rows)
 
-# save each dataframe
-df_lr.to_csv(base_dir / "lr_sweep.csv", index=False)
-df_best.to_csv(base_dir / "best_lrs.csv", index=False)
-df_cur.to_csv(base_dir / "curves.csv", index=False)
+# save dfs to files
+df_lr.to_csv(os.path.join(script_dir, "lr_sweep.csv"), index=False)
+df_best.to_csv(os.path.join(script_dir, "best_lrs.csv"), index=False)
+df_cur.to_csv(os.path.join(script_dir, "curves.csv"), index=False)
+
 
 agg_lr = (
     df_lr.groupby(["width", "init", "model", "lr_used"])["test_mse"] #.
@@ -700,7 +694,7 @@ agg_cur = (
 
 # ===================== PLOT: best curves, one line per width =====================
 # --- choose orderings ---
-inits_order = ["norm_preservation"]#["kaiming_uniform", "lecun_normal"]
+inits_order = ["lecun_normal"]#["kaiming_uniform", "lecun_normal"]
 models_order = ["BP", "BP (scaled lr)", "PC", "PC (scaled lr)"]
 widths_order = sorted(agg_cur["width"].unique())
 
@@ -843,7 +837,7 @@ for r, width in enumerate(widths_order):
         # Axes formatting
         ax.set_xscale("log")
         ax.set_yscale("log")
-        ax.set_ylim(1e-16, 1e-1)
+        #ax.set_ylim(1e-16, 1e-1)
       #  ax.set_xlim(-1, max_steps_sweep)
        # ax.set_ylim(1e-4, 1e-1)
         ax.grid(True, alpha=0.25)
