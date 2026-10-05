@@ -265,3 +265,5 @@ plt.ylim(0.0, 1.15)
 plt.legend()
 plt.tight_layout()
 plt.show()
+
+# plot trajectories as a function of number of inference steps
