@@ -194,7 +194,7 @@ class BP_MLP(nn.Module):
 
 
 class PC_MLP(nn.Module):
-    def __init__(self, input_dim, hidden_dim, output_dim, nm_layers=2, bias=False, scale_method=None, iters=32, e_lr=0.05):
+    def __init__(self, input_dim, hidden_dim, output_dim, nm_layers=2, bias=False, scale_method=None, iters=100, e_lr=0.05):
         super(PC_MLP, self).__init__()
         self.nm_layers = nm_layers
         self.iters = iters
@@ -750,6 +750,8 @@ for r, width in enumerate(widths_order):
                 **style[model_name]
             )
             ax.fill_between(x, lower, upper, alpha=0.15, color=style[model_name]["color"])
+            #add ylim
+            ax.set_ylim(1e-2, 0.5*1e-1)
 
         # Axes formatting
         ax.tick_params(axis='both')

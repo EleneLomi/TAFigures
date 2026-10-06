@@ -8,3 +8,9 @@ Have the same approach as in figure 4: i.e. use batch learning, synthetic data e
 To do: 
 
 Now you have things implemented
+
+Should I Just do learning rate of 1.
+
+Should i have a linear model? Or non-linear? I think maybe start with linear model.
+
+Write code for a linear PCN with Euler integration steps. What would be the TA for such a model? 
