@@ -19,7 +19,7 @@ base_dir = Path(__file__).parent
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 epsilon = 0.0
-alpha = 1e-5
+alpha = 0#1e-5
 
 
 # ============================================================
@@ -35,18 +35,18 @@ input_dim = 20
 output_dim = 20
 n_train = 7096
 n_test = 2048
-batch_size = 64
+batch_size = 15#64
 
 # Network architecture.
 hidden_dim = 20
-nm_layers = 1
+nm_layers = 4
 
 # Predictive-coding relaxation hyperparameters.
 # e_lr is the relaxation/error-state learning rate inside PC inference.
-e_lr = 0.05
+e_lr = 0.01
 
 # This is the x-axis of the experiment.
-iters_values = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000]
+iters_values = [1,500]#, 2, 5, 10, 20, 50, 100, 200, 500, 1000]
 
 # Number of different minibatches tested for each seed.
 # Every iters value sees the SAME minibatch within a trial.
@@ -334,6 +334,8 @@ class PC_MLP(nn.Module):
 
         covariances = [
             z0.double().T @ z.double() / z.shape[0]
+            #identity matrix shapes as z.double().T @ z0.double() / (z.shape[0] * z.shape[1])
+            #torch.eye(z.shape[1], device=z.device, dtype=z.dtype)
             for z0, z in zip(self.z0, self.z)
         ]
 
