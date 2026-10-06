@@ -35,15 +35,15 @@ input_dim = 20
 output_dim = 20
 n_train = 7096
 n_test = 2048
-batch_size = 15#64
+batch_size = 20#64
 
 # Network architecture.
 hidden_dim = 20
-nm_layers = 4
+nm_layers = 1
 
 # Predictive-coding relaxation hyperparameters.
 # e_lr is the relaxation/error-state learning rate inside PC inference.
-e_lr = 0.01
+e_lr = .1#0.01
 
 # This is the x-axis of the experiment.
 iters_values = [1,500]#, 2, 5, 10, 20, 50, 100, 200, 500, 1000]
@@ -336,6 +336,7 @@ class PC_MLP(nn.Module):
             z0.double().T @ z.double() / z.shape[0]
             #identity matrix shapes as z.double().T @ z0.double() / (z.shape[0] * z.shape[1])
             #torch.eye(z.shape[1], device=z.device, dtype=z.dtype)
+            #z.double().T @ z0.double() / z.shape[0]
             for z0, z in zip(self.z0, self.z)
         ]
 
@@ -712,7 +713,7 @@ ax.fill_between(
 ax.set_xscale("log")
 
 # Target alignment is a cosine similarity.
-ax.set_ylim(-1.05, 1.05)
+ax.set_ylim(.8, 1.05)
 
 ax.axhline(
     y=0.0,
