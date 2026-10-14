@@ -2,6 +2,7 @@ import math
 import os
 import random
 from pathlib import Path
+from typing import Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -35,7 +36,7 @@ input_dim = 20
 output_dim = 20
 n_train = 7096
 n_test = 2048
-batch_size = 20#64
+batch_size = 5 #20#64
 
 # Network architecture.
 hidden_dim = 20
@@ -43,14 +44,14 @@ nm_layers = 1
 
 # Predictive-coding relaxation hyperparameters.
 # e_lr is the relaxation/error-state learning rate inside PC inference.
-e_lr = .1#0.01
+e_lr = .005#0.01
 
 # This is the x-axis of the experiment.
-iters_values = [1,500]#, 2, 5, 10, 20, 50, 100, 200, 500, 1000]
+iters_values = [0,1,2,5,50,200,300,500,5000]#, 2, 5, 10, 20, 50, 100, 200, 500, 1000]
 
 # Number of different minibatches tested for each seed.
 # Every iters value sees the SAME minibatch within a trial.
-alignment_trials = 20
+alignment_trials = 3#20
 
 # IMPORTANT: keep the weight learning rate fixed across iters.
 # Replace this with the best LR you want to use for PC (scaled lr),
@@ -182,14 +183,24 @@ class PC_MLP(nn.Module):
         else:
             self.get_activity = None
 
-    def forward(self, x):
-        """
-        Pure feedforward prediction W_{L:1} x.
-        This is the prediction used in the target-alignment definition.
-        """
-        for layer in self.layers:
-            x = layer(x)
-        return x
+    #def forward(self, x):
+    #    """
+    #    Pure feedforward prediction W_{L:1} x.
+    #    This is the prediction used in the target-alignment definition.
+    #    """
+    #    for layer in self.layers:
+    #        x = layer(x)
+    #    return x
+    def forward(self, x: torch.Tensor, y: Optional[torch.Tensor] = None) -> torch.Tensor:#(self, x: torch.Tensor) -> torch.Tensor:
+        #x = self._prepare_x(x)
+
+        if y is None:
+            self.init_zero_errors(x)
+        else:
+            self.minimize_error_energy(x, y)
+
+        return self.y_pred(x)
+    # ADDED ABOVE
 
     def output_loss(self, y_hat, y):
         return 0.5 * F.mse_loss(y_hat, y, reduction="sum")
@@ -469,7 +480,7 @@ def train_step(model, xb, yb, optimizer):
     steps, then backward() computes the weight gradients, and
     optimizer.step() applies the weight update.
     """
-    model.train()
+   # model.train()
     optimizer.zero_grad(set_to_none=True)
 
     loss, _ = model.loss(xb, yb)
@@ -551,7 +562,7 @@ for seed in seeds:
         hidden_dim=hidden_dim,
         output_dim=output_dim,
         nm_layers=nm_layers,
-        scale_method="covariance",  # <-- RESCALED MODEL
+        # scale_method="covariance",  # <-- RESCALED MODEL
         iters=1,
         e_lr=e_lr,
     ).to(device)
