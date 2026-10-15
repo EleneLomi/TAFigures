@@ -32,19 +32,19 @@ alpha = 0#1e-5
 seeds = [0, 1, 2, 3, 4]
 
 # Synthetic-data dimensions, matching your existing Figure 4 setup.
-input_dim = 20
-output_dim = 20
+input_dim = 256
+output_dim = 256
 n_train = 7096
 n_test = 2048
-batch_size = 5 #20#64
+batch_size = 100 #20#64
 
 # Network architecture.
-hidden_dim = 20
+hidden_dim = 256
 nm_layers = 1
 
 # Predictive-coding relaxation hyperparameters.
 # e_lr is the relaxation/error-state learning rate inside PC inference.
-e_lr = .005#0.01
+e_lr = .01#0.01
 
 # This is the x-axis of the experiment.
 iters_values = [0,1,2,5,50,200,300,500,5000]#, 2, 5, 10, 20, 50, 100, 200, 500, 1000]
@@ -162,6 +162,7 @@ class PC_MLP(nn.Module):
             self.layers.append(
                 nn.Linear(input_dim, hidden_dim, bias=bias)
             )
+           # self.layers.append(nn.ReLU())
             input_dim = hidden_dim
 
         self.layers.append(
@@ -354,17 +355,17 @@ class PC_MLP(nn.Module):
         self.scalings = []
 
         for cov in covariances:
-            eps = choose_epsilon_from_eigs(
-                cov,
-                mode="floor",
-                alpha=alpha,
-            )
+            #eps = choose_epsilon_from_eigs(
+            #    cov,
+            #    mode="floor",
+            #    alpha=alpha,
+            #)
 
-            reg_cov = cov + eps * torch.eye(
-                cov.shape[0],
-                device=cov.device,
-                dtype=cov.dtype,
-            )
+            reg_cov = cov #+ eps * torch.eye(
+            #    cov.shape[0],
+            #    device=cov.device,
+            #    dtype=cov.dtype,
+            #)
 
             self.scalings.append(
                 stable_inverse(reg_cov).float()
