@@ -40,7 +40,7 @@ batch_size = 100 #20#64
 
 # Network architecture.
 hidden_dim = 256
-nm_layers = 1
+nm_layers = 5
 
 # Predictive-coding relaxation hyperparameters.
 # e_lr is the relaxation/error-state learning rate inside PC inference.
@@ -531,6 +531,9 @@ def target_alignment(y, y_pre, y_post, eps=1e-12):
 # ============================================================
 # MAIN EXPERIMENT
 # ============================================================
+# ============================================================
+# MAIN EXPERIMENT
+# ============================================================
 
 alignment_rows = []
 
@@ -539,12 +542,19 @@ print(f"Relaxation steps: {iters_values}")
 print(f"Fixed weight learning rate: {weight_lr}")
 print(f"Trials per seed: {alignment_trials}")
 
+# Compare covariance rescaling against default (unscaled) PC
+scale_conditions = {
+    "PC (rescaled)": "covariance",
+    "PC (unscaled)": None,
+}
+
 for seed in seeds:
+
     print(f"\n========== seed {seed} ==========")
 
     set_seed(seed)
 
-    # Same synthetic-data convention as your original Figure 4 code:
+    # Same synthetic-data convention as original Figure 4:
     # rank_data = 15.
     X_train, Y_train, X_test, Y_test, W_data = make_synthetic(
         seed=seed,
@@ -556,14 +566,14 @@ for seed in seeds:
 
     # --------------------------------------------------------
     # One common initialization for this seed.
-    # Every value of iters starts from this exact state.
+    # Every condition starts from exactly the same weights.
     # --------------------------------------------------------
+
     base_model = PC_MLP(
         input_dim=input_dim,
         hidden_dim=hidden_dim,
         output_dim=output_dim,
         nm_layers=nm_layers,
-        # scale_method="covariance",  # <-- RESCALED MODEL
         iters=1,
         e_lr=e_lr,
     ).to(device)
@@ -575,7 +585,11 @@ for seed in seeds:
         for k, v in base_model.state_dict().items()
     }
 
+    # --------------------------------------------------------
     # Fixed set of minibatches for this seed.
+    # Both models use exactly the same minibatches.
+    # --------------------------------------------------------
+
     batches = make_batches(
         X_train,
         Y_train,
@@ -583,83 +597,113 @@ for seed in seeds:
         seed=seed + 999,
     )
 
+    # --------------------------------------------------------
+    # Run both PC conditions for all relaxation-step values.
+    # --------------------------------------------------------
+
     for trial, (xb, yb) in enumerate(batches):
+
         for n_iters in iters_values:
 
-            # ------------------------------------------------
-            # Fresh model for this condition.
-            # This is crucial: every n_iters value starts from
-            # exactly the same W_pre for this seed/trial.
-            # ------------------------------------------------
-            model = PC_MLP(
-                input_dim=input_dim,
-                hidden_dim=hidden_dim,
-                output_dim=output_dim,
-                nm_layers=nm_layers,
-                scale_method="covariance",  # <-- rescaling ON
-                iters=n_iters,
-                e_lr=e_lr,
-            ).to(device)
+            for condition_name, scale_method in scale_conditions.items():
 
-            model.load_state_dict(base_state, strict=True)
+                # ------------------------------------------------
+                # Fresh model for this condition.
+                #
+                # Rescaled: scale_method="covariance"
+                # Unscaled: omit scale_method entirely
+                #
+                # Every model starts from the exact same W_pre.
+                # ------------------------------------------------
 
-            optimizer = optimizer_cls(
-                model.parameters(),
-                lr=weight_lr,
-                weight_decay=weight_decay,
-                **optimizer_kwargs,
-            )
+                model_kwargs = dict(
+                    input_dim=input_dim,
+                    hidden_dim=hidden_dim,
+                    output_dim=output_dim,
+                    nm_layers=nm_layers,
+                    iters=n_iters,
+                    e_lr=e_lr,
+                )
 
-            # ------------------------------------------------
-            # Feedforward prediction BEFORE the weight update.
-            # Use the SAME minibatch that generates the update.
-            # ------------------------------------------------
-            with torch.no_grad():
-                y_pre = model.forward(xb).detach().clone()
+                if scale_method is not None:
+                    model_kwargs["scale_method"] = scale_method
 
-            # ------------------------------------------------
-            # ONE weight update after n_iters PC relaxation steps.
-            # ------------------------------------------------
-            loss = train_step(
-                model,
-                xb,
-                yb,
-                optimizer,
-            )
+                model = PC_MLP(**model_kwargs).to(device)
 
-            # ------------------------------------------------
-            # Feedforward prediction AFTER the weight update.
-            # ------------------------------------------------
-            with torch.no_grad():
-                y_post = model.forward(xb).detach().clone()
+                # Restore identical initial weights
+                model.load_state_dict(base_state, strict=True)
 
-            # ------------------------------------------------
-            # Target alignment of this one update.
-            # ------------------------------------------------
-            ta = target_alignment(
-                y=yb,
-                y_pre=y_pre,
-                y_post=y_post,
-            )
+                # ------------------------------------------------
+                # Optimizer
+                # ------------------------------------------------
 
-            alignment_rows.append(
-                {
-                    "seed": seed,
-                    "trial": trial,
-                    "iters": n_iters,
-                    "target_alignment": ta,
-                    "loss": loss,
-                    "weight_lr": weight_lr,
-                    "e_lr": e_lr,
-                    "hidden_dim": hidden_dim,
-                }
-            )
+                optimizer = optimizer_cls(
+                    model.parameters(),
+                    lr=weight_lr,
+                    weight_decay=weight_decay,
+                    **optimizer_kwargs,
+                )
 
-            print(
-                f"trial={trial:02d}  "
-                f"iters={n_iters:4d}  "
-                f"TA={ta: .6f}"
-            )
+                # ------------------------------------------------
+                # Feedforward prediction BEFORE weight update.
+                # Same minibatch that generates the update.
+                # ------------------------------------------------
+
+                with torch.no_grad():
+                    y_pre = model.forward(xb).detach().clone()
+
+                # ------------------------------------------------
+                # ONE weight update after n_iters relaxation steps.
+                # ------------------------------------------------
+
+                loss = train_step(
+                    model,
+                    xb,
+                    yb,
+                    optimizer,
+                )
+
+                # ------------------------------------------------
+                # Feedforward prediction AFTER weight update.
+                # ------------------------------------------------
+
+                with torch.no_grad():
+                    y_post = model.forward(xb).detach().clone()
+
+                # ------------------------------------------------
+                # Target alignment of this one update.
+                # ------------------------------------------------
+
+                ta = target_alignment(
+                    y=yb,
+                    y_pre=y_pre,
+                    y_post=y_post,
+                )
+
+                # ------------------------------------------------
+                # Store results
+                # ------------------------------------------------
+
+                alignment_rows.append(
+                    {
+                        "seed": seed,
+                        "trial": trial,
+                        "iters": n_iters,
+                        "condition": condition_name,
+                        "target_alignment": ta,
+                        "loss": loss,
+                        "weight_lr": weight_lr,
+                        "e_lr": e_lr,
+                        "hidden_dim": hidden_dim,
+                    }
+                )
+
+                print(
+                    f"{condition_name:15s}  "
+                    f"trial={trial:02d}  "
+                    f"iters={n_iters:4d}  "
+                    f"TA={ta: .6f}"
+                )
 
 
 # ============================================================
@@ -669,16 +713,38 @@ for seed in seeds:
 df_alignment = pd.DataFrame(alignment_rows)
 
 raw_csv_path = base_dir / "target_alignment_vs_relaxation_raw.csv"
-df_alignment.to_csv(raw_csv_path, index=False)
+
+df_alignment.to_csv(
+    raw_csv_path,
+    index=False,
+)
 
 
 # ============================================================
 # AGGREGATE ACROSS SEEDS / TRIALS
 # ============================================================
 
-agg_alignment = (
+# First average trials within each seed.
+# This avoids treating repeated trials from the same seed
+# as fully independent observations.
+
+seed_means = (
     df_alignment
-    .groupby("iters")["target_alignment"]
+    .groupby(
+        ["condition", "iters", "seed"]
+    )["target_alignment"]
+    .mean()
+    .reset_index()
+)
+
+# Then calculate mean, standard deviation and SEM
+# across independent seeds.
+
+agg_alignment = (
+    seed_means
+    .groupby(
+        ["condition", "iters"]
+    )["target_alignment"]
     .agg(["mean", "std", "count"])
     .reset_index()
 )
@@ -688,45 +754,96 @@ agg_alignment["sem"] = (
     / np.sqrt(agg_alignment["count"])
 )
 
-summary_csv_path = base_dir / "target_alignment_vs_relaxation_summary.csv"
-agg_alignment.to_csv(summary_csv_path, index=False)
+# Save summary CSV
+
+summary_csv_path = (
+    base_dir / "target_alignment_vs_relaxation_summary.csv"
+)
+
+agg_alignment.to_csv(
+    summary_csv_path,
+    index=False,
+)
 
 print("\n========================================")
 print("Target alignment vs relaxation steps")
 print("========================================")
-print(agg_alignment.to_string(index=False))
+
+print(
+    agg_alignment.to_string(index=False)
+)
 
 
 # ============================================================
 # PLOT TARGET ALIGNMENT VS RELAXATION STEPS
 # ============================================================
 
-x = agg_alignment["iters"].to_numpy(dtype=float)
-y = agg_alignment["mean"].to_numpy(dtype=float)
-sem = agg_alignment["sem"].fillna(0.0).to_numpy(dtype=float)
-
-fig, ax = plt.subplots(figsize=(4.2, 3.3))
-
-ax.plot(
-    x,
-    y,
-    marker="o",
-    label="PC (rescaled)",
+fig, ax = plt.subplots(
+    figsize=(4.2, 3.3)
 )
 
-ax.fill_between(
-    x,
-    np.maximum(y - sem, -1.0),
-    np.minimum(y + sem, 1.0),
-    alpha=0.2,
-)
+# Colours for the two conditions
 
-# Log x-axis because relaxation-step values span several orders of magnitude.
+colors = {
+    "PC (rescaled)": "tab:blue",
+    "PC (unscaled)": "tab:orange",
+}
+
+# ------------------------------------------------------------
+# Plot each condition separately
+# ------------------------------------------------------------
+
+for condition_name, color in colors.items():
+
+    df_plot = (
+        agg_alignment[
+            agg_alignment["condition"] == condition_name
+        ]
+        .sort_values("iters")
+    )
+
+    x = df_plot["iters"].to_numpy(dtype=float)
+
+    y = df_plot["mean"].to_numpy(dtype=float)
+
+    sem = (
+        df_plot["sem"]
+        .fillna(0.0)
+        .to_numpy(dtype=float)
+    )
+
+    # Mean target alignment
+    ax.plot(
+        x,
+        y,
+        marker="o",
+        linewidth=1.8,
+        markersize=4,
+        color=color,
+        label=condition_name,
+    )
+
+    # SEM shading
+    ax.fill_between(
+        x,
+        np.maximum(y - sem, -1.0),
+        np.minimum(y + sem, 1.0),
+        color=color,
+        alpha=0.2,
+    )
+
+
+# ============================================================
+# AXIS FORMATTING
+# ============================================================
+
+# Log x-axis because relaxation steps span orders of magnitude
 ax.set_xscale("log")
 
-# Target alignment is a cosine similarity.
-ax.set_ylim(.8, 1.05)
+# Target alignment is cosine similarity
+ax.set_ylim(0.3, 1.05)
 
+# Reference line at zero
 ax.axhline(
     y=0.0,
     linestyle=":",
@@ -734,6 +851,7 @@ ax.axhline(
     linewidth=1.0,
 )
 
+# Reference line at perfect alignment
 ax.axhline(
     y=1.0,
     linestyle="--",
@@ -744,12 +862,25 @@ ax.axhline(
 
 ax.set_xlabel("PC relaxation steps")
 ax.set_ylabel("Target alignment")
-ax.legend(frameon=False)
-ax.grid(True, alpha=0.25)
 
+ax.legend(
+    frameon=False,
+)
+
+ax.grid(
+    True,
+    alpha=0.25,
+)
+
+# Light grey spines
 for spine in ax.spines.values():
     spine.set_color("#CCCCCC")
     spine.set_linewidth(0.8)
+
+
+# ============================================================
+# SAVE FIGURE AS SVG
+# ============================================================
 
 plt.tight_layout()
 
@@ -760,7 +891,7 @@ figure_path = os.path.join(
 
 plt.savefig(
     figure_path,
-    dpi=300,
+    format="svg",
     bbox_inches="tight",
 )
 

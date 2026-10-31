@@ -24,7 +24,7 @@ alpha = 0.0  # Retained from the original experiment (unused).
 # ============================================================
 # EXPERIMENT CONFIGURATION
 # ============================================================
-seeds = [0, 1, 2, 3, 4]
+seeds = [0, 1]#, 2, 3, 4]
 input_dim = 256
 output_dim = 256
 n_train = 7096
@@ -32,7 +32,7 @@ n_test = 2048
 batch_size = 100
 
 hidden_dim = 256
-nm_layers = 1
+nm_layers = 5
 
 e_lr = 0.01
 iters_values = [0, 1, 2, 5, 50, 200, 300, 500, 5000]
@@ -352,7 +352,7 @@ def main():
                 model = PC_MLP(
                     input_dim=input_dim, hidden_dim=hidden_dim,
                     output_dim=output_dim, nm_layers=nm_layers,
-                    #scale_method="covariance", 
+                    scale_method="covariance", 
                     iters=n_iters, e_lr=e_lr,
                 ).to(device)
                 model.load_state_dict(base_state, strict=True)

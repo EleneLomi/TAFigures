@@ -1,5 +1,7 @@
 import torch
 import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 
 torch.manual_seed(0)
 
@@ -242,7 +244,7 @@ def train_pc(
 n_steps = 1000
 lr = 0.01
 
-inference_steps_list = [1, 2, 5, 10, 20, 50, 100, 300]
+inference_steps_list = [1, 2, 5, 10, 300]
 
 
 # ============================================================
@@ -304,7 +306,7 @@ for n_inference_steps in inference_steps_list:
 
 fig, axes = plt.subplots(
     1, 2,
-    figsize=(14, 6),
+    figsize=(7, 2.6),
     sharex=True,
     sharey=True,
 )
@@ -334,23 +336,38 @@ for ax, bp_traj, pc_trajs, title in experiments:
         bp_traj[:, 0],
         bp_traj[:, 1],
         label="BP",
-        linewidth=3,
-        color="black",
+        linewidth=2,
+        color="orange",
     )
 
     # --------------------------------------------------------
     # Predictive coding
     # --------------------------------------------------------
 
-    for n_inference_steps, trajectory in pc_trajs.items():
+    cmap = plt.cm.Blues
+    norm = mcolors.Normalize(
+        vmin=min(pc_trajs),
+        vmax=max(pc_trajs),
+    )
 
+    for n_inference_steps, trajectory in pc_trajs.items():
         ax.plot(
             trajectory[:, 0],
             trajectory[:, 1],
-            linewidth=1.8,
-            label=f"PC ({n_inference_steps} inference steps)",
+            color=cmap(.4 + 0.6 * norm(n_inference_steps)),
+            linewidth=1,
+            label=f"PC (T={n_inference_steps})",
         )
 
+    #for n_inference_steps, trajectory in pc_trajs.items():
+#
+  #      ax.plot(
+  #          trajectory[:, 0],
+  #          trajectory[:, 1],
+  #          linewidth=1,
+   #         label=f"PC (T={n_inference_steps})",
+ #       )
+#
     # --------------------------------------------------------
     # Initialisation
     # --------------------------------------------------------
@@ -398,7 +415,7 @@ for ax, bp_traj, pc_trajs, title in experiments:
     ax.set_ylabel(r"$\hat{y}_2$")
 
     ax.set_xlim(-1.1, 1.1)
-    ax.set_ylim(0.0, 1.15)
+    ax.set_ylim(0.6, 1.15)
 
     ax.set_title(title)
     ax.grid(alpha=0.25)
@@ -409,4 +426,7 @@ axes[1].legend(
 )
 
 plt.tight_layout()
+#save as svg file
+plt.savefig("figure.svg", format="svg", bbox_inches="tight")
 plt.show()
+#plt.show()

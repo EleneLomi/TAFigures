@@ -9,13 +9,13 @@ import torch
 import torch.nn as nn
 
 seed = 0
-input_dim = 20
-hidden_dim = 20
-output_dim = 20
-nm_layers = 1
+input_dim = 256
+hidden_dim = 256
+output_dim = 256
+nm_layers = 5
 n_train = 7096
 n_test = 2048
-batch_size = 20
+batch_size = 100
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
