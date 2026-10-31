@@ -351,10 +351,12 @@ for ax, bp_traj, pc_trajs, title in experiments:
     )
 
     for n_inference_steps, trajectory in pc_trajs.items():
+        idx = inference_steps_list.index(n_inference_steps)
+
         ax.plot(
             trajectory[:, 0],
             trajectory[:, 1],
-            color=cmap(.4 + 0.6 * norm(n_inference_steps)),
+            color=cmap(0.3 + 0.6 * idx / (len(inference_steps_list) - 1)),
             linewidth=1,
             label=f"PC (T={n_inference_steps})",
         )
@@ -378,6 +380,7 @@ for ax, bp_traj, pc_trajs, title in experiments:
         marker="o",
         s=80,
         label="Initialisation",
+        color="black",
         zorder=10,
     )
 
@@ -392,6 +395,7 @@ for ax, bp_traj, pc_trajs, title in experiments:
         s=120,
         linewidth=2,
         label="Target",
+        color="black",
         zorder=10,
     )
 
@@ -404,6 +408,7 @@ for ax, bp_traj, pc_trajs, title in experiments:
         [1, 1],
         "--",
         linewidth=1,
+        color="grey",
         label="Ideal",
     )
 
@@ -416,6 +421,11 @@ for ax, bp_traj, pc_trajs, title in experiments:
 
     ax.set_xlim(-1.1, 1.1)
     ax.set_ylim(0.6, 1.15)
+
+    # Light grey subplot borders
+    for spine in ax.spines.values():
+        spine.set_color("#D3D3D3")
+        spine.set_linewidth(0.8)
 
     ax.set_title(title)
     ax.grid(alpha=0.25)
