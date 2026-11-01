@@ -32,14 +32,14 @@ alpha = 0.0  # set >0 if you want covariance regularisation
 seeds = [0, 1]  # , 2, 3, 4
 
 # Synthetic-data dimensions.
-input_dim = 1#512
+input_dim = 512
 output_dim = 512
 n_train = 7096
 n_test = 2048
 batch_size = 128
 
 # Network architecture.
-hidden_dim = 1#512
+hidden_dim = 512
 nm_layers = 1
 
 # Predictive-coding relaxation hyperparameters.
@@ -47,7 +47,7 @@ nm_layers = 1
 e_lr = 0.01
 
 # Relaxation-step values tested for PC.
-iters_values = [1,5, 20]#[1, 2, 5, 50, 200, 300, 500, 5000]
+iters_values = [1, 2, 5, 50, 200, 300, 500, 5000]
 
 # Number of different minibatches tested for each seed.
 # Every condition sees the SAME minibatch within a trial.
