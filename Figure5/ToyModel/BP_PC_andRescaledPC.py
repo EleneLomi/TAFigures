@@ -625,7 +625,8 @@ plt.plot(
     bp_trajectory[:, 0].numpy(),
     bp_trajectory[:, 1].numpy(),
     linewidth=2,
-    label="BP"
+    label="BP",
+    color='orange'
 )
 
 
@@ -637,7 +638,8 @@ plt.plot(
     pc_trajectory[:, 0].numpy(),
     pc_trajectory[:, 1].numpy(),
     linewidth=2,
-    label="PC"
+    label="PC",
+    c='#1f77b4'
 )
 
 
@@ -649,7 +651,9 @@ plt.plot(
     pc_norm_trajectory[:, 0].numpy(),
     pc_norm_trajectory[:, 1].numpy(),
     linewidth=2,
-    label="PC + activity norm"
+    label="rescaled PC",
+    c='#1f77b4',
+    linestyle = '--'
 )
 
 
@@ -657,13 +661,13 @@ plt.plot(
 # Ideal trajectory
 # ------------------------------------------------------------
 
-plt.plot(
-    [1, -1],
-    [1, 1],
-    "--",
-    linewidth=1.5,
-    label="ideal"
-)
+#plt.plot(
+#    [1, -1],
+#    [1, 1],
+#    "--",
+#    linewidth=1.5,
+#    label="ideal"
+#)
 
 
 # ------------------------------------------------------------
@@ -680,9 +684,23 @@ plt.scatter(
 plt.annotate(
     "initialisation",
     xy=(1, 1),
-    xytext=(0.35, 1.06)
+    xytext=(0.35, 1.06),
+    fontsize=18,
+    fontfamily="sans-serif"
 )
 
+
+# ------------------------------------------------------------
+# Initialisation
+# ------------------------------------------------------------
+
+plt.scatter(
+    1,
+    1,
+    s=60,
+    color="black",
+    zorder=10
+)
 
 # ------------------------------------------------------------
 # Target
@@ -694,14 +712,40 @@ plt.scatter(
     marker="x",
     s=100,
     linewidth=2,
+    color="black",
     zorder=10
 )
 
 plt.annotate(
     "target",
     xy=(-1, 1),
-    xytext=(-1.05, 0.93)
+    xytext=(-1.05, 0.93),
+    fontsize=18,
+    fontfamily="sans-serif"
 )
+
+# ------------------------------------------------------------
+# Simplified ticks
+# ------------------------------------------------------------
+
+plt.xticks([-1.0, 0.0, 1.0])
+plt.yticks([0.8, 1.0])
+
+
+# ------------------------------------------------------------
+# Spines
+# ------------------------------------------------------------
+
+ax = plt.gca()
+
+ax.spines["top"].set_visible(False)
+ax.spines["right"].set_visible(False)
+
+ax.spines["left"].set_color("lightgray")
+ax.spines["bottom"].set_color("lightgray")
+
+ax.spines["left"].set_linewidth(2)
+ax.spines["bottom"].set_linewidth(2)
 
 
 # ------------------------------------------------------------
@@ -710,13 +754,16 @@ plt.annotate(
 
 plt.xlabel(
     r"$\hat{y}_1$",
-    fontsize=13
+    fontsize=22
 )
 
 plt.ylabel(
     r"$\hat{y}_2$",
-    fontsize=13
+    fontsize=22
 )
+
+# Tick labels
+plt.tick_params(axis="both", labelsize=18)
 
 plt.xlim(
     -1.1,
@@ -724,11 +771,11 @@ plt.xlim(
 )
 
 plt.ylim(
-    0.0,
+    0.6,
     1.15
 )
 
-plt.legend()
+plt.legend(fontsize=16)
 
 plt.tight_layout()
 

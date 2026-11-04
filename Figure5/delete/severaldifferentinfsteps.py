@@ -184,9 +184,8 @@ def train_pc(
 
     return torch.stack(trajectory)
 
-
 # ============================================================
-# Train both models
+# Train BP once
 # ============================================================
 
 bp_trajectory = train_bp(
@@ -196,48 +195,77 @@ bp_trajectory = train_bp(
     lr=0.01,
 )
 
-pc_trajectory = train_pc(
-    x=x,
-    target=target,
-    n_steps=1000,
-    weight_lr=0.01,
-    inference_lr=0.1,
-    inference_steps=50,
-)
-# NOTE YOU CAN INSTEAD USE EQUILIBRATED ENERGY
 
 # ============================================================
-# Plot both trajectories
+# Train PC for different numbers of inference steps
 # ============================================================
 
-plt.figure(figsize=(6, 5))
+inference_steps_list = [1, 2, 5, 10, 20, 50, 100, 300]
 
+pc_trajectories = {}
+
+for n_inference_steps in inference_steps_list:
+
+    pc_trajectories[n_inference_steps] = train_pc(
+        x=x,
+        target=target,
+        n_steps=1000,
+        weight_lr=0.01,
+        inference_lr=0.1,
+        inference_steps=n_inference_steps,
+    )
+
+# ============================================================
+# Plot trajectories
+# ============================================================
+
+plt.figure(figsize=(7, 6))
+
+
+# ------------------------------------------------------------
 # Backpropagation
+# ------------------------------------------------------------
+
 plt.plot(
     bp_trajectory[:, 0],
     bp_trajectory[:, 1],
     label="BP",
-    linewidth=2,
+    linewidth=3,
 )
 
-# Predictive coding
-plt.plot(
-    pc_trajectory[:, 0],
-    pc_trajectory[:, 1],
-    label="PC",
-    linewidth=2,
-)
 
-# initialization
+# ------------------------------------------------------------
+# Predictive coding for different inference-step counts
+# ------------------------------------------------------------
+
+for n_inference_steps, trajectory in pc_trajectories.items():
+
+    plt.plot(
+        trajectory[:, 0],
+        trajectory[:, 1],
+        linewidth=1.8,
+        label=f"PC ({n_inference_steps} inference steps)",
+    )
+
+
+# ------------------------------------------------------------
+# Initialisation
+# ------------------------------------------------------------
+
 plt.scatter(
     1,
     1,
     marker="o",
     s=80,
     label="initialisation",
+    zorder=10,
 )
 
-# target
+
+# ------------------------------------------------------------
+# Target
+# ------------------------------------------------------------
+
 plt.scatter(
     -1,
     1,
@@ -245,9 +273,14 @@ plt.scatter(
     s=120,
     linewidth=2,
     label="target",
+    zorder=10,
 )
 
-# ideal path
+
+# ------------------------------------------------------------
+# Ideal path
+# ------------------------------------------------------------
+
 plt.plot(
     [-1, 1],
     [1, 1],
@@ -255,6 +288,11 @@ plt.plot(
     linewidth=1,
     label="ideal",
 )
+
+
+# ------------------------------------------------------------
+# Formatting
+# ------------------------------------------------------------
 
 plt.xlabel(r"$\hat{y}_1$")
 plt.ylabel(r"$\hat{y}_2$")
@@ -264,4 +302,5 @@ plt.ylim(0.0, 1.15)
 
 plt.legend()
 plt.tight_layout()
+
 plt.show()

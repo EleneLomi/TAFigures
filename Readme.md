@@ -1,3 +1,3 @@
 Repository containing learning dynamics of predictive coding and backpropagation with and without rescaling.
 
-Four folders contain code, figures and csv files for figures 2, 3, 4 and the nonlinear autoencoders. Within each folder, 'output_data' usually contains the data used for the figures (one hidden layer network) and the folder titled 'Deep' contains experiments with deeper networks (eight hidden layers).
+Five folders contain code, figures and csv files for figures 2, 3, 4, 5 and the nonlinear autoencoders. Within each folder, 'output_data' usually contains the data used for the figures (one hidden layer network) and the folder titled 'Deep' contains experiments with deeper networks (eight hidden layers).
